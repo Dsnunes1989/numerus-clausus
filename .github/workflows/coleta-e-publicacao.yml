@@ -1,0 +1,60 @@
+name: Coleta diária e publicação
+
+on:
+  schedule:
+    - cron: "23 23 * * *"   # 20h23 em Brasília
+    - cron: "23 13 * * *"   # 10h23 em Brasília (segunda tentativa)
+  workflow_dispatch:
+  push:
+    branches: [main]
+
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+concurrency:
+  group: coleta-e-publicacao
+  cancel-in-progress: false
+
+jobs:
+  coleta:
+    if: github.event_name != 'push'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - name: Coletar a população publicada pela SAP
+        run: python3 coleta/atualizar.py
+      - name: Gravar no repositório
+        run: |
+          if [ -n "$(git status --porcelain data)" ]; then
+            git config user.name "github-actions[bot]"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git add data
+            git commit -m "Coleta SAP: população de $(python3 -c 'import json;print(json.load(open("data/meta.json"))["data_sap"])')"
+            git push
+          fi
+
+  publicacao:
+    needs: coleta
+    if: always() && needs.coleta.result != 'failure'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    environment:
+      name: github-pages
+      url: ${{ steps.deploy.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - name: Montar o site
+        run: |
+          mkdir _site
+          cp -r index.html assets data .nojekyll _site/
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+      - id: deploy
+        uses: actions/deploy-pages@v4

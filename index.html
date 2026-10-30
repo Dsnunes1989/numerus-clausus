@@ -1,0 +1,1481 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Lotação do semiaberto na 4ª RAJ</title>
+<meta name="description" content="Ocupação diária das unidades prisionais paulistas, com foco no semiaberto da 4ª RAJ, a partir dos dados da SAP-SP, e gerador de manifestação.">
+<style>
+:root {
+  color-scheme: light dark;
+  --font-anthropic-sans: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-anthropic-serif: Georgia, "Times New Roman", serif;
+  --cds-font-size-title: 2rem;
+  --cds-font-size-heading: 1.125rem;
+  --cds-font-size-body: 0.9375rem;
+  --cds-font-size-caption: 0.8125rem;
+  --cds-font-weight-medium: 600;
+  --cds-gap-xs: 4px; --cds-gap-sm: 8px; --cds-gap-md: 16px; --cds-gap-lg: 24px; --cds-gap-xl: 32px;
+  --cds-pad-xs: 4px; --cds-pad-sm: 8px; --cds-pad-md: 16px; --cds-pad-lg: 24px;
+  --cds-radius: 8px;
+  --cds-dur-slow: 300ms;
+  --color-bg: #fbfaf7;
+  --color-fg: #1b1b18;
+  --color-fg-muted: #5f5e58;
+  --color-panel: #f1efe8;
+  --color-border-line: #dad7cd;
+  --color-bad: #b42318;
+  --cds-border: #d3d0c6;
+  --cds-surface-popover: #ffffff;
+  --cds-shadow-popover: 0 4px 16px rgba(0, 0, 0, .12);
+  --cds-text-secondary: #5f5e58;
+  --cds-chart-axis: #8a887f;
+  --cds-chart-grid: #e4e1d8;
+  --cds-chart-muted: #a19f96;
+  --cds-chart-reference: #3a3934;
+  --cds-chart-status-critical: #c4320a;
+  --ls-accent: #1f5fa8;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-bg: #1a1a18;
+    --color-fg: #eceae4;
+    --color-fg-muted: #a8a69e;
+    --color-panel: #24241f;
+    --color-border-line: #3a3934;
+    --color-bad: #f97066;
+    --cds-border: #44433d;
+    --cds-surface-popover: #2b2a26;
+    --cds-shadow-popover: 0 4px 16px rgba(0, 0, 0, .5);
+    --cds-text-secondary: #a8a69e;
+    --cds-chart-axis: #8f8d85;
+    --cds-chart-grid: #34332e;
+    --cds-chart-muted: #77756d;
+    --cds-chart-reference: #d8d6cf;
+    --cds-chart-status-critical: #f0703f;
+    --ls-accent: #6aa5e8;
+  }
+}
+html { -webkit-text-size-adjust: 100%; }
+body { margin: 0; padding: 24px 16px 48px; background: var(--color-bg); color: var(--color-fg); font-family: var(--font-anthropic-sans); font-size: var(--cds-font-size-body); line-height: 1.5; }
+a { color: inherit; }
+.dash-skeleton { min-height: 160px; border-radius: var(--cds-radius); background: linear-gradient(90deg, var(--color-panel), var(--color-border-line), var(--color-panel)); background-size: 200% 100%; animation: ls-sk 1.4s ease-in-out infinite; }
+@keyframes ls-sk { 0% { background-position: 100% 0; } 100% { background-position: -100% 0; } }
+@media (prefers-reduced-motion: reduce) { .dash-skeleton { animation: none; } }
+.ls-rodape { max-width: 70rem; margin: 40px auto 0; padding-top: 16px; border-top: 1px solid var(--color-border-line); font-size: var(--cds-font-size-caption); color: var(--color-fg-muted); }
+</style>
+<script src="assets/d3.min.js"></script>
+<script src="assets/runtime.js"></script>
+</head>
+<body>
+<style>
+  .ls-page { max-width: 70rem; margin-inline: auto; display: grid; gap: var(--cds-gap-xl); font-family: var(--font-anthropic-sans); }
+  .ls-head { display: grid; gap: var(--cds-gap-sm); }
+  .ls-head h1 { font-family: var(--font-anthropic-serif); font-weight: 400; font-size: var(--cds-font-size-title); line-height: 1.15; margin: 0; text-wrap: balance; }
+  .ls-lede { font-size: var(--cds-font-size-body); line-height: 1.55; max-width: 64ch; margin: 0; }
+  .ls-page .ls-lede b { font-weight: 600; font-variant-numeric: tabular-nums; }
+  .ls-src { color: var(--color-fg-muted); font-size: var(--cds-font-size-caption); margin: 0; max-width: 72ch; line-height: 1.5; }
+  .ls-src a, .ls-note a, .ls-prose a { color: inherit; text-decoration: underline; text-underline-offset: 2px; }
+  .ls-nav { display: flex; flex-wrap: wrap; gap: var(--cds-gap-xs); margin-top: var(--cds-gap-xs); }
+  .ls-nav button { font: inherit; font-size: var(--cds-font-size-caption); color: var(--color-fg); background: var(--color-panel); border: 1px solid var(--color-border-line); border-radius: 999px; padding: 4px 12px; cursor: pointer; }
+  .ls-nav button:hover { border-color: var(--color-fg-muted); }
+  .ls-nav button:focus-visible, .ls-sort:focus-visible, .ls-controls :is(input, select):focus-visible { outline: 2px solid var(--color-fg); outline-offset: 2px; }
+  .ls-sec { display: grid; gap: var(--cds-gap-md); scroll-margin-top: 16px; }
+  .ls-sec-head { display: grid; gap: var(--cds-gap-xs); }
+  .ls-sec-head h2 { font-size: var(--cds-font-size-heading); font-weight: var(--cds-font-weight-medium); margin: 0; text-wrap: balance; }
+  .ls-sec-head p { color: var(--color-fg-muted); font-size: var(--cds-font-size-caption); margin: 0; max-width: 72ch; line-height: 1.5; }
+  .ls-eyebrow { font-size: var(--cds-font-size-caption); letter-spacing: .06em; text-transform: uppercase; color: var(--color-fg-muted); }
+  .ls-tiles { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 10.5rem), 1fr)); gap: var(--cds-gap-md); }
+  .ls-tile { background: var(--color-panel); border: 1px solid var(--color-border-line); border-radius: var(--cds-radius); padding: var(--cds-pad-md); display: grid; gap: var(--cds-gap-xs); align-content: start; }
+  .ls-num { font-family: var(--font-anthropic-serif); font-weight: 400; font-size: var(--cds-font-size-title); line-height: 1.1; font-variant-numeric: tabular-nums; }
+  .ls-label { font-size: var(--cds-font-size-caption); color: var(--color-fg-muted); line-height: 1.4; }
+  .ls-tile.ls-key { border-color: var(--cds-chart-status-critical); }
+  .ls-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 22rem), 1fr)); gap: var(--cds-gap-md); }
+  .ls-card { background: var(--color-panel); border: 1px solid var(--color-border-line); border-radius: var(--cds-radius); padding: var(--cds-pad-lg); display: grid; gap: var(--cds-gap-sm); align-content: start; min-width: 0; }
+  .ls-card h3 { font-size: var(--cds-font-size-body); font-weight: var(--cds-font-weight-medium); margin: 0; }
+  .ls-note { color: var(--color-fg-muted); font-size: var(--cds-font-size-caption); margin: 0; line-height: 1.5; max-width: 72ch; }
+  .ls-prose { font-size: var(--cds-font-size-body); line-height: 1.6; margin: 0; max-width: 70ch; }
+  .ls-page .ls-prose b, .ls-page .ls-note b { font-weight: 600; font-variant-numeric: tabular-nums; }
+  .ls-chart { position: relative; min-height: 140px; }
+  .ls-chart svg { display: block; overflow: visible; }
+  .ls-t-name { font-size: 12px; fill: var(--color-fg); }
+  .ls-t-val { font-size: 12px; fill: var(--color-fg); font-variant-numeric: tabular-nums; }
+  .ls-t-val.ls-over { font-weight: 600; }
+  .ls-t-muted { font-size: 12px; fill: var(--color-fg-muted); }
+  .ls-t-ref { font-size: 11px; fill: var(--color-fg-muted); }
+  .ls-ref { stroke: var(--cds-chart-reference); stroke-width: 1.5; stroke-dasharray: 3 3; }
+  .ls-bar-over { fill: var(--cds-chart-status-critical); }
+  .ls-bar-ok { fill: var(--cds-chart-muted); }
+  .ls-row:hover .ls-t-name { text-decoration: underline; }
+  .ls-tip { position: absolute; pointer-events: none; background: var(--cds-surface-popover); border: 1px solid var(--cds-border); border-radius: var(--cds-radius); box-shadow: var(--cds-shadow-popover); padding: var(--cds-pad-xs) var(--cds-pad-sm); font-size: var(--cds-font-size-caption); line-height: 1.45; max-width: 17rem; z-index: 3; }
+  .ls-tip .ls-tip-h { color: var(--cds-text-secondary); margin-bottom: 2px; }
+  .ls-fail { display: flex; align-items: center; justify-content: center; gap: 6px; min-height: 120px; color: var(--color-fg-muted); font-size: var(--cds-font-size-caption); }
+  .ls-fail::before { content: ""; width: .375rem; height: .375rem; border-radius: 50%; background: var(--color-bad); }
+  .ls-controls { display: flex; flex-wrap: wrap; gap: var(--cds-gap-sm); align-items: center; }
+  .ls-controls input[type="search"], .ls-controls select { font: inherit; font-size: var(--cds-font-size-caption); color: var(--color-fg); background: var(--color-bg); border: 1px solid var(--color-border-line); border-radius: var(--cds-radius); padding: 6px 10px; min-width: 0; }
+  .ls-controls input[type="search"] { flex: 1 1 14rem; }
+  .ls-controls label { font-size: var(--cds-font-size-caption); display: inline-flex; gap: 6px; align-items: center; }
+  .ls-table-box { max-height: 34rem; overflow: auto; border: 1px solid var(--color-border-line); border-radius: var(--cds-radius); }
+  .ls-table { width: 100%; border-collapse: collapse; font-size: var(--cds-font-size-caption); font-variant-numeric: tabular-nums; }
+  .ls-table th { position: sticky; top: 0; background: var(--color-panel); text-align: left; font-weight: var(--cds-font-weight-medium); border-bottom: 1px solid var(--color-border-line); padding: 0; white-space: nowrap; z-index: 1; }
+  .ls-table td { padding: 6px 10px; border-bottom: 1px solid var(--color-border-line); vertical-align: top; }
+  .ls-table .ls-n { text-align: right; }
+  .ls-table th.ls-n .ls-sort { justify-content: flex-end; }
+  .ls-sort { font: inherit; color: inherit; background: none; border: 0; width: 100%; padding: 8px 10px; cursor: pointer; display: flex; gap: 4px; text-align: inherit; }
+  span.ls-sort::after { content: none; }
+  .ls-sort::after { content: "↕"; color: var(--color-fg-muted); font-size: 10px; }
+  th[aria-sort="ascending"] .ls-sort::after { content: "↑"; color: var(--color-fg); }
+  th[aria-sort="descending"] .ls-sort::after { content: "↓"; color: var(--color-fg); }
+  .ls-table td.ls-over { font-weight: 600; }
+  .ls-hide-narrow { }
+  @container (max-width: 34rem) { .ls-hide-narrow { display: none; } }
+  .ls-table-wrap { container-type: inline-size; display: grid; gap: var(--cds-gap-sm); }
+  .ls-legal { display: grid; gap: var(--cds-gap-sm); }
+  .ls-legal ol, .ls-prose-list { margin: 0; padding-left: 1.2em; display: grid; gap: var(--cds-gap-xs); font-size: var(--cds-font-size-body); line-height: 1.55; max-width: 72ch; }
+  .ls-def { display: grid; grid-template-columns: max-content 1fr; gap: var(--cds-gap-xs) var(--cds-gap-md); font-size: var(--cds-font-size-caption); line-height: 1.5; margin: 0; }
+  .ls-def dt { font-weight: var(--cds-font-weight-medium); }
+  .ls-def dd { margin: 0; color: var(--color-fg-muted); }
+  .ls-legend { display: inline-flex; align-items: center; gap: 6px; font-size: var(--cds-font-size-caption); color: var(--color-fg-muted); }
+  .ls-sw { width: 14px; height: 3px; border-radius: 2px; display: inline-block; background: var(--cds-chart-muted); }
+  .ls-sw-est { background: var(--cds-chart-muted); }
+  .ls-line { fill: none; stroke-width: 2px; stroke-linecap: round; stroke-linejoin: round; }
+  .ls-line-est { stroke: var(--cds-chart-muted); }
+  .ls-dot-est { fill: var(--cds-chart-muted); stroke: var(--color-panel); stroke-width: 2px; }
+  .ls-grid-l { stroke: var(--cds-chart-grid); stroke-width: 1; }
+  .ls-axis-t { font-size: 11px; fill: var(--color-fg-muted); font-variant-numeric: tabular-nums; }
+  .ls-cross { stroke: var(--cds-chart-axis); stroke-width: 1; }
+  [data-dash-source-state=refreshing] { opacity: .5; transition: opacity var(--cds-dur-slow); }
+
+  .ls-ref2 { stroke: var(--cds-chart-reference); stroke-width: 2; stroke-dasharray: 1 3; stroke-linecap: round; }
+  .ls-bar-est { fill: none; stroke: var(--color-fg); stroke-width: 1.5; }
+  .ls-sw-pav { width: 14px; height: 9px; border-radius: 2px; display: inline-block; background: var(--cds-chart-status-critical); }
+  .ls-sw-unid { width: 14px; height: 9px; border-radius: 2px; display: inline-block; border: 1.5px solid var(--color-fg); }
+  .ls-sw-l100 { width: 16px; height: 0; display: inline-block; border-top: 1.5px dashed var(--cds-chart-reference); }
+  .ls-sw-l137 { width: 16px; height: 0; display: inline-block; border-top: 2px dotted var(--cds-chart-reference); }
+  .ls-legend-row { display: flex; flex-wrap: wrap; gap: var(--cds-gap-sm) var(--cds-gap-md); }
+  .ls-peca { background: var(--color-bg); border: 1px solid var(--color-border-line); border-radius: var(--cds-radius); padding: var(--cds-pad-lg); display: grid; gap: var(--cds-gap-sm); font-size: var(--cds-font-size-body); line-height: 1.6; max-width: 46rem; }
+  .ls-peca p, .ls-peca ol { margin: 0; }
+  .ls-peca ol { padding-left: 1.4em; display: grid; gap: var(--cds-gap-xs); }
+  .ls-peca .ls-table { font-size: var(--cds-font-size-caption); }
+  .ls-peca .ls-mark { color: var(--color-fg-muted); }
+  .ls-btn { font: inherit; font-size: var(--cds-font-size-caption); color: var(--color-fg); background: var(--color-panel); border: 1px solid var(--color-border-line); border-radius: var(--cds-radius); padding: 6px 12px; cursor: pointer; }
+  .ls-btn:hover { border-color: var(--color-fg-muted); }
+  .ls-btn:focus-visible { outline: 2px solid var(--color-fg); outline-offset: 2px; }
+  .ls-subhead { font-size: var(--cds-font-size-caption); letter-spacing: .04em; text-transform: uppercase; color: var(--color-fg-muted); margin: var(--cds-gap-xs) 0 0; }
+
+  .ls-tabs { display: flex; flex-wrap: wrap; gap: 4px; border-bottom: 1px solid var(--color-border-line); margin-top: var(--cds-gap-sm); }
+  .ls-tabs button { font: inherit; font-size: var(--cds-font-size-caption); color: var(--color-fg-muted); background: none; border: 0; border-bottom: 2px solid transparent; padding: 8px 10px; cursor: pointer; margin-bottom: -1px; }
+  .ls-tabs button:hover { color: var(--color-fg); }
+  .ls-tabs button[aria-selected="true"] { color: var(--color-fg); border-bottom-color: var(--color-fg); font-weight: var(--cds-font-weight-medium); }
+  .ls-tabs button:focus-visible { outline: 2px solid var(--color-fg); outline-offset: 2px; }
+  .ls-panel { display: grid; gap: var(--cds-gap-xl); }
+  @media (max-width: 40rem) { .ls-tabs { flex-wrap: nowrap; overflow-x: auto; scrollbar-width: thin; } .ls-tabs button { white-space: nowrap; flex: 0 0 auto; } }
+
+  .ls-page [hidden] { display: none !important; }
+
+  .ls-points { margin: 0; padding-left: 1.2em; display: grid; gap: var(--cds-gap-sm); font-size: var(--cds-font-size-body); line-height: 1.55; max-width: 70ch; }
+  .ls-form { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 15rem), 1fr)); gap: var(--cds-gap-sm) var(--cds-gap-md); }
+  .ls-field { display: grid; gap: 4px; font-size: var(--cds-font-size-caption); color: var(--color-fg-muted); }
+  .ls-field input, .ls-field select { font: inherit; font-size: var(--cds-font-size-body); color: var(--color-fg); background: var(--color-bg); border: 1px solid var(--color-border-line); border-radius: var(--cds-radius); padding: 6px 10px; min-width: 0; }
+  .ls-field input:focus-visible, .ls-field select:focus-visible, .ls-checks input:focus-visible { outline: 2px solid var(--color-fg); outline-offset: 2px; }
+  .ls-checks { display: grid; gap: 6px; font-size: var(--cds-font-size-caption); }
+  .ls-checks label { display: flex; gap: 8px; align-items: flex-start; line-height: 1.4; }
+  .ls-actions { display: flex; flex-wrap: wrap; gap: var(--cds-gap-sm); align-items: center; }
+  .ls-btn-main { background: var(--color-fg); color: var(--color-bg); border-color: var(--color-fg); }
+  .ls-btn-main:hover { opacity: .9; }
+  .ls-paper-box { overflow-x: auto; padding: var(--cds-pad-md); background: var(--color-panel); border: 1px solid var(--color-border-line); border-radius: var(--cds-radius); }
+  .ls-paper { background: #ffffff; color: #111111; max-width: 21cm; margin-inline: auto; padding: 1.5cm 1.8cm; box-shadow: 0 1px 3px rgba(0,0,0,.18); }
+  .ls-paper .ls-mark { background: #fff3c4; }
+  @media (max-width: 40rem) { .ls-paper { padding: 0.8cm 0.6cm; } }
+  .ls-cta { margin-top: 2px; }
+  .ls-gerador { display: grid; gap: var(--cds-gap-lg); align-items: start; }
+  .ls-gerador-form { display: grid; gap: var(--cds-gap-md); }
+  .ls-wide { display: none; }
+  @media (min-width: 62rem) {
+    .ls-gerador { grid-template-columns: minmax(15rem, 19rem) minmax(0, 1fr); }
+    .ls-gerador-form { position: sticky; top: 12px; max-height: calc(100vh - 24px); overflow-y: auto; }
+    .ls-gerador-form .ls-form { grid-template-columns: 1fr; }
+    .ls-wide { display: inline; }
+    .ls-narrow { display: none; }
+  }
+</style>
+
+
+<div class="ls-page">
+  <header class="ls-head" id="topo">
+    <span class="ls-eyebrow">Sistema prisional paulista · dados diários da SAP</span>
+    <h1>Lotação do semiaberto na 4ª RAJ</h1>
+    <p class="ls-lede">Em <b data-draw="valor" data-source="resumo" data-field="data_br" data-where="chave=raj4-Masculino" data-fmt="texto">—</b>, os pavilhões de semiaberto das unidades masculinas que o DEECRIM da 4ª RAJ indica para início de pena estavam com <b data-draw="valor" data-source="listadas_resumo" data-field="sa_taxa" data-where="chave=Masculino" data-fmt="pct">—</b> de ocupação. Somando a unidade inteira, <b data-draw="valor" data-source="listadas_resumo" data-field="n_est_1375" data-where="chave=Masculino">—</b> dessas unidades passavam de 137,5%. O sistema prisional do Estado, como um todo, operava com <b data-draw="valor" data-source="geral" data-field="ocupacao" data-where="chave=estado" data-fmt="pct">—</b> de ocupação.</p>
+    <p class="ls-src">Fonte: página <a href="https://www1.sap.sp.gov.br/sp/unidades-prisionais/unidades-prisionais.html" target="_blank" rel="noopener">Unidades Prisionais</a> da Secretaria da Administração Penitenciária (SAP-SP), registrada diariamente desde 28/10/2026. Ocupação é a população dividida pela capacidade informada pela SAP.</p>
+    <div class="ls-actions ls-cta"><button type="button" class="ls-btn ls-btn-main" data-ir="manifestacao">Gerar manifestação</button><button type="button" class="ls-btn" data-ir="indicadas">Ver as unidades indicadas</button></div>
+    <nav class="ls-tabs" role="tablist" aria-label="Seções do painel">
+      <button type="button" role="tab" id="tab-resumo" data-aba="resumo" aria-selected="true">Resumo</button>
+      <button type="button" role="tab" id="tab-indicadas" data-aba="indicadas" aria-selected="false">Unidades indicadas</button>
+      <button type="button" role="tab" id="tab-semiaberto" data-aba="semiaberto" aria-selected="false">Semiaberto na 4ª RAJ</button>
+      <button type="button" role="tab" id="tab-geral" data-aba="geral" aria-selected="false">Superlotação geral</button>
+      <button type="button" role="tab" id="tab-estado" data-aba="estado" aria-selected="false">Semiaberto no Estado</button>
+      <button type="button" role="tab" id="tab-trajetoria" data-aba="trajetoria" aria-selected="false">Trajetória</button>
+      <button type="button" role="tab" id="tab-manifestacao" data-aba="manifestacao" aria-selected="false">Gerar manifestação</button>
+      <button type="button" role="tab" id="tab-metodo" data-aba="metodo" aria-selected="false">Método e normas</button>
+    </nav>
+  </header>
+
+  <div class="ls-panel" id="aba-resumo" role="tabpanel" aria-labelledby="tab-resumo">
+    <section class="ls-sec" id="resumo">
+      <div class="ls-tiles">
+        <div class="ls-tile ls-key"><span class="ls-label">Pavilhões de semiaberto acima da capacidade</span><span class="ls-num"><span data-draw="valor" data-source="listadas_resumo" data-field="n_pav_100" data-where="chave=Masculino">—</span> de <span data-draw="valor" data-source="listadas_resumo" data-field="n" data-where="chave=Masculino">—</span></span><span class="ls-label">Unidades masculinas indicadas pelo DEECRIM</span></div>
+        <div class="ls-tile ls-key"><span class="ls-label">Unidades indicadas acima de 137,5%</span><span class="ls-num"><span data-draw="valor" data-source="listadas_resumo" data-field="n_est_1375" data-where="chave=Masculino">—</span> de <span data-draw="valor" data-source="listadas_resumo" data-field="n" data-where="chave=Masculino">—</span></span><span class="ls-label">Somando a unidade inteira</span></div>
+        <div class="ls-tile"><span class="ls-label">Semiaberto masculino na 4ª RAJ</span><span class="ls-num" data-draw="valor" data-source="resumo" data-field="taxa" data-where="chave=raj4-Masculino" data-fmt="pct">—</span><span class="ls-label">Vagas em funcionamento</span></div>
+        <div class="ls-tile"><span class="ls-label">Todas as unidades do Estado</span><span class="ls-num" data-draw="valor" data-source="geral" data-field="ocupacao" data-where="chave=estado" data-fmt="pct">—</span><span class="ls-label">Fechado, provisórios, semiaberto e demais</span></div>
+      </div>
+      <div class="ls-card" id="card-resumo-pontos">
+        <h3>O que sustenta a manifestação</h3>
+        <ol class="ls-points">
+          <li>No Pedido de Providências citado pelo DEECRIM, a SAP não indicou unidade com vaga. Disse haver vagas "por ora", pela régua de 137,5% da Resolução CNPCP nº 05/2016, e condicionou a vaga à classificação do preso.</li>
+          <li>O Comunicado CG nº 602/2025 manda indicar a unidade de apresentação conforme a ocupação atual. A decisão padrão lista todas as unidades para livre escolha.</li>
+          <li>A lotação se mede pelo estabelecimento. Somando a unidade inteira, <b data-draw="valor" data-source="listadas_resumo" data-field="n_est_1375" data-where="chave=Masculino">—</b> das unidades masculinas indicadas passam de 137,5%. No feminino, a Resolução proíbe manter mulheres em estabelecimento acima da capacidade, e <span data-draw="valor" data-source="listadas_resumo" data-field="n_est_100" data-where="chave=Feminino">—</span> das <span data-draw="valor" data-source="listadas_resumo" data-field="n" data-where="chave=Feminino">—</span> unidades femininas indicadas estão nessa situação.</li>
+        </ol>
+        <div class="ls-actions"><button type="button" class="ls-btn ls-btn-main" data-ir="manifestacao">Gerar a manifestação</button><button type="button" class="ls-btn" data-ir="indicadas">Ver as unidades indicadas</button></div>
+      </div>
+      <div class="ls-card" id="card-resumo-duas">
+        <h3>Unidades masculinas indicadas, nas duas réguas</h3>
+        <div class="ls-legend-row">
+          <span class="ls-legend"><span class="ls-sw-pav"></span>Pavilhão de semiaberto</span>
+          <span class="ls-legend"><span class="ls-sw-unid"></span>Unidade inteira</span>
+          <span class="ls-legend"><span class="ls-sw-l100"></span>100% da capacidade</span>
+          <span class="ls-legend"><span class="ls-sw-l137"></span>137,5%, limite da Resolução CNPCP</span>
+        </div>
+        <div class="ls-chart dash-skeleton" id="grafico-resumo-duas" data-draw="duas" data-source="listadas" data-sexo="Masculino" aria-label="Ocupação das unidades masculinas indicadas pelo DEECRIM, pavilhão e unidade inteira"></div>
+      </div>
+    </section>
+  </div>
+
+  <div class="ls-panel" id="aba-indicadas" role="tabpanel" aria-labelledby="tab-indicadas" hidden>
+  <section class="ls-sec" id="indicadas">
+    <div class="ls-sec-head">
+      <h2>Unidades indicadas pelo DEECRIM, nas duas réguas</h2>
+      <p>A decisão padrão do DEECRIM da 4ª RAJ lista 15 unidades masculinas e 4 femininas para apresentação no semiaberto. Cada uma aparece aqui de dois jeitos: só o pavilhão de semiaberto e a unidade inteira, que é a medida da Resolução CNPCP nº 05/2016.</p>
+    </div>
+    <div class="ls-tiles">
+      <div class="ls-tile ls-key"><span class="ls-label">Pavilhões masculinos acima de 100%</span><span class="ls-num"><span data-draw="valor" data-source="listadas_resumo" data-field="n_pav_100" data-where="chave=Masculino">—</span> de <span data-draw="valor" data-source="listadas_resumo" data-field="n" data-where="chave=Masculino">—</span></span></div>
+      <div class="ls-tile ls-key"><span class="ls-label">Unidades masculinas acima de 137,5%</span><span class="ls-num"><span data-draw="valor" data-source="listadas_resumo" data-field="n_est_1375" data-where="chave=Masculino">—</span> de <span data-draw="valor" data-source="listadas_resumo" data-field="n" data-where="chave=Masculino">—</span></span><span class="ls-label">Somando a unidade inteira</span></div>
+      <div class="ls-tile"><span class="ls-label">Ocupação dos pavilhões</span><span class="ls-num" data-draw="valor" data-source="listadas_resumo" data-field="sa_taxa" data-where="chave=Masculino" data-fmt="pct">—</span></div>
+      <div class="ls-tile"><span class="ls-label">Ocupação das unidades inteiras</span><span class="ls-num" data-draw="valor" data-source="listadas_resumo" data-field="est_taxa" data-where="chave=Masculino" data-fmt="pct">—</span></div>
+    </div>
+    <div class="ls-card" id="card-duas-m">
+      <h3>Unidades masculinas indicadas</h3>
+      <div class="ls-legend-row">
+        <span class="ls-legend"><span class="ls-sw-pav"></span>Pavilhão de semiaberto</span>
+        <span class="ls-legend"><span class="ls-sw-unid"></span>Unidade inteira</span>
+        <span class="ls-legend"><span class="ls-sw-l100"></span>100% da capacidade</span>
+        <span class="ls-legend"><span class="ls-sw-l137"></span>137,5%, limite da Resolução CNPCP</span>
+      </div>
+      <div class="ls-chart dash-skeleton" id="grafico-duas-m" data-draw="duas" data-source="listadas" data-sexo="Masculino" aria-label="Ocupação das unidades masculinas indicadas pelo DEECRIM, pavilhão e unidade inteira"></div>
+      <p class="ls-note">Nas unidades inteiramente de semiaberto (CPPs e alguns CRs), as duas barras coincidem. A Penitenciária I de Franco da Rocha está em reforma; só o pavilhão de semiaberto funciona.</p>
+    </div>
+    <div class="ls-card" id="card-duas-f">
+      <h3>Unidades femininas indicadas</h3>
+      <div class="ls-chart dash-skeleton" id="grafico-duas-f" data-draw="duas" data-source="listadas" data-sexo="Feminino" aria-label="Ocupação das unidades femininas indicadas pelo DEECRIM, pavilhão e unidade inteira"></div>
+      <p class="ls-note">A Resolução CNPCP nº 05/2016 veda manter mulheres em unidades acima da capacidade (art. 5º).</p>
+    </div>
+  </section>
+  </div>
+
+  <div class="ls-panel" id="aba-semiaberto" role="tabpanel" aria-labelledby="tab-semiaberto" hidden>
+  <section class="ls-sec" id="raj4">
+    <div class="ls-sec-head">
+      <h2>4ª RAJ · vagas masculinas de semiaberto</h2>
+      <p>Todas as alas e unidades de semiaberto vinculadas ao DEECRIM da 4ª RAJ (Campinas). Contam só as vagas que estavam recebendo presos.</p>
+    </div>
+    <div class="ls-tiles">
+      <div class="ls-tile ls-key"><span class="ls-label">Ocupação</span><span class="ls-num" data-draw="valor" data-source="resumo" data-field="taxa" data-where="chave=raj4-Masculino" data-fmt="pct">—</span><span class="ls-label">100% é a lotação máxima</span></div>
+      <div class="ls-tile"><span class="ls-label">Presos no semiaberto</span><span class="ls-num" data-draw="valor" data-source="resumo" data-field="populacao" data-where="chave=raj4-Masculino">—</span></div>
+      <div class="ls-tile"><span class="ls-label">Vagas em funcionamento</span><span class="ls-num" data-draw="valor" data-source="resumo" data-field="capacidade_funcionamento" data-where="chave=raj4-Masculino">—</span></div>
+      <div class="ls-tile"><span class="ls-label">Presos acima da capacidade</span><span class="ls-num" data-draw="valor" data-source="resumo" data-field="excedente" data-where="chave=raj4-Masculino" data-fmt="sinal">—</span></div>
+    </div>
+    <div class="ls-grid">
+      <div class="ls-card" id="card-raj4-unidades" style="grid-column: 1 / -1;">
+        <h3>Ocupação por ala ou unidade de semiaberto</h3>
+        <p class="ls-note">A linha tracejada marca 100% da capacidade. Passe o cursor ou toque numa barra para ver os números.</p>
+        <div class="ls-chart dash-skeleton" id="grafico-raj4" data-draw="grafico" data-source="atual" data-escopo="raj4" data-sexo="Masculino" aria-label="Ocupação das alas masculinas de semiaberto da 4ª RAJ"></div>
+      </div>
+      <div class="ls-card" id="card-nominal">
+        <h3>Por que a página da SAP mostra mais vagas</h3>
+        <p class="ls-prose">Somando a capacidade que a página da SAP exibe, a 4ª RAJ teria <b data-draw="valor" data-source="resumo" data-field="capacidade_nominal" data-where="chave=raj4-Masculino">—</b> vagas masculinas, e a ocupação cairia para <b data-draw="valor" data-source="resumo" data-field="taxa_nominal" data-where="chave=raj4-Masculino" data-fmt="pct">—</b>. A diferença, de <b data-draw="valor" data-source="resumo" data-field="capacidade_inativa" data-where="chave=raj4-Masculino">—</b> vagas, está em alas com zero preso: o CPP de Franco da Rocha, cujas atividades o Estado encerrou, e a ala de progressão da Penitenciária I de Franco da Rocha, em reforma até fevereiro de 2027.</p>
+      </div>
+      <div class="ls-card" id="card-robustez">
+        <h3>O resultado não depende de Franco da Rocha</h3>
+        <p class="ls-prose">Tirando todo o complexo de Franco da Rocha, a ocupação masculina de semiaberto na 4ª RAJ fica em <b data-draw="valor" data-source="resumo" data-field="taxa_sem_franco" data-where="chave=raj4-Masculino" data-fmt="pct">—</b>. As vagas livres somam <b data-draw="valor" data-source="resumo" data-field="vagas_ociosas" data-where="chave=raj4-Masculino">—</b>, todas em alas de progressão dentro de CDPs que, somando a unidade inteira, estão muito acima da capacidade.</p>
+      </div>
+    </div>
+  </section>
+  <section class="ls-sec" id="raj4-feminino">
+    <div class="ls-sec-head">
+      <h2>4ª RAJ · vagas femininas de semiaberto</h2>
+      <p>Mesma conta, para as quatro unidades femininas de semiaberto da região.</p>
+    </div>
+    <div class="ls-tiles">
+      <div class="ls-tile ls-key"><span class="ls-label">Ocupação</span><span class="ls-num" data-draw="valor" data-source="resumo" data-field="taxa" data-where="chave=raj4-Feminino" data-fmt="pct">—</span><span class="ls-label">100% é a lotação máxima</span></div>
+      <div class="ls-tile"><span class="ls-label">Presas no semiaberto</span><span class="ls-num" data-draw="valor" data-source="resumo" data-field="populacao" data-where="chave=raj4-Feminino">—</span></div>
+      <div class="ls-tile"><span class="ls-label">Vagas em funcionamento</span><span class="ls-num" data-draw="valor" data-source="resumo" data-field="capacidade_funcionamento" data-where="chave=raj4-Feminino">—</span></div>
+      <div class="ls-tile"><span class="ls-label">Vagas livres em alguma unidade</span><span class="ls-num" data-draw="valor" data-source="resumo" data-field="vagas_ociosas" data-where="chave=raj4-Feminino">—</span></div>
+    </div>
+    <div class="ls-card" id="card-raj4-feminino">
+      <h3>Ocupação por unidade</h3>
+      <p class="ls-note">No feminino a situação é desigual: há unidades acima da capacidade e unidades com vagas livres.</p>
+      <div class="ls-chart dash-skeleton" id="grafico-raj4-feminino" data-draw="grafico" data-source="atual" data-escopo="raj4" data-sexo="Feminino" aria-label="Ocupação das unidades femininas de semiaberto da 4ª RAJ"></div>
+    </div>
+  </section>
+  <section class="ls-sec" id="comparativo">
+    <div class="ls-sec-head">
+      <h2>Três anos depois, o semiaberto masculino segue acima da capacidade</h2>
+      <p>Comparação com a tabela de 27/10/2023, montada a partir do mesmo site da SAP. Entre as duas datas a rede mudou: o CPP de Franco da Rocha foi fechado e a Penitenciária II de Hortolândia passou a receber o semiaberto.</p>
+    </div>
+    <div class="ls-card" id="card-comparativo">
+      <h3>Ocupação das vagas masculinas de semiaberto da 4ª RAJ</h3>
+      <p class="ls-prose">Em <b data-draw="valor" data-source="comparativo" data-field="periodo" data-where="chave=base" data-fmt="texto">—</b>: <b data-draw="valor" data-source="comparativo" data-field="taxa" data-where="chave=base" data-fmt="pct">—</b> (<b data-draw="valor" data-source="comparativo" data-field="populacao" data-where="chave=base">—</b> presos para <b data-draw="valor" data-source="comparativo" data-field="capacidade" data-where="chave=base">—</b> vagas). Em <b data-draw="valor" data-source="comparativo" data-field="periodo" data-where="chave=atual" data-fmt="texto">—</b>: <b data-draw="valor" data-source="comparativo" data-field="taxa" data-where="chave=atual" data-fmt="pct">—</b> (<b data-draw="valor" data-source="comparativo" data-field="populacao" data-where="chave=atual">—</b> presos para <b data-draw="valor" data-source="comparativo" data-field="capacidade" data-where="chave=atual">—</b> vagas).</p>
+      <div class="ls-chart dash-skeleton" id="grafico-comparativo" data-draw="grafico-comp" data-source="comparativo" aria-label="Ocupação masculina de semiaberto da 4ª RAJ em 2023 e hoje"></div>
+    </div>
+  </section>
+  </div>
+
+  <div class="ls-panel" id="aba-geral" role="tabpanel" aria-labelledby="tab-geral" hidden>
+  <section class="ls-sec" id="geral">
+    <div class="ls-sec-head">
+      <h2>Superlotação geral: todas as unidades prisionais</h2>
+      <p>Toda a população presa em cada unidade, somando regime fechado, provisórios, semiaberto e prisão civil. É a régua da Resolução CNPCP nº 05/2016, que mede o estabelecimento e exige plano de redução acima de 137,5%.</p>
+    </div>
+    <p class="ls-subhead">4ª RAJ</p>
+    <div class="ls-tiles">
+      <div class="ls-tile ls-key"><span class="ls-label">Ocupação</span><span class="ls-num" data-draw="valor" data-source="geral" data-field="ocupacao" data-where="chave=raj4" data-fmt="pct">—</span></div>
+      <div class="ls-tile"><span class="ls-label">Pessoas presas</span><span class="ls-num" data-draw="valor" data-source="geral" data-field="populacao" data-where="chave=raj4">—</span></div>
+      <div class="ls-tile"><span class="ls-label">Vagas</span><span class="ls-num" data-draw="valor" data-source="geral" data-field="capacidade" data-where="chave=raj4">—</span></div>
+      <div class="ls-tile"><span class="ls-label">Unidades acima de 137,5%</span><span class="ls-num"><span data-draw="valor" data-source="geral" data-field="acima_1375" data-where="chave=raj4">—</span> de <span data-draw="valor" data-source="geral" data-field="unidades" data-where="chave=raj4">—</span></span></div>
+    </div>
+    <p class="ls-subhead">Estado de São Paulo</p>
+    <div class="ls-tiles">
+      <div class="ls-tile ls-key"><span class="ls-label">Ocupação</span><span class="ls-num" data-draw="valor" data-source="geral" data-field="ocupacao" data-where="chave=estado" data-fmt="pct">—</span></div>
+      <div class="ls-tile"><span class="ls-label">Pessoas presas</span><span class="ls-num" data-draw="valor" data-source="geral" data-field="populacao" data-where="chave=estado">—</span></div>
+      <div class="ls-tile"><span class="ls-label">Vagas</span><span class="ls-num" data-draw="valor" data-source="geral" data-field="capacidade" data-where="chave=estado">—</span></div>
+      <div class="ls-tile"><span class="ls-label">Unidades acima de 137,5%</span><span class="ls-num"><span data-draw="valor" data-source="geral" data-field="acima_1375" data-where="chave=estado">—</span> de <span data-draw="valor" data-source="geral" data-field="unidades" data-where="chave=estado">—</span></span></div>
+    </div>
+    <div class="ls-card" id="card-geral-raj4">
+      <h3>Unidades prisionais da 4ª RAJ</h3>
+      <div class="ls-legend-row">
+        <span class="ls-legend"><span class="ls-sw-l100"></span>100% da capacidade</span>
+        <span class="ls-legend"><span class="ls-sw-l137"></span>137,5%, limite da Resolução CNPCP</span>
+      </div>
+      <div class="ls-chart dash-skeleton" id="grafico-geral-raj4" data-draw="grafico-unid" data-source="unidades" aria-label="Ocupação de todas as unidades prisionais da 4ª RAJ"></div>
+    </div>
+    <div class="ls-card ls-table-wrap" id="card-tabela-unid">
+      <h3>Todas as unidades do Estado</h3>
+      <div class="ls-controls">
+        <input type="search" id="ls-u-busca" placeholder="Buscar cidade ou unidade" aria-label="Buscar cidade ou unidade">
+        <label><input type="checkbox" id="ls-u-raj4"> Só 4ª RAJ</label>
+        <label><input type="checkbox" id="ls-u-acima"> Só acima de 137,5%</label>
+      </div>
+      <div class="ls-table-box">
+        <table class="ls-table" id="tabela-unid" data-source="unidades" data-row-key="unidade_id">
+          <thead>
+            <tr>
+              <th data-field="unidade" aria-sort="none"><button type="button" class="ls-sort" data-t="u" data-k="unidade">Unidade</button></th>
+              <th data-field="coordenadoria" aria-sort="none" class="ls-hide-narrow"><button type="button" class="ls-sort" data-t="u" data-k="coordenadoria">Coordenadoria</button></th>
+              <th data-field="capacidade" aria-sort="none" class="ls-n"><button type="button" class="ls-sort" data-t="u" data-k="capacidade">Vagas</button></th>
+              <th data-field="populacao" aria-sort="none" class="ls-n"><button type="button" class="ls-sort" data-t="u" data-k="populacao">Presos</button></th>
+              <th data-field="ocupacao" aria-sort="descending" class="ls-n"><button type="button" class="ls-sort" data-t="u" data-k="ocupacao">Ocupação</button></th>
+              <th data-field="sa_cap" aria-sort="none" class="ls-n ls-hide-narrow"><button type="button" class="ls-sort" data-t="u" data-k="sa_cap">Vagas de semiaberto</button></th>
+            </tr>
+          </thead>
+          <tbody data-draw="tabela-unid"></tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+  </div>
+
+  <div class="ls-panel" id="aba-estado" role="tabpanel" aria-labelledby="tab-estado" hidden>
+  <section class="ls-sec" id="estado">
+    <div class="ls-sec-head">
+      <h2>Semiaberto no Estado de São Paulo</h2>
+      <p>Todas as alas e unidades de semiaberto masculino da SAP, por coordenadoria regional.</p>
+    </div>
+    <div class="ls-tiles">
+      <div class="ls-tile ls-key"><span class="ls-label">Ocupação</span><span class="ls-num" data-draw="valor" data-source="resumo" data-field="taxa" data-where="chave=estado-Masculino" data-fmt="pct">—</span><span class="ls-label">100% é a lotação máxima</span></div>
+      <div class="ls-tile"><span class="ls-label">Presos no semiaberto</span><span class="ls-num" data-draw="valor" data-source="resumo" data-field="populacao" data-where="chave=estado-Masculino">—</span></div>
+      <div class="ls-tile"><span class="ls-label">Vagas em funcionamento</span><span class="ls-num" data-draw="valor" data-source="resumo" data-field="capacidade_funcionamento" data-where="chave=estado-Masculino">—</span></div>
+      <div class="ls-tile"><span class="ls-label">Presos acima da capacidade</span><span class="ls-num" data-draw="valor" data-source="resumo" data-field="excedente" data-where="chave=estado-Masculino" data-fmt="sinal">—</span></div>
+    </div>
+    <div class="ls-grid">
+      <div class="ls-card" id="card-mistas" style="grid-column: 1 / -1;">
+        <h3>Pavilhões de semiaberto dentro de outras unidades</h3>
+        <p class="ls-prose">Das <b data-draw="valor" data-source="mistas" data-field="n_unid_sa" data-where="chave=estado">—</b> unidades com vagas de semiaberto no Estado, <b data-draw="valor" data-source="mistas" data-field="n_mistas" data-where="chave=estado">—</b> são mistas: o semiaberto é um pavilhão ou ala dentro de unidade de regime fechado, de provisórios ou de CR. Esses pavilhões somam <b data-draw="valor" data-source="mistas" data-field="cap_mistas" data-where="chave=estado">—</b> vagas de semiaberto, <b data-draw="valor" data-source="mistas" data-field="pct_mistas" data-where="chave=estado" data-fmt="pct">—</b> do total. Em <b data-draw="valor" data-source="mistas" data-field="n_mistas_1375" data-where="chave=estado">—</b> dessas unidades, a ocupação da unidade inteira passa de 137,5%. Nelas estão <b data-draw="valor" data-source="mistas" data-field="cap_mistas_1375" data-where="chave=estado">—</b> vagas de semiaberto, <b data-draw="valor" data-source="mistas" data-field="pct_mistas_1375" data-where="chave=estado" data-fmt="pct">—</b> de todas as vagas do regime no Estado.</p>
+      </div>
+      <div class="ls-card" id="card-coordenadorias">
+        <h3>Ocupação por coordenadoria</h3>
+        <p class="ls-note">Vagas masculinas de semiaberto, pavilhões e unidades somados.</p>
+        <div class="ls-chart dash-skeleton" id="grafico-coordenadorias" data-draw="grafico-coord" data-source="por_coordenadoria" aria-label="Ocupação do semiaberto masculino por coordenadoria regional"></div>
+      </div>
+      <div class="ls-card" id="card-ociosas">
+        <h3>Onde há vagas livres</h3>
+        <p class="ls-prose">Das <b data-draw="valor" data-source="resumo" data-field="blocos" data-where="chave=estado-Masculino">—</b> alas e unidades masculinas de semiaberto em funcionamento, <b data-draw="valor" data-source="resumo" data-field="blocos_acima" data-where="chave=estado-Masculino">—</b> estão acima da capacidade. As vagas livres somam <b data-draw="valor" data-source="resumo" data-field="vagas_ociosas" data-where="chave=estado-Masculino">—</b> e se concentram em poucas unidades, enquanto o excesso nas demais chega a <b data-draw="valor" data-source="resumo" data-field="excesso_bruto" data-where="chave=estado-Masculino">—</b> presos.</p>
+        <div class="ls-table-box" style="max-height: 18rem;">
+          <table class="ls-table" id="tabela-ociosas" data-source="ociosas" data-row-key="id">
+            <thead><tr><th data-field="nome"><span class="ls-sort" style="cursor: default;">Unidade</span></th><th data-field="coordenadoria" class="ls-hide-narrow"><span class="ls-sort" style="cursor: default;">Coordenadoria</span></th><th data-field="vagas_ociosas" class="ls-n"><span class="ls-sort" style="cursor: default; justify-content: flex-end;">Vagas livres</span></th></tr></thead>
+            <tbody data-draw="ociosas"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+    <p class="ls-note">Vagas femininas de semiaberto no Estado: <b data-draw="valor" data-source="resumo" data-field="taxa" data-where="chave=estado-Feminino" data-fmt="pct">—</b> de ocupação, com <b data-draw="valor" data-source="resumo" data-field="populacao" data-where="chave=estado-Feminino">—</b> presas para <b data-draw="valor" data-source="resumo" data-field="capacidade_funcionamento" data-where="chave=estado-Feminino">—</b> vagas.</p>
+  </section>
+  <section class="ls-sec" id="unidades">
+    <div class="ls-sec-head">
+      <h2>Todas as alas de semiaberto</h2>
+      <p>Uma linha por unidade, ala ou pavilhão de semiaberto, como a SAP informa. Clique no título de uma coluna para ordenar.</p>
+    </div>
+    <div class="ls-table-wrap">
+      <div class="ls-controls">
+        <input type="search" id="ls-busca" placeholder="Buscar cidade ou unidade" aria-label="Buscar cidade ou unidade">
+        <select id="ls-sexo" aria-label="Vagas">
+          <option value="">Masculinas e femininas</option>
+          <option value="Masculino">Masculinas</option>
+          <option value="Feminino">Femininas</option>
+        </select>
+        <label><input type="checkbox" id="ls-raj4" checked> Só 4ª RAJ</label>
+      </div>
+      <div class="ls-table-box">
+        <table class="ls-table" id="tabela-unidades" data-source="atual" data-row-key="id">
+          <thead>
+            <tr>
+              <th data-field="nome" aria-sort="none"><button type="button" class="ls-sort" data-t="b" data-k="nome">Unidade</button></th>
+              <th data-field="coordenadoria" aria-sort="none" class="ls-hide-narrow"><button type="button" class="ls-sort" data-t="b" data-k="coordenadoria">Coordenadoria</button></th>
+              <th data-field="capacidade" aria-sort="none" class="ls-n"><button type="button" class="ls-sort" data-t="b" data-k="capacidade">Vagas</button></th>
+              <th data-field="populacao" aria-sort="none" class="ls-n"><button type="button" class="ls-sort" data-t="b" data-k="populacao">Presos</button></th>
+              <th data-source="ocupacao" data-field="ocupacao" aria-sort="descending" class="ls-n"><button type="button" class="ls-sort" data-t="b" data-k="ocupacao">Ocupação</button></th>
+              <th data-field="situacao" aria-sort="none" class="ls-hide-narrow"><button type="button" class="ls-sort" data-t="b" data-k="situacao">Situação</button></th>
+            </tr>
+          </thead>
+          <tbody data-draw="tabela"></tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+  </div>
+
+  <div class="ls-panel" id="aba-trajetoria" role="tabpanel" aria-labelledby="tab-trajetoria" hidden>
+  <section class="ls-sec" id="trajetoria">
+    <div class="ls-sec-head">
+      <h2>Trajetória da ocupação</h2>
+      <p>Um ponto por dia em que a SAP atualiza a população. A série começa em <b data-draw="valor" data-source="serie" data-field="inicio_br" data-where="chave=serie" data-fmt="texto">—</b> e tem <b data-draw="valor" data-source="serie" data-field="registros" data-where="chave=serie">—</b> data(s) registrada(s) até agora.</p>
+    </div>
+    <div class="ls-card" id="card-trajetoria">
+      <div class="ls-controls">
+        <select id="ls-traj-serie" aria-label="Série da trajetória">
+          <option value="semiaberto|Masculino">Semiaberto, vagas masculinas</option>
+          <option value="semiaberto|Feminino">Semiaberto, vagas femininas</option>
+          <option value="geral|Todos">Todas as unidades prisionais</option>
+        </select>
+        <span class="ls-legend"><span class="ls-sw ls-sw-raj"></span>4ª RAJ</span>
+        <span class="ls-legend"><span class="ls-sw ls-sw-est"></span>Estado</span>
+      </div>
+      <div class="ls-chart dash-skeleton" id="grafico-trajetoria" data-draw="trajetoria" data-source="trajetoria" aria-label="Ocupação ao longo do tempo, na 4ª RAJ e no Estado"></div>
+      <p class="ls-note">A linha tracejada marca 100% e a pontilhada, 137,5%. Cada ponto usa só as vagas em funcionamento naquele dia.</p>
+    </div>
+  </section>
+  </div>
+
+  <div class="ls-panel" id="aba-manifestacao" role="tabpanel" aria-labelledby="tab-manifestacao" hidden>
+    <section class="ls-sec" id="manifestacao">
+      <div class="ls-sec-head">
+        <h2>Gerar manifestação</h2>
+        <p>Resposta à decisão que intima a pessoa condenada a se apresentar numa das unidades listadas pelo DEECRIM da 4ª RAJ, com os números do registro mais recente da SAP. Preencha os campos e a peça se monta <span class="ls-wide">ao lado</span><span class="ls-narrow">logo abaixo do formulário</span>; depois, copie para o Word ou para o editor do sistema.</p>
+      </div>
+      <div class="ls-gerador">
+      <div class="ls-card ls-gerador-form">
+        <div class="ls-form">
+          <label class="ls-field" for="f-processo">Número da execução<input id="f-processo" type="text" autocomplete="off" placeholder="0000000-00.0000.8.26.0502"></label>
+          <label class="ls-field" for="f-nome">Parte executada<input id="f-nome" type="text" autocomplete="off" placeholder="Nome completo"></label>
+          <label class="ls-field" for="f-var">A parte executada é<select id="f-var"><option value="m">Homem (unidades masculinas)</option><option value="f">Mulher (unidades femininas)</option></select></label>
+          <label class="ls-field" for="f-cidade">Cidade<input id="f-cidade" type="text" autocomplete="off" placeholder="Limeira"></label>
+          <label class="ls-field" for="f-defensor">Defensor(a)<input id="f-defensor" type="text" autocomplete="off" placeholder="Nome do(a) defensor(a)"></label>
+        </div>
+        <fieldset class="ls-checks" style="border:0;padding:0;margin:0;">
+          <legend class="ls-label" style="margin-bottom:6px;">Critérios do item 7 do Comunicado CG nº 602/2025 presentes no caso</legend>
+          <label><input type="checkbox" class="f-crit" id="f-crit-1" value="1"> Crime cometido sem violência ou grave ameaça</label>
+          <label><input type="checkbox" class="f-crit" id="f-crit-2" value="2"> Crime não hediondo</label>
+          <label><input type="checkbox" class="f-crit" id="f-crit-3" value="3"> Mulher gestante, lactante, mãe ou responsável por criança ou pessoa com deficiência</label>
+          <label><input type="checkbox" class="f-crit" id="f-crit-4" value="4"> Pessoa idosa, com doença grave ou com deficiência</label>
+          <label><input type="checkbox" class="f-crit" id="f-crit-5" value="5"> Lapso para benefício próximo do vencimento</label>
+        </fieldset>
+        <div class="ls-actions">
+          <button type="button" class="ls-btn ls-btn-main" id="ls-copiar-rico"><span data-st="0">Copiar para Word ou editor do sistema</span><span data-st="1" hidden>Copiado com formatação</span><span data-st="2" hidden>Texto selecionado: tecle Ctrl+C</span></button>
+          <button type="button" class="ls-btn" id="ls-copiar-texto"><span data-st="0">Copiar só o texto</span><span data-st="1" hidden>Texto copiado</span><span data-st="2" hidden>Texto selecionado: tecle Ctrl+C</span></button>
+        </div>
+        <p class="ls-note">Os trechos marcados em amarelo pedem conferência antes do protocolo. No Word, cole normalmente (Ctrl+V). No editor do sistema, se a tabela não aparecer, use "Copiar só o texto".</p>
+      </div>
+      <div class="ls-paper-box">
+        <article class="ls-paper" id="peca" style="font-family:Arial, Helvetica, sans-serif;font-size:12pt;">
+          <p style="margin:0 0 24pt 0;text-align:justify;font-weight:bold;line-height:1.5;">EXCELENTÍSSIMO(A) SENHOR(A) JUIZ(A) DE DIREITO DO DEECRIM DA 4ª RAJ – CAMPINAS/SP</p>
+          <p style="margin:0 0 12pt 0;text-align:justify;line-height:1.5;"><b>Execução nº</b> <span data-draw="campo" data-campo="processo" data-vazio="[número da execução]">—</span><br><b>Parte executada:</b> <span data-draw="campo" data-campo="nome" data-vazio="[nome da parte executada]">—</span></p>
+                    <p style="margin:0 0 12pt 0;text-align:justify;text-indent:2cm;line-height:1.5;">A <b>DEFENSORIA PÚBLICA DO ESTADO DE SÃO PAULO</b>, nos autos em epígrafe, diante da decisão que determinou a intimação da parte executada para se apresentar, no prazo de 5 (cinco) dias, em uma das unidades de regime semiaberto relacionadas, sob pena de expedição de mandado de prisão ou de regressão de regime, vem requerer a sua <b>RECONSIDERAÇÃO, COM URGÊNCIA</b>, pelas razões a seguir.</p>
+          <p style="margin:18pt 0 12pt 0;text-align:justify;font-weight:bold;line-height:1.5;">I – A SAP NÃO INDICOU UNIDADES COM VAGA</p>
+          <p style="margin:0 0 12pt 0;text-align:justify;text-indent:2cm;line-height:1.5;">A decisão se apoia na informação de vagas prestada no Pedido de Providências nº 0012533-71.2022.8.26.0502. Naquele expediente, porém, a Secretaria da Administração Penitenciária não indicou nenhuma unidade com vaga. Limitou-se a informar, em termos genéricos (fls. 49 e 55):</p>
+          <p style="margin:0 0 12pt 4cm;text-align:justify;font-size:10pt;line-height:1.15;">"(...) a existência, por ora, de vagas em unidades prisionais de regime semiaberto, que serão disponibilizadas aos sentenciados, conforme os parâmetros estabelecidos no artigo 4º da Resolução nº 05, de 25 de novembro de 2016, do Conselho Nacional de Política Criminal e Penitenciária. Ressalto que, para a efetiva disponibilização da vaga e definição da unidade prisional de destino, serão considerados o perfil e a classificação carcerária do sentenciado (...)."</p>
+          <p style="margin:0 0 12pt 0;text-align:justify;text-indent:2cm;line-height:1.5;">A informação é provisória, não aponta unidade e condiciona a vaga à classificação do sentenciado. O expediente, ademais, foi arquivado em 15/08/2025 (fls. 96), justamente porque a fiscalização das vagas passou a ser diária, por meio de painel enviado pela SAP ao DEECRIM (Comunicado CG nº 602/2025).</p>
+          <p style="margin:18pt 0 12pt 0;text-align:justify;font-weight:bold;line-height:1.5;">II – A UNIDADE DEVE SER INDICADA CONFORME A OCUPAÇÃO ATUAL</p>
+          <p style="margin:0 0 12pt 0;text-align:justify;text-indent:2cm;line-height:1.5;">O Comunicado CG nº 602/2025 determina expressamente:</p>
+          <p style="margin:0 0 12pt 4cm;text-align:justify;font-size:10pt;line-height:1.15;">"5. As Unidades deverão observar a ocupação atual das unidades prisionais para indicar onde o sentenciado deve se apresentar para início do cumprimento do regime semiaberto, nos termos do Comunicado CG nº 67/2025."</p>
+          <p style="margin:0 0 12pt 0;text-align:justify;text-indent:2cm;line-height:1.5;">A decisão, contudo, relacionou todas as unidades de semiaberto da região, inclusive as que estão acima da capacidade, e deixou a escolha à parte executada. Não houve consulta à ocupação atual nem à classificação exigida pela própria SAP.</p>
+          <p style="margin:18pt 0 12pt 0;text-align:justify;font-weight:bold;line-height:1.5;">III – AS UNIDADES INDICADAS ESTÃO SUPERLOTADAS</p>
+          <div data-var="m">
+            <p style="margin:0 0 12pt 0;text-align:justify;text-indent:2cm;line-height:1.5;">Segundo os dados publicados pela SAP, com população de <span data-draw="valor" data-source="resumo" data-field="data_br" data-where="chave=raj4-Masculino" data-fmt="texto">—</span>, as unidades masculinas relacionadas na decisão apresentam a seguinte ocupação:</p>
+            <table id="peca-tabela-m" data-source="listadas" data-row-key="unidade_id" style="border-collapse:collapse;width:100%;margin:0 0 6pt 0;font-size:10pt;line-height:1.2;"><thead><tr><th data-field="unidade" style="border:1px solid #000000;padding:3pt 5pt;font-weight:bold;text-align:left;">Unidade indicada</th><th data-field="sa_taxa" style="border:1px solid #000000;padding:3pt 5pt;font-weight:bold;text-align:right;">Pavilhão de semiaberto</th><th data-field="est_taxa" style="border:1px solid #000000;padding:3pt 5pt;font-weight:bold;text-align:right;">Unidade inteira</th></tr></thead><tbody data-draw="peca-tabela" data-sexo="Masculino"></tbody></table>
+            <p style="margin:0 0 12pt 0;font-size:9pt;line-height:1.2;text-align:justify;">Fonte: SAP-SP, página Unidades Prisionais (www1.sap.sp.gov.br/sp/unidades-prisionais), população de <span data-draw="valor" data-source="resumo" data-field="data_br" data-where="chave=estado-Masculino" data-fmt="texto">—</span>. Em cada célula: ocupação (presos/vagas). Unidade inteira: soma de todos os pavilhões da unidade.</p>
+            <p style="margin:0 0 12pt 0;text-align:justify;text-indent:2cm;line-height:1.5;"><span data-draw="valor" data-source="listadas_resumo" data-field="n_pav_100" data-where="chave=Masculino">—</span> dos <span data-draw="valor" data-source="listadas_resumo" data-field="n" data-where="chave=Masculino">—</span> pavilhões de semiaberto estão acima da capacidade, com ocupação conjunta de <span data-draw="valor" data-source="listadas_resumo" data-field="sa_taxa" data-where="chave=Masculino" data-fmt="pct">—</span>. Somando a população de toda a unidade, <span data-draw="valor" data-source="listadas_resumo" data-field="n_est_1375" data-where="chave=Masculino">—</span> delas superam 137,5% da capacidade, patamar a partir do qual a Resolução CNPCP nº 05/2016 prevê plano obrigatório de redução da superlotação, com metas e filtro de controle da porta de entrada (art. 4º, <i>caput</i> e § 1º).</p>
+            <p style="margin:0 0 12pt 0;text-align:justify;text-indent:2cm;line-height:1.5;">A lotação deve ser aferida pelo estabelecimento, e não pelo pavilhão. A Resolução CNPCP nº 05/2016 dispõe sobre a lotação máxima "nos estabelecimentos penais" e, no art. 4º, toma como referência a "unidade penal"; a Lei de Execução Penal exige que o estabelecimento tenha "lotação compatível com a sua estrutura e finalidade" (art. 85). Nas unidades mistas, o pavilhão de semiaberto não é um estabelecimento autônomo: integra a mesma unidade prisional, que a própria SAP informa como uma só, e depende da mesma estrutura de alimentação, saúde, segurança e pessoal que atende toda a população do estabelecimento. A superlotação do conjunto alcança, portanto, também quem é encaminhado ao semiaberto.</p>
+          </div>
+          <div data-var="f" hidden>
+            <p style="margin:0 0 12pt 0;text-align:justify;text-indent:2cm;line-height:1.5;">Segundo os dados publicados pela SAP, com população de <span data-draw="valor" data-source="resumo" data-field="data_br" data-where="chave=raj4-Feminino" data-fmt="texto">—</span>, as unidades femininas relacionadas na decisão apresentam a seguinte ocupação:</p>
+            <table id="peca-tabela-f" data-source="listadas" data-row-key="unidade_id" style="border-collapse:collapse;width:100%;margin:0 0 6pt 0;font-size:10pt;line-height:1.2;"><thead><tr><th data-field="unidade" style="border:1px solid #000000;padding:3pt 5pt;font-weight:bold;text-align:left;">Unidade indicada</th><th data-field="sa_taxa" style="border:1px solid #000000;padding:3pt 5pt;font-weight:bold;text-align:right;">Pavilhão de semiaberto</th><th data-field="est_taxa" style="border:1px solid #000000;padding:3pt 5pt;font-weight:bold;text-align:right;">Unidade inteira</th></tr></thead><tbody data-draw="peca-tabela" data-sexo="Feminino"></tbody></table>
+            <p style="margin:0 0 12pt 0;font-size:9pt;line-height:1.2;text-align:justify;">Fonte: SAP-SP, página Unidades Prisionais (www1.sap.sp.gov.br/sp/unidades-prisionais), população de <span data-draw="valor" data-source="resumo" data-field="data_br" data-where="chave=estado-Masculino" data-fmt="texto">—</span>. Em cada célula: ocupação (presos/vagas). Unidade inteira: soma de todos os pavilhões da unidade.</p>
+            <p style="margin:0 0 12pt 0;text-align:justify;text-indent:2cm;line-height:1.5;">Para as mulheres, a Resolução CNPCP nº 05/2016 não admite tolerância:</p><p style="margin:0 0 12pt 4cm;text-align:justify;font-size:10pt;line-height:1.15;">"Art. 5º Em relação às mulheres, fica expressamente proibida a permanência em estabelecimentos penais (...) cuja lotação esteja acima de sua capacidade (...)."</p><p style="margin:0 0 12pt 0;text-align:justify;text-indent:2cm;line-height:1.5;">Somada a unidade inteira, <span data-draw="valor" data-source="listadas_resumo" data-field="n_est_100" data-where="chave=Feminino">—</span> das <span data-draw="valor" data-source="listadas_resumo" data-field="n" data-where="chave=Feminino">—</span> unidades femininas relacionadas estão acima da capacidade e não podem receber a executada. A decisão, ao listá-las indistintamente, deixa à própria executada o risco de se apresentar em estabelecimento onde a sua permanência é proibida. A indicação, se for o caso, deve recair apenas sobre unidade abaixo da capacidade e compatível com a classificação da executada.</p>
+          </div>
+          <p style="margin:18pt 0 12pt 0;text-align:justify;font-weight:bold;line-height:1.5;">IV – A CONSEQUÊNCIA: SÚMULA VINCULANTE 56</p>
+          <p style="margin:0 0 12pt 0;text-align:justify;text-indent:2cm;line-height:1.5;">Nos termos da Súmula Vinculante 56, "a falta de estabelecimento penal adequado não autoriza a manutenção do condenado em regime prisional mais gravoso, devendo-se observar, nessa hipótese, os parâmetros fixados no RE 641.320/RS". Entre esses parâmetros está a prisão domiciliar, com ou sem monitoração eletrônica, até que haja vaga adequada. No mesmo sentido, o item 3.2 do Comunicado CG nº 67/2025 autoriza o juízo, na falta de vaga, a fixar prazo para que a SAP a providencie ou a substituir a privação de liberdade por monitoração eletrônica ou prisão domiciliar.</p>
+          <p style="margin:0 0 12pt 0;text-align:justify;text-indent:2cm;line-height:1.5;">O item 7 do Comunicado CG nº 602/2025 sugere critérios para essas situações. No caso, estão presentes:</p>
+          <div>
+            <p data-crit="1" hidden style="margin:0 0 6pt 2cm;text-indent:-0.6cm;padding-left:0.6cm;text-align:justify;line-height:1.5;">– crime cometido sem violência ou grave ameaça</p>
+            <p data-crit="2" hidden style="margin:0 0 6pt 2cm;text-indent:-0.6cm;padding-left:0.6cm;text-align:justify;line-height:1.5;">– crime não hediondo</p>
+            <p data-crit="3" hidden style="margin:0 0 6pt 2cm;text-indent:-0.6cm;padding-left:0.6cm;text-align:justify;line-height:1.5;">– mulher gestante, lactante, mãe ou responsável por criança ou pessoa com deficiência</p>
+            <p data-crit="4" hidden style="margin:0 0 6pt 2cm;text-indent:-0.6cm;padding-left:0.6cm;text-align:justify;line-height:1.5;">– pessoa idosa, com doença grave ou com deficiência</p>
+            <p data-crit="5" hidden style="margin:0 0 6pt 2cm;text-indent:-0.6cm;padding-left:0.6cm;text-align:justify;line-height:1.5;">– lapso para benefício próximo do vencimento</p>
+            <p data-crit="0" style="margin:0 0 6pt 2cm;text-indent:-0.6cm;padding-left:0.6cm;text-align:justify;line-height:1.5;"><span class="ls-mark">[marque, no formulário, os critérios presentes no caso]</span></p>
+          </div>
+          <p style="margin:18pt 0 12pt 0;text-align:justify;font-weight:bold;line-height:1.5;">V – PEDIDOS</p>
+          <p style="margin:0 0 12pt 0;text-align:justify;text-indent:2cm;line-height:1.5;">Ante o exposto, a Defensoria Pública requer:</p>
+          <div>
+            <p style="margin:0 0 6pt 2cm;text-indent:-0.6cm;padding-left:0.6cm;text-align:justify;line-height:1.5;">a) a reconsideração da decisão;</p>
+            <p style="margin:0 0 6pt 2cm;text-indent:-0.6cm;padding-left:0.6cm;text-align:justify;line-height:1.5;">b) com urgência, a suspensão do prazo de apresentação e da cominação de mandado de prisão e de regressão, até a apreciação deste pedido;</p>
+            <p style="margin:0 0 6pt 2cm;text-indent:-0.6cm;padding-left:0.6cm;text-align:justify;line-height:1.5;">c) a prisão domiciliar, com ou sem monitoração eletrônica, enquanto não houver vaga em unidade que não esteja acima da capacidade (Súmula Vinculante 56; RE 641.320/RS; item 3.2 do Comunicado CG nº 67/2025);</p>
+            <p style="margin:0 0 6pt 2cm;text-indent:-0.6cm;padding-left:0.6cm;text-align:justify;line-height:1.5;">d) subsidiariamente, a indicação de unidade específica, conforme a ocupação atual e a classificação da parte executada, excluídas as unidades acima da capacidade (item 5 do Comunicado CG nº 602/2025), com a juntada aos autos do painel diário de ocupação;</p>
+            <p style="margin:0 0 6pt 2cm;text-indent:-0.6cm;padding-left:0.6cm;text-align:justify;line-height:1.5;">e) ainda subsidiariamente, a fixação de prazo para que a SAP providencie vaga em unidade que não esteja acima da capacidade, mantida suspensa a obrigação de apresentação até lá.</p>
+          </div>
+          <p style="margin:0 0 12pt 0;text-align:justify;text-indent:2cm;line-height:1.5;">Termos em que, pede deferimento.</p>
+          <p style="margin:0 0 12pt 0;text-align:right;line-height:1.5;"><span data-draw="campo" data-campo="cidade" data-vazio="[Cidade]">—</span>, data do protocolo.</p>
+          <p style="margin:24pt 0 0 0;text-align:center;line-height:1.5;"><b><span data-draw="campo" data-campo="defensor" data-vazio="[Nome do(a) defensor(a)]">—</span></b><br>Defensor(a) Público(a) do Estado de São Paulo</p>
+        </article>
+      </div>
+      </div>
+    </section>
+  </div>
+
+  <div class="ls-panel" id="aba-metodo" role="tabpanel" aria-labelledby="tab-metodo" hidden>
+  <section class="ls-sec" id="normas">
+    <div class="ls-sec-head">
+      <h2>Por que a falta de vaga importa</h2>
+    </div>
+    <div class="ls-card ls-legal">
+      <ol>
+        <li>A Resolução CNJ nº 474/2022 deu nova redação ao art. 23 da Resolução CNJ nº 417/2021: com o trânsito em julgado de condenação ao semiaberto, a pessoa é intimada para iniciar o cumprimento da pena antes de qualquer mandado de prisão, observada a Súmula Vinculante nº 56.</li>
+        <li>A Súmula Vinculante nº 56 proíbe manter o condenado em regime mais gravoso por falta de estabelecimento adequado e manda aplicar os parâmetros do RE 641.320/RS: saída antecipada, monitoração eletrônica e, até que essas medidas existam, prisão domiciliar.</li>
+        <li>O Comunicado CG nº 67/2025 da Corregedoria do TJSP manda o juízo da execução verificar com a SAP se há vaga em estabelecimento adequado (item 3). Sem vaga, o juízo pode fixar prazo para a SAP ou substituir a prisão por monitoração eletrônica ou prisão domiciliar (item 3.2).</li>
+        <li>O Comunicado CG nº 602/2025 instituiu o painel diário de ocupação do semiaberto enviado pela SAP aos DEECRIMs e manda indicar a unidade de apresentação conforme a ocupação atual (item 5). Acima de 137,5%, o juiz coordenador deve ser avisado (item 2).</li>
+        <li>A Resolução CNPCP nº 05/2016 trata da lotação máxima dos estabelecimentos penais. Acima de 137,5% da capacidade, a unidade masculina deve ter plano de redução, com controle de entrada e critérios de saída (art. 4º, § 1º). Mulheres não podem ser mantidas acima da capacidade (art. 5º).</li>
+      </ol>
+      <p class="ls-note">Resumo informativo. Confira o texto das normas nas fontes oficiais antes de citar.</p>
+    </div>
+  </section>
+  <section class="ls-sec" id="metodo">
+    <div class="ls-sec-head">
+      <h2>Método e fontes</h2>
+    </div>
+    <div class="ls-grid">
+      <div class="ls-card">
+        <h3>O que conta como vaga de semiaberto</h3>
+        <dl class="ls-def">
+          <dt>CPP</dt><dd>Centro de Progressão Penitenciária: unidade inteira de semiaberto.</dd>
+          <dt>CR</dt><dd>Centro de Ressocialização: conta a unidade quando ela é só de semiaberto, ou o anexo de semiaberto (RSA) quando ela é mista.</dd>
+          <dt>APP</dt><dd>Ala de Progressão Penitenciária, destinada a presos do semiaberto dentro de unidade de outro regime.</dd>
+          <dt>PRSA</dt><dd>Pavilhão de Regime Semiaberto dentro de unidade de outro regime.</dd>
+          <dt>RSA</dt><dd>Unidade ou anexo identificado pela SAP como de regime semiaberto.</dd>
+        </dl>
+      </div>
+      <div class="ls-card">
+        <h3>Como os números são montados</h3>
+        <ul class="ls-prose-list">
+          <li>Uma rotina diária lê o arquivo de dados da página Unidades Prisionais da SAP e grava capacidade e população de cada pavilhão de cada unidade (regime fechado, provisórios, semiaberto, prisão civil e hospitais) sempre que a SAP muda a data da população. O primeiro registro é de 28/10/2026.</li>
+          <li>Ocupação é a população dividida pela capacidade. A unidade inteira soma todos os seus pavilhões.</li>
+          <li>Ficam fora da conta, enquanto estiverem com zero preso, os pavilhões com causa documentada: o CPP de Franco da Rocha (<a href="https://www.portaldoispontos.com.br/noticia/governo-do-estado-encerra-atividades-do-cpp-de-franco-da-rocha-e-discute-com-prefeitura-destinacao-cultural-para-o-espaco" target="_blank" rel="noopener">atividades encerradas, notícia de 21/08/2026</a>) e a Penitenciária I de Franco da Rocha, fora o pavilhão de semiaberto (<a href="https://www.correiodamanha.com.br/nacional/sao-paulo/estado-de-sao-paulo/2026/07/302192-reforma-de-rs-182-milhoes-em-presidio-de-franco-da-rocha.html" target="_blank" rel="noopener">reforma até fevereiro de 2027</a>).</li>
+          <li>A 4ª RAJ reúne as unidades vinculadas ao DEECRIM de Campinas, segundo a relação de presídios por DEECRIM do TJSP, incluindo o complexo de Franco da Rocha.</li>
+          <li>As unidades indicadas são as da decisão padrão do DEECRIM da 4ª RAJ (setembro de 2026). A comparação com 2023 usa a tabela de uma manifestação da Defensoria Pública com dados do site da SAP.</li>
+        </ul>
+      </div>
+      <div class="ls-card">
+        <h3>Limites</h3>
+        <ul class="ls-prose-list">
+          <li>A capacidade é a informada pela SAP. Ela não diz quantas vagas existem por perfil de preso.</li>
+          <li>A SAP não publica série histórica por unidade. A trajetória começa no primeiro registro deste painel.</li>
+          <li>Os dados são públicos e podem ser baixados em Fontes, no canto do painel.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+  </div>
+</div>
+
+<footer class="ls-rodape">
+  <p>Painel independente, feito a partir dos dados públicos da Secretaria da Administração Penitenciária (SAP-SP). Não é publicação oficial da SAP nem da Defensoria Pública.</p>
+  <p>A coleta roda uma vez por dia. Os números registrados e o arquivo original publicado pela SAP em cada data ficam guardados no repositório <a href="https://github.com/Dsnunes1989/lotacao-semiaberto" target="_blank" rel="noopener">Dsnunes1989/lotacao-semiaberto</a>. O que se digita no gerador de manifestação não sai deste navegador.</p>
+</footer>
+
+<script>
+  window.lsInt = (v) => Number(v).toLocaleString('pt-BR');
+  window.lsPct = (v) => Number(v).toLocaleString('pt-BR', { minimumFractionDigits: 1, maximumFractionDigits: 1 }) + '%';
+  window.lsSim = (v) => v === true || v === 'true';
+
+  dash.calc('atual', {
+    inputs: ['catalogo', 'historico'],
+    title: 'Situação na data mais recente',
+    description: 'Junta o cadastro de cada pavilhão com a capacidade e a população do registro mais recente. Um pavilhão marcado como encerrado ou em reforma só fica fora da conta enquanto estiver com zero preso.',
+    fn: (catalogo, historico) => {
+      const sim = (v) => v === true || v === 'true';
+      const ultima = historico.reduce((m, r) => (String(r.d) > m ? String(r.d) : m), '');
+      const dia = new Map(historico.filter((r) => String(r.d) === ultima).map((r) => [r.i, r]));
+      const [a, m, d] = ultima.split('-');
+      return catalogo
+        .filter((c) => dia.has(c.id))
+        .map((c) => {
+          const h = dia.get(c.id);
+          const populacao = Number(h.p);
+          return {
+            ...c,
+            raj4: sim(c.raj4),
+            semiaberto: sim(c.semiaberto),
+            franco_da_rocha: sim(c.franco_da_rocha),
+            data: ultima,
+            data_br: `${d}/${m}/${a}`,
+            capacidade: Number(h.c),
+            populacao,
+            conta: c.situacao === 'Em funcionamento' || populacao > 0,
+          };
+        });
+    },
+  });
+
+  dash.calc('unidades', {
+    inputs: ['atual'],
+    title: 'Ocupação de cada unidade inteira',
+    description: 'Soma todos os pavilhões em funcionamento de cada unidade prisional (fechado, provisórios, semiaberto, prisão civil e hospital) e calcula a ocupação da unidade inteira.',
+    fn: (atual) => {
+      const g = new Map();
+      for (const r of atual) {
+        const u = g.get(r.unidade_id) || { unidade_id: r.unidade_id, unidade: r.unidade, cidade: r.cidade, coordenadoria: r.coordenadoria, tipo_unidade: r.tipo_unidade, raj4: r.raj4, sexos: [], capacidade: 0, populacao: 0, sa_cap: 0, sa_pop: 0, outros: 0 };
+        if (!u.sexos.includes(r.sexo)) u.sexos.push(r.sexo);
+        if (r.conta) {
+          u.capacidade += r.capacidade;
+          u.populacao += r.populacao;
+          if (r.semiaberto) { u.sa_cap += r.capacidade; u.sa_pop += r.populacao; }
+        }
+        if (!r.semiaberto && r.regime !== 'Prisão civil') u.outros += 1;
+        g.set(r.unidade_id, u);
+      }
+      return [...g.values()]
+        .filter((u) => u.capacidade > 0)
+        .map((u) => ({
+          unidade_id: u.unidade_id,
+          unidade: u.unidade,
+          cidade: u.cidade,
+          coordenadoria: u.coordenadoria,
+          tipo_unidade: u.tipo_unidade,
+          raj4: u.raj4,
+          sexo: u.sexos.length > 1 ? 'Misto' : u.sexos[0],
+          capacidade: u.capacidade,
+          populacao: u.populacao,
+          ocupacao: Math.round((u.populacao / u.capacidade) * 1000) / 10,
+          tem_semiaberto: u.sa_cap > 0,
+          mista: u.sa_cap > 0 && u.outros > 0,
+          sa_cap: u.sa_cap,
+          sa_pop: u.sa_pop,
+        }));
+    },
+  });
+
+  dash.calc('geral', {
+    inputs: ['unidades'],
+    title: 'Ocupação geral do sistema',
+    description: 'Vagas, pessoas presas e ocupação de todas as unidades, na 4ª RAJ e no Estado, e quantas unidades passam de 100% e de 137,5%.',
+    fn: (unidades) => ['raj4', 'estado'].map((chave) => {
+      const us = unidades.filter((u) => chave === 'estado' || u.raj4);
+      const capacidade = us.reduce((s, u) => s + u.capacidade, 0);
+      const populacao = us.reduce((s, u) => s + u.populacao, 0);
+      return {
+        chave,
+        capacidade,
+        populacao,
+        ocupacao: Math.round((populacao / capacidade) * 1000) / 10,
+        unidades: us.length,
+        acima_100: us.filter((u) => u.populacao > u.capacidade).length,
+        acima_1375: us.filter((u) => u.populacao > 1.375 * u.capacidade).length,
+      };
+    }),
+  });
+
+  dash.calc('listadas', {
+    inputs: ['unidades'],
+    title: 'Unidades indicadas pelo DEECRIM da 4ª RAJ',
+    description: 'As unidades da decisão padrão do DEECRIM da 4ª RAJ para apresentação no semiaberto, com a ocupação do pavilhão de semiaberto e a da unidade inteira.',
+    fn: (unidades) => {
+      const masc = [22, 104, 32, 41, 42, 47, 59, 142, 145, 158, 161, 164, 168, 173, 175];
+      const fem = [12, 55, 170, 172];
+      const por = new Map(unidades.map((u) => [Number(u.unidade_id), u]));
+      const pct = (a, b) => (b ? Math.round((a / b) * 1000) / 10 : null);
+      return masc.map((i) => [i, 'Masculino']).concat(fem.map((i) => [i, 'Feminino']))
+        .filter(([i]) => por.has(i))
+        .map(([i, sexo]) => {
+          const u = por.get(i);
+          return { unidade_id: i, unidade: u.unidade, sexo, mista: u.mista, sa_cap: u.sa_cap, sa_pop: u.sa_pop, sa_taxa: pct(u.sa_pop, u.sa_cap), est_cap: u.capacidade, est_pop: u.populacao, est_taxa: pct(u.populacao, u.capacidade) };
+        });
+    },
+  });
+
+  dash.calc('listadas_resumo', {
+    inputs: ['listadas'],
+    title: 'Resumo das unidades indicadas',
+    description: 'Quantas unidades indicadas têm o pavilhão acima de 100% e a unidade inteira acima de 100% e de 137,5%, e a ocupação somada, por sexo.',
+    fn: (listadas) => ['Masculino', 'Feminino'].map((sexo) => {
+      const rs = listadas.filter((r) => r.sexo === sexo);
+      const soma = (k) => rs.reduce((s, r) => s + r[k], 0);
+      const pct = (a, b) => (b ? Math.round((a / b) * 1000) / 10 : null);
+      return {
+        chave: sexo,
+        n: rs.length,
+        n_pav_100: rs.filter((r) => r.sa_pop > r.sa_cap).length,
+        n_est_100: rs.filter((r) => r.est_pop > r.est_cap).length,
+        n_est_1375: rs.filter((r) => r.est_pop > 1.375 * r.est_cap).length,
+        sa_cap: soma('sa_cap'),
+        sa_pop: soma('sa_pop'),
+        sa_taxa: pct(soma('sa_pop'), soma('sa_cap')),
+        est_cap: soma('est_cap'),
+        est_pop: soma('est_pop'),
+        est_taxa: pct(soma('est_pop'), soma('est_cap')),
+      };
+    }),
+  });
+
+  dash.calc('mistas', {
+    inputs: ['unidades'],
+    title: 'Pavilhões de semiaberto em unidades mistas',
+    description: 'Quantas unidades com vagas de semiaberto são mistas, quantas vagas de semiaberto elas têm e quantas estão em unidades cuja ocupação total passa de 137,5%.',
+    fn: (unidades) => {
+      const com = unidades.filter((u) => u.tem_semiaberto);
+      const mistas = com.filter((u) => u.mista);
+      const acima = mistas.filter((u) => u.populacao > 1.375 * u.capacidade);
+      const total = com.reduce((s, u) => s + u.sa_cap, 0);
+      const capM = mistas.reduce((s, u) => s + u.sa_cap, 0);
+      const capA = acima.reduce((s, u) => s + u.sa_cap, 0);
+      return [{
+        chave: 'estado',
+        n_unid_sa: com.length,
+        n_mistas: mistas.length,
+        cap_sa_total: total,
+        cap_mistas: capM,
+        pct_mistas: Math.round((capM / total) * 1000) / 10,
+        n_mistas_1375: acima.length,
+        cap_mistas_1375: capA,
+        pct_mistas_1375: Math.round((capA / total) * 1000) / 10,
+      }];
+    },
+  });
+
+  dash.calc('resumo', {
+    inputs: ['atual'],
+    title: 'Resumo da ocupação do semiaberto',
+    description: 'Soma vagas e presos de semiaberto por recorte (4ª RAJ ou Estado) e sexo. A taxa usa só as vagas de alas e unidades em funcionamento.',
+    fn: (atual) => {
+      const soma = (rs, k) => rs.reduce((s, r) => s + Number(r[k]), 0);
+      const pct = (a, b) => (b ? Math.round((a / b) * 1000) / 10 : null);
+      const sa = atual.filter((r) => r.semiaberto);
+      const out = [];
+      for (const escopo of ['raj4', 'estado']) {
+        for (const sexo of ['Masculino', 'Feminino']) {
+          const todas = sa.filter((r) => r.sexo === sexo && (escopo === 'estado' || r.raj4));
+          const ativas = todas.filter((r) => r.conta);
+          const semFranco = ativas.filter((r) => !r.franco_da_rocha);
+          const cap = soma(ativas, 'capacidade');
+          const pop = soma(ativas, 'populacao');
+          const nominal = soma(todas, 'capacidade');
+          out.push({
+            chave: escopo + '-' + sexo,
+            escopo,
+            sexo,
+            data_br: atual.length ? atual[0].data_br : null,
+            capacidade_nominal: nominal,
+            capacidade_funcionamento: cap,
+            capacidade_inativa: nominal - cap,
+            populacao: pop,
+            taxa: pct(pop, cap),
+            taxa_nominal: pct(pop, nominal),
+            excedente: pop - cap,
+            vagas_ociosas: ativas.reduce((s, r) => s + Math.max(0, r.capacidade - r.populacao), 0),
+            excesso_bruto: ativas.reduce((s, r) => s + Math.max(0, r.populacao - r.capacidade), 0),
+            blocos: ativas.length,
+            blocos_acima: ativas.filter((r) => r.populacao > r.capacidade).length,
+            taxa_sem_franco: pct(soma(semFranco, 'populacao'), soma(semFranco, 'capacidade')),
+          });
+        }
+      }
+      return out;
+    },
+  });
+
+  dash.calc('por_coordenadoria', {
+    inputs: ['atual'],
+    title: 'Semiaberto masculino por coordenadoria',
+    description: 'Vagas em funcionamento, presos e ocupação do semiaberto masculino em cada coordenadoria regional da SAP.',
+    fn: (atual) => {
+      const grupos = new Map();
+      for (const r of atual) {
+        if (!r.semiaberto || r.sexo !== 'Masculino' || !r.conta) continue;
+        const g = grupos.get(r.coordenadoria) || { coordenadoria: r.coordenadoria, capacidade: 0, populacao: 0 };
+        g.capacidade += r.capacidade;
+        g.populacao += r.populacao;
+        grupos.set(r.coordenadoria, g);
+      }
+      return [...grupos.values()]
+        .map((g) => ({ ...g, taxa: Math.round((g.populacao / g.capacidade) * 1000) / 10 }))
+        .sort((a, b) => b.taxa - a.taxa);
+    },
+  });
+
+  dash.calc('comparativo', {
+    inputs: ['atual', 'rede_2023'],
+    title: '4ª RAJ masculino em 2023 e hoje',
+    description: 'Vagas, presos e ocupação do semiaberto masculino da 4ª RAJ na tabela de 27/10/2023 e nas vagas em funcionamento na data mais recente.',
+    fn: (atual, rede_2023) => {
+      const linha = (chave, periodo, rs) => {
+        const capacidade = rs.reduce((s, r) => s + Number(r.capacidade), 0);
+        const populacao = rs.reduce((s, r) => s + Number(r.populacao), 0);
+        return { chave, periodo, capacidade, populacao, taxa: Math.round((populacao / capacidade) * 1000) / 10 };
+      };
+      const hoje = atual.filter((r) => r.semiaberto && r.sexo === 'Masculino' && r.raj4 && r.conta);
+      return [
+        linha('base', '27/10/2023', rede_2023.filter((r) => r.sexo === 'Masculino')),
+        linha('atual', hoje.length ? hoje[0].data_br : '', hoje),
+      ];
+    },
+  });
+
+  dash.calc('ocupacao', {
+    inputs: ['atual'],
+    title: 'Ocupação de cada pavilhão',
+    description: 'População dividida pela capacidade de cada pavilhão, em porcentagem, na data mais recente.',
+    fn: (atual) => atual.map((r) => ({
+      id: r.id,
+      ocupacao: r.capacidade > 0 ? Math.round((r.populacao / r.capacidade) * 1000) / 10 : null,
+    })),
+  });
+
+  dash.calc('ociosas', {
+    inputs: ['atual'],
+    title: 'Vagas masculinas de semiaberto livres',
+    description: 'Alas e unidades masculinas de semiaberto em funcionamento com menos presos do que vagas, da maior sobra para a menor.',
+    fn: (atual) => atual
+      .filter((r) => r.semiaberto && r.sexo === 'Masculino' && r.conta && r.populacao < r.capacidade)
+      .map((r) => ({ id: r.id, nome: r.nome, coordenadoria: r.coordenadoria, vagas_ociosas: r.capacidade - r.populacao }))
+      .sort((a, b) => b.vagas_ociosas - a.vagas_ociosas),
+  });
+
+  dash.calc('trajetoria', {
+    inputs: ['catalogo', 'historico'],
+    title: 'Ocupação dia a dia',
+    description: 'Para cada data registrada, soma vagas em funcionamento e pessoas presas na 4ª RAJ e no Estado: no semiaberto, por sexo, e em todas as unidades.',
+    fn: (catalogo, historico) => {
+      const sim = (v) => v === true || v === 'true';
+      const cad = new Map(catalogo.map((c) => [c.id, c]));
+      const acc = new Map();
+      for (const h of historico) {
+        const c = cad.get(h.i);
+        if (!c) continue;
+        const pop = Number(h.p), cap = Number(h.c);
+        if (!(c.situacao === 'Em funcionamento' || pop > 0)) continue;
+        const escopos = sim(c.raj4) ? ['4ª RAJ', 'Estado'] : ['Estado'];
+        for (const escopo of escopos) {
+          const series = [['geral', 'Todos']];
+          if (sim(c.semiaberto)) series.push(['semiaberto', c.sexo]);
+          for (const [serie, sexo] of series) {
+            const k = `${h.d}|${serie}|${escopo}|${sexo}`;
+            const a = acc.get(k) || { chave: k, data: String(h.d), serie, escopo, sexo, capacidade: 0, populacao: 0 };
+            a.capacidade += cap;
+            a.populacao += pop;
+            acc.set(k, a);
+          }
+        }
+      }
+      return [...acc.values()]
+        .map((a) => ({ ...a, taxa: Math.round((a.populacao / a.capacidade) * 1000) / 10 }))
+        .sort((a, b) => (a.data < b.data ? -1 : a.data > b.data ? 1 : 0));
+    },
+  });
+
+  dash.calc('serie', {
+    inputs: ['historico'],
+    title: 'Extensão da série',
+    description: 'Primeira e última data registradas e quantas datas existem no histórico.',
+    fn: (historico) => {
+      const datas = [...new Set(historico.map((r) => String(r.d)))].sort();
+      const br = (s) => (s ? s.split('-').reverse().join('/') : null);
+      return [{ chave: 'serie', inicio_br: br(datas[0]), fim_br: br(datas[datas.length - 1]), registros: datas.length }];
+    },
+  });
+
+  window.lsFalha = (el) => {
+    const s = document.createElement('div');
+    s.className = 'ls-fail';
+    s.textContent = 'Failed to load';
+    el.replaceChildren(s);
+  };
+
+  window.lsTip = (el) => {
+    const tip = document.createElement('div');
+    tip.className = 'ls-tip';
+    tip.hidden = true;
+    el.appendChild(tip);
+    return {
+      show(ev, titulo, linhas, nota) {
+        const h = document.createElement('div');
+        h.className = 'ls-tip-h';
+        h.textContent = titulo;
+        const ps = linhas.map((t) => { const p = document.createElement('div'); p.textContent = t; return p; });
+        tip.replaceChildren(h, ...ps);
+        if (nota) { const n = document.createElement('div'); n.textContent = nota; n.style.marginTop = '4px'; tip.appendChild(n); }
+        tip.hidden = false;
+        const box = el.getBoundingClientRect();
+        const px = ev.clientX - box.left, py = ev.clientY - box.top;
+        tip.style.left = Math.max(0, Math.min(px + 12, el.clientWidth - tip.offsetWidth)) + 'px';
+        tip.style.top = Math.max(0, py - tip.offsetHeight - 10) + 'px';
+      },
+      hide() { tip.hidden = true; },
+    };
+  };
+
+  window.lsEncurtar = (sel, max) => {
+    let s = sel.text();
+    while (sel.node().getComputedTextLength() > max && s.length > 6) { s = s.slice(0, -2); sel.text(s.trimEnd() + '…'); }
+  };
+
+  window.lsRefLabels = (svg, x, W, y, ref2) => {
+    const marcar = (v, txt) => {
+      const t = svg.append('text').attr('class', 'ls-t-ref').attr('y', y).attr('x', x(v)).attr('text-anchor', 'middle').text(txt);
+      const w = t.node().getComputedTextLength();
+      if (x(v) + w / 2 > W) t.attr('text-anchor', 'end').attr('x', W);
+      else if (x(v) - w / 2 < 0) t.attr('text-anchor', 'start').attr('x', 0);
+      return t;
+    };
+    const a = marcar(1, '100%');
+    if (ref2) {
+      const b = marcar(1.375, '137,5%');
+      const ra = a.node().getBBox(), rb = b.node().getBBox();
+      if (rb.x < ra.x + ra.width + 4) b.attr('text-anchor', 'start').attr('x', ra.x + ra.width + 6);
+    }
+  };
+
+  window.lsBarras = (el, itens, opts) => {
+    const ref2 = !!(opts && opts.ref2);
+    el.classList.remove('dash-skeleton');
+    el.replaceChildren();
+    const W = el.clientWidth;
+    if (!W) return;
+    const ativos = itens
+      .filter((d) => d.conta && Number(d.capacidade) > 0)
+      .map((d) => ({ ...d, capacidade: Number(d.capacidade), populacao: Number(d.populacao), t: Number(d.populacao) / Number(d.capacidade) }))
+      .sort((a, b) => b.t - a.t);
+    const inativos = itens.filter((d) => !d.conta);
+    const rowH = 42, barY = 19, barH = 12, top = 20, inH = 34;
+    const H = top + ativos.length * rowH + (inativos.length ? 22 + inativos.length * inH : 0) + 4;
+    const svg = d3.select(el).append('svg').attr('width', '100%').attr('viewBox', `0 0 ${W} ${H}`).attr('height', H)
+      .attr('role', 'img').attr('aria-label', el.getAttribute('aria-label') || '');
+    const rotulo = (d) => `${lsPct(Math.round(d.t * 1000) / 10)} · ${lsInt(d.populacao)} / ${lsInt(d.capacidade)}`;
+    let maxL = 0;
+    const medir = svg.append('g');
+    ativos.forEach((d) => {
+      const t = medir.append('text').attr('class', 'ls-t-val ls-over').text(rotulo(d));
+      maxL = Math.max(maxL, t.node().getComputedTextLength());
+    });
+    medir.remove();
+    const maxT = Math.max(ref2 ? 1.45 : 1.05, d3.max(ativos, (d) => d.t) || 1);
+    const x = d3.scaleLinear([0, maxT], [0, Math.max(60, W - maxL - 10)]);
+    lsRefLabels(svg, x, W, 11, ref2);
+    const tip = lsTip(el);
+    const g = svg.append('g');
+    ativos.forEach((d, i) => {
+      const row = g.append('g').attr('class', 'ls-row').attr('transform', `translate(0,${top + i * rowH})`);
+      row.append('rect').attr('x', 0).attr('y', 0).attr('width', W).attr('height', rowH).style('fill', 'transparent');
+      lsEncurtar(row.append('text').attr('class', 'ls-t-name').attr('x', 0).attr('y', 13).text(d.nome), W);
+      const over = d.t > 1;
+      row.append('rect').attr('class', over ? 'ls-bar-over' : 'ls-bar-ok').attr('x', 0).attr('y', barY)
+        .attr('height', barH).attr('width', Math.max(2, x(d.t))).attr('rx', 3);
+      row.append('line').attr('class', 'ls-ref').attr('x1', x(1)).attr('x2', x(1)).attr('y1', barY - 3).attr('y2', barY + barH + 3);
+      if (ref2) row.append('line').attr('class', 'ls-ref2').attr('x1', x(1.375)).attr('x2', x(1.375)).attr('y1', barY - 3).attr('y2', barY + barH + 3);
+      row.append('text').attr('class', 'ls-t-val' + (over ? ' ls-over' : '')).attr('x', Math.max(x(d.t), x(ref2 ? 1.375 : 1)) + 6).attr('y', barY + barH - 2).text(rotulo(d));
+      const dif = d.populacao - d.capacidade;
+      row.on('pointermove', (ev) => tip.show(ev, d.nome, [
+        `Presos: ${lsInt(d.populacao)}`,
+        `Vagas: ${lsInt(d.capacidade)}`,
+        `Ocupação: ${lsPct(Math.round(d.t * 1000) / 10)}`,
+        dif > 0 ? `Acima da capacidade: ${lsInt(dif)}` : `Vagas livres: ${lsInt(-dif)}`,
+      ], d.nota)).on('pointerleave', () => tip.hide());
+    });
+    if (inativos.length) {
+      const y0 = top + ativos.length * rowH + 8;
+      g.append('text').attr('class', 'ls-t-ref').attr('x', 0).attr('y', y0 + 10).text('Sem ocupação, fora da conta');
+      inativos.forEach((d, i) => {
+        const row = g.append('g').attr('class', 'ls-row').attr('transform', `translate(0,${y0 + 22 + i * inH})`);
+        row.append('rect').attr('x', 0).attr('y', 0).attr('width', W).attr('height', inH).style('fill', 'transparent');
+        lsEncurtar(row.append('text').attr('class', 'ls-t-name').attr('x', 0).attr('y', 12).text(d.nome), W);
+        lsEncurtar(row.append('text').attr('class', 'ls-t-muted').attr('x', 0).attr('y', 27)
+          .text(`${d.situacao} · ${lsInt(d.capacidade)} vagas na página da SAP, ${lsInt(d.populacao)} presos`), W);
+        row.on('pointermove', (ev) => tip.show(ev, d.nome, [`Situação: ${d.situacao}`, `Vagas na página da SAP: ${lsInt(d.capacidade)}`, `Presos: ${lsInt(d.populacao)}`], d.nota))
+          .on('pointerleave', () => tip.hide());
+      });
+    }
+  };
+
+  window.lsDuas = (el, rows) => {
+    el.classList.remove('dash-skeleton');
+    el.replaceChildren();
+    const W = el.clientWidth;
+    if (!W || !rows.length) return;
+    const itens = rows.map((r) => ({ ...r, ts: r.sa_pop / r.sa_cap, te: r.est_pop / r.est_cap })).sort((a, b) => b.te - a.te);
+    const rowH = 56, top = 20, b1 = 19, b2 = 33, bh = 10;
+    const H = top + itens.length * rowH + 4;
+    const svg = d3.select(el).append('svg').attr('width', '100%').attr('viewBox', `0 0 ${W} ${H}`).attr('height', H)
+      .attr('role', 'img').attr('aria-label', el.getAttribute('aria-label') || '');
+    const rot1 = (d) => `Pavilhão ${lsPct(d.sa_taxa)}`;
+    const rot2 = (d) => `Unidade ${lsPct(d.est_taxa)}`;
+    let maxL = 0;
+    const medir = svg.append('g');
+    itens.forEach((d) => {
+      [rot1(d), rot2(d)].forEach((s) => { maxL = Math.max(maxL, medir.append('text').attr('class', 'ls-t-val ls-over').text(s).node().getComputedTextLength()); });
+    });
+    medir.remove();
+    const maxT = Math.max(1.45, d3.max(itens, (d) => Math.max(d.ts, d.te)));
+    const x = d3.scaleLinear([0, maxT], [0, Math.max(60, W - maxL - 10)]);
+    lsRefLabels(svg, x, W, 11, true);
+    const tip = lsTip(el);
+    const g = svg.append('g');
+    itens.forEach((d, i) => {
+      const row = g.append('g').attr('class', 'ls-row').attr('transform', `translate(0,${top + i * rowH})`);
+      row.append('rect').attr('x', 0).attr('y', 0).attr('width', W).attr('height', rowH).style('fill', 'transparent');
+      lsEncurtar(row.append('text').attr('class', 'ls-t-name').attr('x', 0).attr('y', 13).text(d.unidade), W);
+      row.append('rect').attr('class', d.ts > 1 ? 'ls-bar-over' : 'ls-bar-ok').attr('x', 0).attr('y', b1).attr('height', bh).attr('width', Math.max(2, x(d.ts))).attr('rx', 2);
+      row.append('rect').attr('class', 'ls-bar-est').attr('x', 0.75).attr('y', b2 + 0.75).attr('height', bh - 1.5).attr('width', Math.max(2, x(d.te) - 1.5)).attr('rx', 2);
+      row.append('line').attr('class', 'ls-ref').attr('x1', x(1)).attr('x2', x(1)).attr('y1', b1 - 3).attr('y2', b2 + bh + 3);
+      row.append('line').attr('class', 'ls-ref2').attr('x1', x(1.375)).attr('x2', x(1.375)).attr('y1', b1 - 3).attr('y2', b2 + bh + 3);
+      row.append('text').attr('class', 'ls-t-val' + (d.ts > 1 ? ' ls-over' : '')).attr('x', Math.max(x(d.ts), x(1.375)) + 6).attr('y', b1 + bh - 1).text(rot1(d));
+      row.append('text').attr('class', 'ls-t-val' + (d.te > 1.375 ? ' ls-over' : '')).attr('x', Math.max(x(d.te), x(1.375)) + 6).attr('y', b2 + bh - 1).text(rot2(d));
+      const linhas = [
+        `Pavilhão de semiaberto: ${lsInt(d.sa_pop)} presos para ${lsInt(d.sa_cap)} vagas (${lsPct(d.sa_taxa)})`,
+        `Unidade inteira: ${lsInt(d.est_pop)} presos para ${lsInt(d.est_cap)} vagas (${lsPct(d.est_taxa)})`,
+      ];
+      if (!d.mista) linhas.push('Unidade inteiramente de semiaberto');
+      row.on('pointermove', (ev) => tip.show(ev, d.unidade, linhas)).on('pointerleave', () => tip.hide());
+    });
+  };
+
+  window.lsLinhas = (el, series) => {
+    el.classList.remove('dash-skeleton');
+    el.replaceChildren();
+    const W = el.clientWidth;
+    if (!W) return;
+    const H = 260, mt = 18, mb = 26;
+    const todos = series.flatMap((s) => s.pontos);
+    if (!todos.length) return;
+    const fmtD = d3.utcFormat('%d/%m/%Y'), fmtTick = d3.utcFormat('%d/%m');
+    let [d0, d1] = d3.extent(todos, (p) => p.d);
+    if (+d0 === +d1) { d0 = d3.utcDay.offset(d0, -3); d1 = d3.utcDay.offset(d1, 3); }
+    const tMin = Math.min(90, d3.min(todos, (p) => p.t) - 5), tMax = Math.max(145, d3.max(todos, (p) => p.t) + 5);
+    const svg = d3.select(el).append('svg').attr('width', '100%').attr('viewBox', `0 0 ${W} ${H}`).attr('height', H)
+      .attr('role', 'img').attr('aria-label', el.getAttribute('aria-label') || '');
+    const y = d3.scaleLinear([tMin, tMax], [H - mb, mt]).nice();
+    const yt = y.ticks(5);
+    const medir = svg.append('g');
+    let ml = 0;
+    yt.forEach((t) => { ml = Math.max(ml, medir.append('text').attr('class', 'ls-axis-t').text(t + '%').node().getComputedTextLength()); });
+    let mr = 0;
+    series.forEach((s) => {
+      const u = s.pontos[s.pontos.length - 1];
+      if (u) mr = Math.max(mr, medir.append('text').attr('class', 'ls-t-val ls-over').text(`${s.nome} ${lsPct(u.t)}`).node().getComputedTextLength());
+    });
+    medir.remove();
+    ml += 8; mr += 10;
+    const x = d3.scaleUtc([d0, d1], [ml, Math.max(ml + 40, W - mr)]);
+    const grid = svg.append('g');
+    yt.forEach((t) => {
+      grid.append('line').attr('class', 'ls-grid-l').attr('x1', ml).attr('x2', x.range()[1]).attr('y1', y(t)).attr('y2', y(t));
+      grid.append('text').attr('class', 'ls-axis-t').attr('x', ml - 6).attr('y', y(t) + 4).attr('text-anchor', 'end').text(t + '%');
+    });
+    svg.append('line').attr('class', 'ls-ref').attr('x1', ml).attr('x2', x.range()[1]).attr('y1', y(100)).attr('y2', y(100));
+    svg.append('text').attr('class', 'ls-t-ref').attr('x', ml + 4).attr('y', y(100) - 5).text('100%');
+    svg.append('line').attr('class', 'ls-ref2').attr('x1', ml).attr('x2', x.range()[1]).attr('y1', y(137.5)).attr('y2', y(137.5));
+    svg.append('text').attr('class', 'ls-t-ref').attr('x', ml + 4).attr('y', y(137.5) - 5).text('137,5%');
+    const datas = [...new Set(todos.map((p) => +p.d))].sort((a, b) => a - b).map((v) => new Date(v));
+    const nTicks = Math.max(1, Math.min(datas.length, Math.floor((x.range()[1] - ml) / 70)));
+    const ticks = datas.length <= nTicks ? datas : x.ticks(nTicks);
+    ticks.forEach((d) => svg.append('text').attr('class', 'ls-axis-t').attr('x', x(d)).attr('y', H - 6).attr('text-anchor', 'middle').text(fmtTick(d)));
+    const linha = d3.line().x((p) => x(p.d)).y((p) => y(p.t));
+    const labels = [];
+    series.forEach((s) => {
+      if (s.pontos.length > 1) svg.append('path').attr('class', 'ls-line ' + (s.cls || '')).attr('d', linha(s.pontos)).style('stroke', s.cor || null);
+      (s.pontos.length <= 40 ? s.pontos : s.pontos.slice(-1)).forEach((p) => {
+        svg.append('circle').attr('class', s.dotCls || '').attr('cx', x(p.d)).attr('cy', y(p.t)).attr('r', 4)
+          .style('fill', s.cor || null).style('stroke', 'var(--color-panel)').style('stroke-width', 2);
+      });
+      const u = s.pontos[s.pontos.length - 1];
+      if (u) labels.push({ s, u, y: y(u.t) + 4 });
+    });
+    labels.sort((a, b) => a.y - b.y);
+    for (let i = 1; i < labels.length; i++) if (labels[i].y - labels[i - 1].y < 15) labels[i].y = labels[i - 1].y + 15;
+    labels.forEach(({ s, u, y: ly }) => {
+      svg.append('text').attr('class', 'ls-t-val ls-over').attr('x', x(u.d) + 8).attr('y', ly).text(`${s.nome} ${lsPct(u.t)}`);
+    });
+    const cross = svg.append('line').attr('class', 'ls-cross').attr('y1', mt).attr('y2', H - mb).style('opacity', 0);
+    const tip = lsTip(el);
+    svg.append('rect').attr('x', ml).attr('y', mt).attr('width', Math.max(0, x.range()[1] - ml)).attr('height', H - mt - mb).style('fill', 'transparent')
+      .on('pointermove', (ev) => {
+        const [px] = d3.pointer(ev);
+        const alvo = x.invert(px);
+        const d = datas.reduce((m, v) => (Math.abs(v - alvo) < Math.abs(m - alvo) ? v : m), datas[0]);
+        cross.attr('x1', x(d)).attr('x2', x(d)).style('opacity', 1);
+        const linhas = series.map((s) => {
+          const p = s.pontos.find((q) => +q.d === +d);
+          return p ? `${s.nome}: ${lsPct(p.t)} (${lsInt(p.pop)} / ${lsInt(p.cap)})` : `${s.nome}: sem registro`;
+        });
+        tip.show(ev, fmtD(d), linhas);
+      })
+      .on('pointerleave', () => { cross.style('opacity', 0); tip.hide(); });
+  };
+
+  dash.onData(() => {
+    document.querySelectorAll('.ls-sw-raj').forEach((s) => { s.style.background = dash.colors[0]; });
+  });
+
+  dash.draw('valor', (el) => {
+    const r = dash.data(el.dataset.source);
+    if (r.status !== 'ok') { el.textContent = '—'; return; }
+    const i = (el.dataset.where || '').indexOf('=');
+    const k = el.dataset.where.slice(0, i), v = decodeURIComponent(el.dataset.where.slice(i + 1));
+    const row = (r.data || []).find((x) => String(x[k]) === v);
+    const val = row ? row[el.dataset.field] : null;
+    if (val === null || val === undefined || val === '') { el.textContent = '—'; return; }
+    const f = el.dataset.fmt;
+    el.textContent = f === 'texto' ? String(val) : f === 'pct' ? lsPct(val) : f === 'sinal' ? (val > 0 ? '+' : '') + lsInt(val) : lsInt(val);
+  });
+
+  const lsEstado = (el, id) => {
+    const r = dash.data(id);
+    if (r.status === 'error') { el.classList.remove('dash-skeleton'); lsFalha(el); return null; }
+    if (r.status !== 'ok') { el.replaceChildren(); return null; }
+    return r.data;
+  };
+
+  dash.draw('grafico', (el) => {
+    const data = lsEstado(el, 'atual');
+    if (!data) return;
+    lsBarras(el, data.filter((r) => r.semiaberto && r.sexo === el.dataset.sexo && (el.dataset.escopo !== 'raj4' || r.raj4)));
+  });
+
+  dash.draw('grafico-coord', (el) => {
+    const data = lsEstado(el, 'por_coordenadoria');
+    if (!data) return;
+    lsBarras(el, data.map((r) => ({ nome: r.coordenadoria, capacidade: r.capacidade, populacao: r.populacao, conta: true })));
+  });
+
+  dash.draw('grafico-comp', (el) => {
+    const data = lsEstado(el, 'comparativo');
+    if (!data) return;
+    lsBarras(el, data.map((r) => ({ nome: r.periodo, capacidade: r.capacidade, populacao: r.populacao, conta: true })));
+  });
+
+  dash.draw('grafico-unid', (el) => {
+    const data = lsEstado(el, 'unidades');
+    if (!data) return;
+    lsBarras(el, data.filter((u) => u.raj4).map((u) => ({ nome: u.unidade, capacidade: u.capacidade, populacao: u.populacao, conta: true })), { ref2: true });
+  });
+
+  dash.draw('duas', (el) => {
+    const data = lsEstado(el, 'listadas');
+    if (!data) return;
+    lsDuas(el, data.filter((r) => r.sexo === el.dataset.sexo));
+  });
+
+  dash.draw('trajetoria', (el) => {
+    const data = lsEstado(el, 'trajetoria');
+    if (!data) return;
+    const [serie, sexo] = ((document.querySelector('#ls-traj-serie') || {}).value || 'semiaberto|Masculino').split('|');
+    const pontos = (escopo) => data.filter((r) => r.serie === serie && r.escopo === escopo && r.sexo === sexo)
+      .map((r) => ({ d: new Date(r.data + 'T12:00:00Z'), t: Number(r.taxa), pop: r.populacao, cap: r.capacidade }));
+    lsLinhas(el, [
+      { nome: 'Estado', pontos: pontos('Estado'), cls: 'ls-line-est', dotCls: 'ls-dot-est', cor: null },
+      { nome: '4ª RAJ', pontos: pontos('4ª RAJ'), cor: dash.colors[0] },
+    ]);
+  });
+
+  dash.draw('ociosas', (tb) => {
+    const o = dash.data('ociosas');
+    if (o.status !== 'ok') { tb.replaceChildren(); return; }
+    tb.replaceChildren(...o.data.slice(0, 8).map((r) => {
+      const tr = document.createElement('tr');
+      tr.dataset.key = r.id;
+      const td1 = document.createElement('td'); td1.textContent = r.nome;
+      const td2 = document.createElement('td'); td2.className = 'ls-hide-narrow'; td2.textContent = r.coordenadoria;
+      const td3 = document.createElement('td'); td3.className = 'ls-n'; td3.textContent = lsInt(r.vagas_ociosas);
+      tr.append(td1, td2, td3);
+      return tr;
+    }));
+  });
+
+  dash.draw('peca-tabela', (tb) => {
+    const o = dash.data('listadas');
+    if (o.status !== 'ok') { tb.replaceChildren(); return; }
+    const rs = o.data.filter((r) => r.sexo === tb.dataset.sexo).slice().sort((a, b) => b.est_taxa - a.est_taxa);
+    const limiteUnid = tb.dataset.sexo === 'Feminino' ? 100 : 137.5;
+    const borda = 'border:1px solid #000000;padding:3pt 5pt;';
+    tb.replaceChildren(...rs.map((r) => {
+      const tr = document.createElement('tr');
+      tr.dataset.key = String(r.unidade_id);
+      const cel = (txt, num, forte) => {
+        const td = document.createElement('td');
+        td.setAttribute('style', borda + (num ? 'text-align:right;white-space:nowrap;' : 'text-align:left;'));
+        if (forte) { const b = document.createElement('b'); b.textContent = txt; td.append(b); } else td.textContent = txt;
+        return td;
+      };
+      tr.append(
+        cel(r.unidade, false, false),
+        cel(`${lsPct(r.sa_taxa)} (${lsInt(r.sa_pop)}/${lsInt(r.sa_cap)})`, true, r.sa_taxa > 100),
+        r.mista
+          ? cel(`${lsPct(r.est_taxa)} (${lsInt(r.est_pop)}/${lsInt(r.est_cap)})`, true, r.est_taxa > limiteUnid)
+          : cel('unidade só de semiaberto', true, false),
+      );
+      return tr;
+    }));
+  });
+
+  // Campos da manifestação: o texto acompanha o que se digita no formulário.
+  dash.draw('campo', (el) => {
+    const inp = document.getElementById('f-' + el.dataset.campo);
+    const v = inp ? inp.value.trim() : '';
+    if (v) { el.textContent = v; return; }
+    const m = document.createElement('span');
+    m.className = 'ls-mark';
+    m.textContent = el.dataset.vazio || '[preencher]';
+    el.replaceChildren(m);
+  });
+
+  window.lsOrdem = { b: { k: 'ocupacao', dir: -1 }, u: { k: 'ocupacao', dir: -1 } };
+  const lsOrdenar = (rows, val, o) => rows.sort((a, b) => { const va = val(a), vb = val(b); return (typeof va === 'number' ? va - vb : String(va).localeCompare(String(vb), 'pt-BR')) * o.dir; });
+
+  dash.draw('tabela', (tb) => {
+    const u = dash.data('atual'), oc = dash.data('ocupacao');
+    if (u.status !== 'ok' || oc.status !== 'ok') { tb.replaceChildren(); return; }
+    const taxa = new Map(oc.data.map((r) => [r.id, r.ocupacao]));
+    const q = ((document.querySelector('#ls-busca') || {}).value || '').trim().toLowerCase();
+    const sexo = (document.querySelector('#ls-sexo') || {}).value || '';
+    const soRaj = !!(document.querySelector('#ls-raj4') || {}).checked;
+    const o = window.lsOrdem.b;
+    const val = (r) => (o.k === 'ocupacao' ? (taxa.get(r.id) ?? -1) : o.k === 'capacidade' || o.k === 'populacao' ? Number(r[o.k]) : String(r[o.k]));
+    const rows = lsOrdenar(u.data.filter((r) => r.semiaberto && (!sexo || r.sexo === sexo) && (!soRaj || r.raj4) && (!q || (r.nome + ' ' + r.coordenadoria).toLowerCase().includes(q))), val, o);
+    tb.replaceChildren(...rows.map((r) => {
+      const tr = document.createElement('tr');
+      tr.dataset.key = r.id;
+      const t = taxa.get(r.id);
+      const cel = (txt, cls) => { const td = document.createElement('td'); if (cls) td.className = cls; td.textContent = txt; return td; };
+      tr.append(
+        cel(r.nome),
+        cel(r.coordenadoria, 'ls-hide-narrow'),
+        cel(lsInt(r.capacidade), 'ls-n'),
+        cel(lsInt(r.populacao), 'ls-n'),
+        cel(t === null || t === undefined ? '—' : lsPct(t), 'ls-n' + (t > 100 ? ' ls-over' : '')),
+        cel(r.situacao, 'ls-hide-narrow'),
+      );
+      return tr;
+    }));
+  });
+
+  dash.draw('tabela-unid', (tb) => {
+    const u = dash.data('unidades');
+    if (u.status !== 'ok') { tb.replaceChildren(); return; }
+    const q = ((document.querySelector('#ls-u-busca') || {}).value || '').trim().toLowerCase();
+    const soRaj = !!(document.querySelector('#ls-u-raj4') || {}).checked;
+    const soAcima = !!(document.querySelector('#ls-u-acima') || {}).checked;
+    const o = window.lsOrdem.u;
+    const val = (r) => (['capacidade', 'populacao', 'ocupacao', 'sa_cap'].includes(o.k) ? Number(r[o.k]) : String(r[o.k]));
+    const rows = lsOrdenar(u.data.filter((r) => (!soRaj || r.raj4) && (!soAcima || r.ocupacao > 137.5) && (!q || (r.unidade + ' ' + r.coordenadoria).toLowerCase().includes(q))), val, o);
+    tb.replaceChildren(...rows.map((r) => {
+      const tr = document.createElement('tr');
+      tr.dataset.key = String(r.unidade_id);
+      const cel = (txt, cls) => { const td = document.createElement('td'); if (cls) td.className = cls; td.textContent = txt; return td; };
+      tr.append(
+        cel(r.unidade),
+        cel(r.coordenadoria, 'ls-hide-narrow'),
+        cel(lsInt(r.capacidade), 'ls-n'),
+        cel(lsInt(r.populacao), 'ls-n'),
+        cel(lsPct(r.ocupacao), 'ls-n' + (r.ocupacao > 137.5 ? ' ls-over' : '')),
+        cel(r.sa_cap ? lsInt(r.sa_cap) : '—', 'ls-n ls-hide-narrow'),
+      );
+      return tr;
+    }));
+  });
+
+  document.querySelectorAll('.ls-sort[data-k]').forEach((b) => {
+    b.addEventListener('click', () => {
+      const t = b.dataset.t, k = b.dataset.k;
+      const o = window.lsOrdem[t];
+      const texto = ['nome', 'unidade', 'coordenadoria', 'situacao'].includes(k);
+      window.lsOrdem[t] = { k, dir: o.k === k ? -o.dir : (texto ? 1 : -1) };
+      document.querySelectorAll(`.ls-sort[data-t="${t}"]`).forEach((bb) => {
+        const th = bb.closest('th');
+        if (th) th.setAttribute('aria-sort', bb.dataset.k === k ? (window.lsOrdem[t].dir === 1 ? 'ascending' : 'descending') : 'none');
+      });
+      dash.draw(t === 'u' ? 'tabela-unid' : 'tabela');
+    });
+  });
+  document.querySelectorAll('#ls-busca').forEach((i) => i.addEventListener('input', () => dash.draw('tabela')));
+  document.querySelectorAll('#ls-sexo, #ls-raj4').forEach((i) => i.addEventListener('change', () => dash.draw('tabela')));
+  document.querySelectorAll('#ls-u-busca').forEach((i) => i.addEventListener('input', () => dash.draw('tabela-unid')));
+  document.querySelectorAll('#ls-u-raj4, #ls-u-acima').forEach((i) => i.addEventListener('change', () => dash.draw('tabela-unid')));
+  document.querySelectorAll('#ls-traj-serie').forEach((i) => i.addEventListener('change', () => dash.draw('trajetoria')));
+
+  // ---------- Manifestação ----------
+  const LS_GUARDA = ['cidade', 'defensor'];
+  const lsGuardado = (k) => { try { return localStorage.getItem('ls-peca-' + k) || ''; } catch (e) { return ''; } };
+  const lsGuardar = (k, v) => { try { localStorage.setItem('ls-peca-' + k, v); } catch (e) { /* sem armazenamento */ } };
+  LS_GUARDA.forEach((k) => document.querySelectorAll('#f-' + k).forEach((inp) => {
+    const v = lsGuardado(k);
+    if (v && !inp.value) inp.value = v;
+  }));
+  document.querySelectorAll('.ls-form input').forEach((inp) => inp.addEventListener('input', () => {
+    const k = inp.id.replace(/^f-/, '');
+    if (LS_GUARDA.includes(k)) lsGuardar(k, inp.value.trim());
+    dash.draw('campo');
+  }));
+
+  const lsVariante = () => {
+    const v = (document.querySelector('#f-var') || {}).value || 'm';
+    document.querySelectorAll('#peca [data-var]').forEach((el) => { el.hidden = el.dataset.var !== v; });
+  };
+  document.querySelectorAll('#f-var').forEach((sel) => sel.addEventListener('change', lsVariante));
+
+  const lsCriterios = () => {
+    const marcados = new Set([...document.querySelectorAll('.f-crit')].filter((c) => c.checked).map((c) => c.value));
+    document.querySelectorAll('#peca [data-crit]').forEach((li) => {
+      li.hidden = li.dataset.crit === '0' ? marcados.size > 0 : !marcados.has(li.dataset.crit);
+    });
+  };
+  document.querySelectorAll('.f-crit').forEach((c) => c.addEventListener('change', lsCriterios));
+  lsVariante();
+  lsCriterios();
+
+  // Cópia: HTML com estilos em linha (Word e CKEditor) e texto puro como alternativa.
+  const LS_ATRIB = ['style', 'type', 'colspan', 'rowspan'];
+  const lsPecaLimpa = () => {
+    const peca = document.getElementById('peca');
+    if (!peca) return null;
+    const c = peca.cloneNode(true);
+    c.querySelectorAll('[hidden]').forEach((e) => e.remove());
+    c.querySelectorAll('.ls-mark').forEach((e) => e.setAttribute('style', 'background-color:#fff3c4;'));
+    c.querySelectorAll('div').forEach((d) => d.replaceWith(...d.childNodes));
+    c.querySelectorAll('*').forEach((e) => [...e.attributes].forEach((a) => { if (!LS_ATRIB.includes(a.name)) e.removeAttribute(a.name); }));
+    const wrap = document.createElement('div');
+    wrap.setAttribute('style', peca.getAttribute('style') || 'font-family:Arial, Helvetica, sans-serif;font-size:12pt;');
+    wrap.append(...c.childNodes);
+    return wrap;
+  };
+  const lsLinha = (n) => {
+    const c = n.cloneNode(true);
+    c.querySelectorAll('br').forEach((b) => b.replaceWith('\n'));
+    return c.textContent.split('\n').map((s) => s.replace(/\s+/g, ' ').trim()).join('\n').trim();
+  };
+  const lsTexto = (root) => {
+    const out = [];
+    [...root.children].forEach((n) => {
+      const tag = n.tagName;
+      if (tag === 'TABLE') out.push([...n.querySelectorAll('tr')].map((tr) => [...tr.children].map(lsLinha).join(' | ')).join('\n'));
+      else if (tag === 'OL') out.push([...n.children].map((li, i) => `${String.fromCharCode(97 + i)}) ${lsLinha(li)}`).join('\n'));
+      else if (tag === 'UL') out.push([...n.children].map((li) => `- ${lsLinha(li)}`).join('\n'));
+      else out.push(lsLinha(n));
+    });
+    return out.filter(Boolean).join('\n\n');
+  };
+  const lsCopiar = (btn, comHtml) => {
+    const estado = (n) => btn.querySelectorAll('[data-st]').forEach((s) => { s.hidden = s.dataset.st !== String(n); });
+    const ok = () => { estado(1); setTimeout(() => estado(0), 5000); };
+    const selecionar = () => { const p = document.getElementById('peca'); const sel = window.getSelection(); if (p && sel) sel.selectAllChildren(p); estado(2); };
+    const wrap = lsPecaLimpa();
+    if (!wrap) return;
+    const texto = lsTexto(wrap);
+    const html = '<html><head><meta charset="utf-8"></head><body>' + wrap.outerHTML + '</body></html>';
+    let feito = false;
+    const noEvento = (e) => {
+      if (!e.clipboardData) return;
+      if (comHtml) e.clipboardData.setData('text/html', html);
+      e.clipboardData.setData('text/plain', texto);
+      e.preventDefault();
+      feito = true;
+    };
+    document.addEventListener('copy', noEvento);
+    try { document.execCommand('copy'); } catch (e) { /* segue para a próxima via */ }
+    document.removeEventListener('copy', noEvento);
+    if (feito) { ok(); return; }
+    try {
+      const p = comHtml && window.ClipboardItem
+        ? navigator.clipboard.write([new ClipboardItem({ 'text/html': new Blob([html], { type: 'text/html' }), 'text/plain': new Blob([texto], { type: 'text/plain' }) })])
+        : navigator.clipboard.writeText(texto);
+      p.then(ok, selecionar);
+    } catch (e) { selecionar(); }
+  };
+  document.querySelectorAll('#ls-copiar-rico').forEach((b) => b.addEventListener('click', () => lsCopiar(b, true)));
+  document.querySelectorAll('#ls-copiar-texto').forEach((b) => b.addEventListener('click', () => lsCopiar(b, false)));
+
+  // ---------- Abas ----------
+  const lsAbas = () => [...document.querySelectorAll('.ls-tabs [data-aba]')];
+  const lsAbrir = (aba, alvo) => {
+    if (!document.getElementById('aba-' + aba)) return;
+    lsAbas().forEach((b) => b.setAttribute('aria-selected', b.dataset.aba === aba ? 'true' : 'false'));
+    document.querySelectorAll('.ls-panel[id^="aba-"]').forEach((p) => { p.hidden = p.id !== 'aba-' + aba; });
+    dash.setLink(alvo || aba);
+    const destino = alvo ? document.getElementById(alvo) : null;
+    const nav = document.querySelector('.ls-tabs');
+    setTimeout(() => {
+      const el = destino || nav;
+      if (!el) return;
+      const r = el.getBoundingClientRect();
+      if (destino || r.top < 0) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }, 60);
+  };
+  lsAbas().forEach((b, i, todos) => {
+    b.addEventListener('click', () => lsAbrir(b.dataset.aba));
+    b.addEventListener('keydown', (ev) => {
+      if (ev.key !== 'ArrowRight' && ev.key !== 'ArrowLeft') return;
+      const lista = lsAbas();
+      const j = lista.indexOf(b) + (ev.key === 'ArrowRight' ? 1 : -1);
+      const prox = lista[(j + lista.length) % lista.length];
+      if (prox) { prox.focus(); lsAbrir(prox.dataset.aba); }
+      ev.preventDefault();
+    });
+  });
+  document.querySelectorAll('[data-ir]').forEach((b) => b.addEventListener('click', () => lsAbrir(b.dataset.ir)));
+  const lsPeloHash = () => {
+    const h = decodeURIComponent(location.hash.slice(1));
+    if (!h) return;
+    if (document.getElementById('aba-' + h)) { lsAbrir(h); return; }
+    const el = document.getElementById(h);
+    const painel = el && el.closest('.ls-panel[id^="aba-"]');
+    if (painel) lsAbrir(painel.id.slice(4), h !== painel.id.slice(4) ? h : null);
+  };
+  window.addEventListener('hashchange', lsPeloHash);
+  lsPeloHash();
+</script>
+
+</body>
+</html>
