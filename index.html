@@ -69,6 +69,7 @@ a { color: inherit; }
 @keyframes ls-sk { 0% { background-position: 100% 0; } 100% { background-position: -100% 0; } }
 @media (prefers-reduced-motion: reduce) { .dash-skeleton { animation: none; } }
 .ls-rodape { max-width: 70rem; margin: 40px auto 0; padding-top: 16px; border-top: 1px solid var(--color-border-line); font-size: var(--cds-font-size-caption); color: var(--color-fg-muted); }
+.ls-rodape p { max-width: 75ch; text-align: justify; -webkit-hyphens: auto; hyphens: auto; hyphenate-limit-chars: 8 4 4; }
 </style>
 <script src="assets/d3.min.js"></script>
 <script src="assets/runtime.js"></script>
@@ -669,7 +670,7 @@ a { color: inherit; }
   </div>
 </div>
 
-<footer class="ls-rodape">
+<footer class="ls-rodape" lang="pt-BR">
   <p><i lang="la">Numerus clausus</i> é um painel independente, feito a partir dos dados públicos da Secretaria da Administração Penitenciária (SAP-SP). Não é publicação oficial da SAP nem da Defensoria Pública. Os números são calculados a partir do que a SAP publica e podem conter erros de leitura ou de classificação: confira a fonte antes de usar em juízo. O método está na aba <a href="#metodo">Método e normas</a>. O gerador de manifestação foi feito só para a 4ª RAJ.</p>
   <p>A coleta roda uma vez por dia. Os números registrados e o arquivo original publicado pela SAP em cada data ficam guardados no repositório <a href="https://github.com/Dsnunes1989/numerus-clausus" target="_blank" rel="noopener">Dsnunes1989/numerus-clausus</a>.</p>
   <p>Esta página não usa cookies nem ferramentas de rastreamento. O que se digita no gerador de manifestação não sai deste navegador; cidade, nome de quem assina e número da OAB ficam guardados nele para a próxima vez.</p>
