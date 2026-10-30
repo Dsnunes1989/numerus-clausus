@@ -199,6 +199,8 @@ a { color: inherit; }
     .ls-wide { display: inline; }
     .ls-narrow { display: none; }
   }
+  .ls-aviso { border-left: 3px solid var(--color-fg); background: var(--color-panel); border-radius: 0 var(--cds-radius) var(--cds-radius) 0; padding: var(--cds-pad-sm) var(--cds-pad-md); font-size: var(--cds-font-size-body); line-height: 1.5; }
+  .ls-aviso p { margin: 0; max-width: 62rem; }
 </style>
 
 
@@ -208,7 +210,7 @@ a { color: inherit; }
     <h1>Lotação do semiaberto na 4ª RAJ</h1>
     <p class="ls-lede">Em <b data-draw="valor" data-source="resumo" data-field="data_br" data-where="chave=raj4-Masculino" data-fmt="texto">—</b>, os pavilhões de semiaberto das unidades masculinas que o DEECRIM da 4ª RAJ indica para início de pena estavam com <b data-draw="valor" data-source="listadas_resumo" data-field="sa_taxa" data-where="chave=Masculino" data-fmt="pct">—</b> de ocupação. Somando a unidade inteira, <b data-draw="valor" data-source="listadas_resumo" data-field="n_est_1375" data-where="chave=Masculino">—</b> dessas unidades passavam de 137,5%. O sistema prisional do Estado, como um todo, operava com <b data-draw="valor" data-source="geral" data-field="ocupacao" data-where="chave=estado" data-fmt="pct">—</b> de ocupação.</p>
     <p class="ls-src">Fonte: página <a href="https://www1.sap.sp.gov.br/sp/unidades-prisionais/unidades-prisionais.html" target="_blank" rel="noopener">Unidades Prisionais</a> da Secretaria da Administração Penitenciária (SAP-SP), registrada diariamente desde 28/10/2026. Ocupação é a população dividida pela capacidade informada pela SAP.</p>
-    <div class="ls-actions ls-cta"><button type="button" class="ls-btn ls-btn-main" data-ir="manifestacao">Gerar manifestação</button><button type="button" class="ls-btn" data-ir="indicadas">Ver as unidades indicadas</button></div>
+    <div class="ls-actions ls-cta"><button type="button" class="ls-btn ls-btn-main" data-ir="manifestacao">Gerar manifestação (4ª RAJ)</button><button type="button" class="ls-btn" data-ir="indicadas">Ver as unidades indicadas</button></div>
     <nav class="ls-tabs" role="tablist" aria-label="Seções do painel">
       <button type="button" role="tab" id="tab-resumo" data-aba="resumo" aria-selected="true">Resumo</button>
       <button type="button" role="tab" id="tab-indicadas" data-aba="indicadas" aria-selected="false">Unidades indicadas</button>
@@ -488,8 +490,11 @@ a { color: inherit; }
   <div class="ls-panel" id="aba-manifestacao" role="tabpanel" aria-labelledby="tab-manifestacao" hidden>
     <section class="ls-sec" id="manifestacao">
       <div class="ls-sec-head">
-        <h2>Gerar manifestação</h2>
+        <h2>Gerar manifestação (4ª RAJ)</h2>
         <p>Resposta à decisão que intima a pessoa condenada a se apresentar numa das unidades listadas pelo DEECRIM da 4ª RAJ, com os números do registro mais recente da SAP. Preencha os campos e a peça se monta <span class="ls-wide">ao lado</span><span class="ls-narrow">logo abaixo do formulário</span>; depois, copie para o Word ou para o editor do sistema.</p>
+      </div>
+      <div class="ls-aviso" role="note">
+        <p><b>Só para a 4ª RAJ.</b> O modelo responde à decisão padrão do DEECRIM da 4ª RAJ (Campinas): a tabela traz as unidades que essa decisão indica, e o texto cita o pedido de providências daquele DEECRIM e os comunicados aplicados por ele. Para outras regiões, as unidades, o procedimento e a decisão são outros, e a peça não serve sem ser refeita.</p>
       </div>
       <div class="ls-gerador">
       <div class="ls-card ls-gerador-form">
@@ -628,7 +633,7 @@ a { color: inherit; }
 </div>
 
 <footer class="ls-rodape">
-  <p>Painel independente, feito a partir dos dados públicos da Secretaria da Administração Penitenciária (SAP-SP). Não é publicação oficial da SAP nem da Defensoria Pública. Os números são calculados a partir do que a SAP publica e podem conter erros de leitura ou de classificação: confira a fonte antes de usar em juízo. O método está na aba <a href="#metodo">Método e normas</a>.</p>
+  <p>Painel independente, feito a partir dos dados públicos da Secretaria da Administração Penitenciária (SAP-SP). Não é publicação oficial da SAP nem da Defensoria Pública. Os números são calculados a partir do que a SAP publica e podem conter erros de leitura ou de classificação: confira a fonte antes de usar em juízo. O método está na aba <a href="#metodo">Método e normas</a>. O gerador de manifestação foi feito só para a 4ª RAJ.</p>
   <p>A coleta roda uma vez por dia. Os números registrados e o arquivo original publicado pela SAP em cada data ficam guardados no repositório <a href="https://github.com/Dsnunes1989/lotacao-semiaberto" target="_blank" rel="noopener">Dsnunes1989/lotacao-semiaberto</a>.</p>
   <p>Esta página não usa cookies nem ferramentas de rastreamento. O que se digita no gerador de manifestação não sai deste navegador; cidade, nome de quem assina e número da OAB ficam guardados nele para a próxima vez.</p>
 </footer>
