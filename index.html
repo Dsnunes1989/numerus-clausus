@@ -216,21 +216,46 @@ a { color: inherit; }
   .ls-marca-nome i { font-style: italic; }
   .ls-marca-sub { margin: 0; font-size: var(--cds-font-size-body); color: var(--color-fg-muted); text-wrap: balance; }
   @media (max-width: 40rem) { .ls-marca-simbolo { width: 46px; height: 46px; } .ls-head h1.ls-marca-nome { font-size: 2.1rem; } }
+  .ls-head-grid { display: grid; gap: var(--cds-gap-lg); align-items: end; }
+  .ls-head-main { display: grid; gap: var(--cds-gap-sm); min-width: 0; }
+  @media (min-width: 62rem) { .ls-head-grid { grid-template-columns: minmax(0, 1fr) 19rem; } }
+  .ls-chamada { display: grid; gap: var(--cds-gap-sm); align-content: start; padding: var(--cds-pad-md); background: var(--color-panel); border: 1px solid var(--color-border-line); border-top: 3px solid var(--cds-chart-status-critical); border-radius: var(--cds-radius); }
+  .ls-chamada h2 { margin: 0; font-size: var(--cds-font-size-body); font-weight: var(--cds-font-weight-medium); line-height: 1.35; }
+  .ls-chamada p { margin: 0; font-size: var(--cds-font-size-caption); line-height: 1.5; color: var(--color-fg-muted); }
+  .ls-chamada .ls-btn { justify-self: start; }
+  .ls-page p, .ls-page li { text-align: justify; -webkit-hyphens: auto; hyphens: auto; hyphenate-limit-chars: 8 4 4; }
+  .ls-page .ls-marca-sub, .ls-page .ls-subhead, .ls-page .ls-paper p { text-align: left; -webkit-hyphens: manual; hyphens: manual; }
+  .ls-page .ls-paper p[style*="justify"] { text-align: justify; }
+  .ls-mais { padding-top: var(--cds-pad-md); padding-bottom: var(--cds-pad-md); }
+  .ls-mais > summary { cursor: pointer; font-size: var(--cds-font-size-body); font-weight: var(--cds-font-weight-medium); list-style: none; display: flex; gap: 10px; align-items: baseline; }
+  .ls-mais > summary::-webkit-details-marker { display: none; }
+  .ls-mais > summary::before { content: "+"; width: 1em; flex: none; color: var(--color-fg-muted); font-weight: 400; }
+  .ls-mais[open] > summary::before { content: "−"; }
+  .ls-mais > summary:focus-visible { outline: 2px solid var(--color-fg); outline-offset: 3px; border-radius: 4px; }
+  .ls-mais[open] > summary { margin-bottom: var(--cds-gap-sm); }
 </style>
 
 
-<div class="ls-page">
+<div class="ls-page" lang="pt-BR">
   <header class="ls-head" id="topo">
-    <div class="ls-marca">
-      <svg class="ls-marca-simbolo" viewBox="0 0 64 64" aria-hidden="true" focusable="false"><rect class="ls-ms-bloco" x="6" y="20" width="52" height="38" rx="5"/><g class="ls-ms-grade" stroke-width="4.5" stroke-linecap="round"><line x1="17" y1="28" x2="17" y2="50"/><line x1="27" y1="28" x2="27" y2="50"/><line x1="47" y1="28" x2="47" y2="50"/></g><line class="ls-ms-excesso" x1="37" y1="4.5" x2="37" y2="50" stroke-width="4.5" stroke-linecap="round"/></svg>
-      <div class="ls-marca-texto">
-        <h1 class="ls-marca-nome"><i lang="la">Numerus clausus</i></h1>
-        <p class="ls-marca-sub">Lotação prisional em São Paulo e semiaberto da 4ª RAJ, com os dados diários da SAP</p>
+    <div class="ls-head-grid">
+      <div class="ls-head-main">
+        <div class="ls-marca">
+          <svg class="ls-marca-simbolo" viewBox="0 0 64 64" aria-hidden="true" focusable="false"><rect class="ls-ms-bloco" x="6" y="20" width="52" height="38" rx="5"/><g class="ls-ms-grade" stroke-width="4.5" stroke-linecap="round"><line x1="17" y1="28" x2="17" y2="50"/><line x1="27" y1="28" x2="27" y2="50"/><line x1="47" y1="28" x2="47" y2="50"/></g><line class="ls-ms-excesso" x1="37" y1="4.5" x2="37" y2="50" stroke-width="4.5" stroke-linecap="round"/></svg>
+          <div class="ls-marca-texto">
+            <h1 class="ls-marca-nome"><i lang="la">Numerus clausus</i></h1>
+            <p class="ls-marca-sub">Lotação prisional em São Paulo e semiaberto da 4ª RAJ, com os dados diários da SAP</p>
+          </div>
+        </div>
+        <p class="ls-lede">Em <b data-draw="valor" data-source="resumo" data-field="data_br" data-where="chave=raj4-Masculino" data-fmt="texto">—</b>, os pavilhões de semiaberto das unidades masculinas que o DEECRIM da 4ª RAJ indica para início de pena estavam com <b data-draw="valor" data-source="listadas_resumo" data-field="sa_taxa" data-where="chave=Masculino" data-fmt="pct">—</b> de ocupação. Somando a unidade inteira, <b data-draw="valor" data-source="listadas_resumo" data-field="n_est_1375" data-where="chave=Masculino">—</b> dessas unidades passavam de 137,5%. O sistema prisional do Estado, como um todo, operava com <b data-draw="valor" data-source="geral" data-field="ocupacao" data-where="chave=estado" data-fmt="pct">—</b> de ocupação.</p>
+        <p class="ls-src">Fonte: <a href="https://www1.sap.sp.gov.br/sp/unidades-prisionais/unidades-prisionais.html" target="_blank" rel="noopener">SAP-SP, página Unidades Prisionais</a>, com registro diário desde 28/10/2026.</p>
       </div>
+      <aside class="ls-chamada" aria-labelledby="chamada-titulo">
+        <h2 id="chamada-titulo">Pessoa intimada a se apresentar no semiaberto?</h2>
+        <p>Se a decisão é do DEECRIM da 4ª RAJ, o gerador monta o pedido de reconsideração com a ocupação do dia.</p>
+        <button type="button" class="ls-btn ls-btn-main" data-ir="manifestacao">Gerar manifestação</button>
+      </aside>
     </div>
-    <p class="ls-lede">Em <b data-draw="valor" data-source="resumo" data-field="data_br" data-where="chave=raj4-Masculino" data-fmt="texto">—</b>, os pavilhões de semiaberto das unidades masculinas que o DEECRIM da 4ª RAJ indica para início de pena estavam com <b data-draw="valor" data-source="listadas_resumo" data-field="sa_taxa" data-where="chave=Masculino" data-fmt="pct">—</b> de ocupação. Somando a unidade inteira, <b data-draw="valor" data-source="listadas_resumo" data-field="n_est_1375" data-where="chave=Masculino">—</b> dessas unidades passavam de 137,5%. O sistema prisional do Estado, como um todo, operava com <b data-draw="valor" data-source="geral" data-field="ocupacao" data-where="chave=estado" data-fmt="pct">—</b> de ocupação.</p>
-    <p class="ls-src">Fonte: página <a href="https://www1.sap.sp.gov.br/sp/unidades-prisionais/unidades-prisionais.html" target="_blank" rel="noopener">Unidades Prisionais</a> da Secretaria da Administração Penitenciária (SAP-SP), registrada diariamente desde 28/10/2026. Ocupação é a população dividida pela capacidade informada pela SAP.</p>
-    <div class="ls-actions ls-cta"><button type="button" class="ls-btn ls-btn-main" data-ir="manifestacao">Gerar manifestação (4ª RAJ)</button><button type="button" class="ls-btn" data-ir="indicadas">Ver as unidades indicadas</button></div>
     <nav class="ls-tabs" role="tablist" aria-label="Seções do painel">
       <button type="button" role="tab" id="tab-resumo" data-aba="resumo" aria-selected="true">Resumo</button>
       <button type="button" role="tab" id="tab-indicadas" data-aba="indicadas" aria-selected="false">Unidades indicadas</button>
@@ -254,11 +279,11 @@ a { color: inherit; }
       <div class="ls-card" id="card-resumo-pontos">
         <h3>O que sustenta a manifestação</h3>
         <ol class="ls-points">
-          <li>No Pedido de Providências citado pelo DEECRIM, a SAP não indicou unidade com vaga. Disse haver vagas "por ora", pela régua de 137,5% da Resolução CNPCP nº 05/2016, e condicionou a vaga à classificação do preso.</li>
-          <li>O Comunicado CG nº 602/2025 manda indicar a unidade de apresentação conforme a ocupação atual. A decisão padrão lista todas as unidades para livre escolha.</li>
-          <li>A lotação se mede pelo estabelecimento. Somando a unidade inteira, <b data-draw="valor" data-source="listadas_resumo" data-field="n_est_1375" data-where="chave=Masculino">—</b> das unidades masculinas indicadas passam de 137,5%. No feminino, a Resolução proíbe manter mulheres em estabelecimento acima da capacidade, e <span data-draw="valor" data-source="listadas_resumo" data-field="n_est_100" data-where="chave=Feminino">—</span> das <span data-draw="valor" data-source="listadas_resumo" data-field="n" data-where="chave=Feminino">—</span> unidades femininas indicadas estão nessa situação.</li>
+          <li>No pedido de providências que o DEECRIM cita, a SAP não indicou nenhuma unidade com vaga.</li>
+          <li>O Comunicado CG nº 602/2025 manda indicar a unidade conforme a ocupação atual; a decisão lista todas para livre escolha.</li>
+          <li>Somando a unidade inteira, <b data-draw="valor" data-source="listadas_resumo" data-field="n_est_1375" data-where="chave=Masculino">—</b> das <b data-draw="valor" data-source="listadas_resumo" data-field="n" data-where="chave=Masculino">—</b> unidades masculinas indicadas passam de 137,5%, e <b data-draw="valor" data-source="listadas_resumo" data-field="n_est_100" data-where="chave=Feminino">—</b> das <b data-draw="valor" data-source="listadas_resumo" data-field="n" data-where="chave=Feminino">—</b> femininas estão acima da capacidade, o que a Resolução CNPCP nº 05/2016 proíbe para mulheres.</li>
         </ol>
-        <div class="ls-actions"><button type="button" class="ls-btn ls-btn-main" data-ir="manifestacao">Gerar a manifestação</button><button type="button" class="ls-btn" data-ir="indicadas">Ver as unidades indicadas</button></div>
+        <div class="ls-actions"><button type="button" class="ls-btn ls-btn-main" data-ir="manifestacao">Gerar manifestação</button></div>
       </div>
       <div class="ls-card" id="card-resumo-duas">
         <h3>Unidades masculinas indicadas, nas duas réguas</h3>
@@ -277,7 +302,7 @@ a { color: inherit; }
   <section class="ls-sec" id="indicadas">
     <div class="ls-sec-head">
       <h2>Unidades indicadas pelo DEECRIM, nas duas réguas</h2>
-      <p>A decisão padrão do DEECRIM da 4ª RAJ lista 15 unidades masculinas e 4 femininas para apresentação no semiaberto. Cada uma aparece aqui de dois jeitos: só o pavilhão de semiaberto e a unidade inteira, que é a medida da Resolução CNPCP nº 05/2016.</p>
+      <p>As 15 unidades masculinas e 4 femininas da decisão padrão do DEECRIM, medidas de dois jeitos: só o pavilhão de semiaberto e a unidade inteira, que é a régua da Resolução CNPCP nº 05/2016.</p>
     </div>
     <div class="ls-tiles">
       <div class="ls-tile ls-key"><span class="ls-label">Pavilhões masculinos acima de 100%</span><span class="ls-num"><span data-draw="valor" data-source="listadas_resumo" data-field="n_pav_100" data-where="chave=Masculino">—</span> de <span data-draw="valor" data-source="listadas_resumo" data-field="n" data-where="chave=Masculino">—</span></span></div>
@@ -307,8 +332,8 @@ a { color: inherit; }
   <div class="ls-panel" id="aba-semiaberto" role="tabpanel" aria-labelledby="tab-semiaberto" hidden>
   <section class="ls-sec" id="raj4">
     <div class="ls-sec-head">
-      <h2>4ª RAJ · vagas masculinas de semiaberto</h2>
-      <p>Todas as alas e unidades de semiaberto vinculadas ao DEECRIM da 4ª RAJ (Campinas). Contam só as vagas que estavam recebendo presos.</p>
+      <h2>Semiaberto masculino na 4ª RAJ</h2>
+      <p>Alas e unidades de semiaberto ligadas ao DEECRIM de Campinas, contando só as vagas em funcionamento.</p>
     </div>
     <div class="ls-tiles">
       <div class="ls-tile ls-key"><span class="ls-label">Ocupação</span><span class="ls-num" data-draw="valor" data-source="resumo" data-field="taxa" data-where="chave=raj4-Masculino" data-fmt="pct">—</span><span class="ls-label">100% é a lotação máxima</span></div>
@@ -322,19 +347,19 @@ a { color: inherit; }
         <p class="ls-note">A linha tracejada marca 100% da capacidade. Passe o cursor ou toque numa barra para ver os números.</p>
         <div class="ls-chart dash-skeleton" id="grafico-raj4" data-draw="grafico" data-source="atual" data-escopo="raj4" data-sexo="Masculino" aria-label="Ocupação das alas masculinas de semiaberto da 4ª RAJ"></div>
       </div>
-      <div class="ls-card" id="card-nominal">
-        <h3>Por que a página da SAP mostra mais vagas</h3>
+      <details class="ls-card ls-mais" id="card-nominal">
+        <summary>Por que a página da SAP mostra mais vagas</summary>
         <p class="ls-prose">Somando a capacidade que a página da SAP exibe, a 4ª RAJ teria <b data-draw="valor" data-source="resumo" data-field="capacidade_nominal" data-where="chave=raj4-Masculino">—</b> vagas masculinas, e a ocupação cairia para <b data-draw="valor" data-source="resumo" data-field="taxa_nominal" data-where="chave=raj4-Masculino" data-fmt="pct">—</b>. A diferença, de <b data-draw="valor" data-source="resumo" data-field="capacidade_inativa" data-where="chave=raj4-Masculino">—</b> vagas, está em alas com zero preso: o CPP de Franco da Rocha, cujas atividades o Estado encerrou, e a ala de progressão da Penitenciária I de Franco da Rocha, em reforma até fevereiro de 2027.</p>
-      </div>
-      <div class="ls-card" id="card-robustez">
-        <h3>O resultado não depende de Franco da Rocha</h3>
+      </details>
+      <details class="ls-card ls-mais" id="card-robustez">
+        <summary>O resultado não depende de Franco da Rocha</summary>
         <p class="ls-prose">Tirando todo o complexo de Franco da Rocha, a ocupação masculina de semiaberto na 4ª RAJ fica em <b data-draw="valor" data-source="resumo" data-field="taxa_sem_franco" data-where="chave=raj4-Masculino" data-fmt="pct">—</b>. As vagas livres somam <b data-draw="valor" data-source="resumo" data-field="vagas_ociosas" data-where="chave=raj4-Masculino">—</b>, todas em alas de progressão dentro de CDPs que, somando a unidade inteira, estão muito acima da capacidade.</p>
-      </div>
+      </details>
     </div>
   </section>
   <section class="ls-sec" id="raj4-feminino">
     <div class="ls-sec-head">
-      <h2>4ª RAJ · vagas femininas de semiaberto</h2>
+      <h2>Semiaberto feminino na 4ª RAJ</h2>
       <p>Mesma conta, para as quatro unidades femininas de semiaberto da região.</p>
     </div>
     <div class="ls-tiles">
@@ -352,7 +377,7 @@ a { color: inherit; }
   <section class="ls-sec" id="comparativo">
     <div class="ls-sec-head">
       <h2>Três anos depois, o semiaberto masculino segue acima da capacidade</h2>
-      <p>Comparação com a tabela de 27/10/2023, montada a partir do mesmo site da SAP. Entre as duas datas a rede mudou: o CPP de Franco da Rocha foi fechado e a Penitenciária II de Hortolândia passou a receber o semiaberto.</p>
+      <p>Comparação com a tabela de 27/10/2023, feita com o mesmo site da SAP. Desde então, o CPP de Franco da Rocha fechou e a Penitenciária II de Hortolândia passou a receber o semiaberto.</p>
     </div>
     <div class="ls-card" id="card-comparativo">
       <h3>Ocupação das vagas masculinas de semiaberto da 4ª RAJ</h3>
@@ -366,7 +391,7 @@ a { color: inherit; }
   <section class="ls-sec" id="geral">
     <div class="ls-sec-head">
       <h2>Superlotação geral: todas as unidades prisionais</h2>
-      <p>Toda a população presa em cada unidade, somando regime fechado, provisórios, semiaberto e prisão civil. É a régua da Resolução CNPCP nº 05/2016, que mede o estabelecimento e exige plano de redução acima de 137,5%.</p>
+      <p>Toda a população de cada unidade: fechado, provisórios, semiaberto e prisão civil. É a régua da Resolução CNPCP nº 05/2016, que exige plano de redução acima de 137,5%.</p>
     </div>
     <p class="ls-subhead">4ª RAJ</p>
     <div class="ls-tiles">
@@ -511,10 +536,10 @@ a { color: inherit; }
     <section class="ls-sec" id="manifestacao">
       <div class="ls-sec-head">
         <h2>Gerar manifestação (4ª RAJ)</h2>
-        <p>Resposta à decisão que intima a pessoa condenada a se apresentar numa das unidades listadas pelo DEECRIM da 4ª RAJ, com os números do registro mais recente da SAP. Preencha os campos e a peça se monta <span class="ls-wide">ao lado</span><span class="ls-narrow">logo abaixo do formulário</span>; depois, copie para o Word ou para o editor do sistema.</p>
+        <p>Preencha os campos e a peça se monta <span class="ls-wide">ao lado</span><span class="ls-narrow">logo abaixo</span>, com os números do último registro da SAP. Depois, copie para o Word ou para o editor do sistema.</p>
       </div>
       <div class="ls-aviso" role="note">
-        <p><b>Só para a 4ª RAJ.</b> O modelo responde à decisão padrão do DEECRIM da 4ª RAJ (Campinas): a tabela traz as unidades que essa decisão indica, e o texto cita o pedido de providências daquele DEECRIM e os comunicados aplicados por ele. Para outras regiões, as unidades, o procedimento e a decisão são outros, e a peça não serve sem ser refeita.</p>
+        <p><b>Só para a 4ª RAJ.</b> A peça responde à decisão padrão do DEECRIM de Campinas e usa as unidades que ela indica. Em outras regiões, precisa ser refeita.</p>
       </div>
       <div class="ls-gerador">
       <div class="ls-card ls-gerador-form">
@@ -539,7 +564,7 @@ a { color: inherit; }
           <button type="button" class="ls-btn ls-btn-main" id="ls-copiar-rico"><span data-st="0">Copiar para Word ou editor do sistema</span><span data-st="1" hidden>Copiado com formatação</span><span data-st="2" hidden>Texto selecionado: tecle Ctrl+C</span></button>
           <button type="button" class="ls-btn" id="ls-copiar-texto"><span data-st="0">Copiar só o texto</span><span data-st="1" hidden>Texto copiado</span><span data-st="2" hidden>Texto selecionado: tecle Ctrl+C</span></button>
         </div>
-        <p class="ls-note">Os trechos marcados em amarelo pedem conferência antes do protocolo. No Word, cole normalmente (Ctrl+V). No editor do sistema, se a tabela não aparecer, use "Copiar só o texto".</p>
+        <p class="ls-note">Os trechos em amarelo pedem conferência antes do protocolo. No Word, cole com Ctrl+V. No editor do sistema, se a tabela não aparecer, use "Copiar só o texto".</p>
       </div>
       <div class="ls-paper-box">
         <article class="ls-paper" id="peca" style="font-family:Arial, Helvetica, sans-serif;font-size:12pt;">
@@ -644,7 +669,7 @@ a { color: inherit; }
         <ul class="ls-prose-list">
           <li>A capacidade é a informada pela SAP. Ela não diz quantas vagas existem por perfil de preso.</li>
           <li>A SAP não publica série histórica por unidade. A trajetória começa no primeiro registro deste painel.</li>
-          <li>Os dados são públicos e podem ser baixados em Fontes, no canto do painel.</li>
+          <li>Os dados coletados e o arquivo original da SAP de cada data ficam no <a href="https://github.com/Dsnunes1989/numerus-clausus" target="_blank" rel="noopener">repositório do projeto</a>.</li>
         </ul>
       </div>
     </div>
