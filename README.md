@@ -1,4 +1,6 @@
-# Lotação do semiaberto na 4ª RAJ
+<img src="assets/numerus-clausus-logo.svg" alt="Numerus clausus" height="64">
+
+# Numerus clausus
 
 Painel com a ocupação diária das unidades prisionais paulistas, a partir dos números publicados pela Secretaria da Administração Penitenciária (SAP-SP) na página [Unidades Prisionais](https://www1.sap.sp.gov.br/sp/unidades-prisionais/unidades-prisionais.html). O foco é o semiaberto da 4ª Região Administrativa Judiciária, mas a coleta cobre todas as unidades do Estado. O painel inclui um gerador de manifestação, que monta a peça com os números do dia. O gerador foi feito só para a 4ª RAJ: responde à decisão padrão do DEECRIM de Campinas e usa a lista de unidades que ela indica; não serve para outras regiões sem ser refeito.
 
