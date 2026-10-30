@@ -498,7 +498,9 @@ a { color: inherit; }
           <label class="ls-field" for="f-nome">Parte executada<input id="f-nome" type="text" autocomplete="off" placeholder="Nome completo"></label>
           <label class="ls-field" for="f-var">A parte executada é<select id="f-var"><option value="m">Homem (unidades masculinas)</option><option value="f">Mulher (unidades femininas)</option></select></label>
           <label class="ls-field" for="f-cidade">Cidade<input id="f-cidade" type="text" autocomplete="off" placeholder="Limeira"></label>
-          <label class="ls-field" for="f-defensor">Defensor(a)<input id="f-defensor" type="text" autocomplete="off" placeholder="Nome do(a) defensor(a)"></label>
+          <label class="ls-field" for="f-papel">Quem assina<select id="f-papel"><option value="d">Defensoria Pública</option><option value="a">Advocacia</option></select></label>
+          <label class="ls-field" for="f-defensor">Nome de quem assina<input id="f-defensor" type="text" autocomplete="off" placeholder="Nome completo"></label>
+          <label class="ls-field" for="f-oab" data-papel="a" hidden>OAB/SP nº<input id="f-oab" type="text" autocomplete="off" placeholder="000.000"></label>
         </div>
         <fieldset class="ls-checks" style="border:0;padding:0;margin:0;">
           <legend class="ls-label" style="margin-bottom:6px;">Critérios do item 7 do Comunicado CG nº 602/2025 presentes no caso</legend>
@@ -518,7 +520,8 @@ a { color: inherit; }
         <article class="ls-paper" id="peca" style="font-family:Arial, Helvetica, sans-serif;font-size:12pt;">
           <p style="margin:0 0 24pt 0;text-align:justify;font-weight:bold;line-height:1.5;">EXCELENTÍSSIMO(A) SENHOR(A) JUIZ(A) DE DIREITO DO DEECRIM DA 4ª RAJ – CAMPINAS/SP</p>
           <p style="margin:0 0 12pt 0;text-align:justify;line-height:1.5;"><b>Execução nº</b> <span data-draw="campo" data-campo="processo" data-vazio="[número da execução]">—</span><br><b>Parte executada:</b> <span data-draw="campo" data-campo="nome" data-vazio="[nome da parte executada]">—</span></p>
-                    <p style="margin:0 0 12pt 0;text-align:justify;text-indent:2cm;line-height:1.5;">A <b>DEFENSORIA PÚBLICA DO ESTADO DE SÃO PAULO</b>, nos autos em epígrafe, diante da decisão que determinou a intimação da parte executada para se apresentar, no prazo de 5 (cinco) dias, em uma das unidades de regime semiaberto relacionadas, sob pena de expedição de mandado de prisão ou de regressão de regime, vem requerer a sua <b>RECONSIDERAÇÃO, COM URGÊNCIA</b>, pelas razões a seguir.</p>
+                    <p data-papel="d" style="margin:0 0 12pt 0;text-align:justify;text-indent:2cm;line-height:1.5;">A <b>DEFENSORIA PÚBLICA DO ESTADO DE SÃO PAULO</b>, nos autos em epígrafe, diante da decisão que determinou a intimação da parte executada para se apresentar, no prazo de 5 (cinco) dias, em uma das unidades de regime semiaberto relacionadas, sob pena de expedição de mandado de prisão ou de regressão de regime, vem requerer a sua <b>RECONSIDERAÇÃO, COM URGÊNCIA</b>, pelas razões a seguir.</p>
+          <p data-papel="a" hidden style="margin:0 0 12pt 0;text-align:justify;text-indent:2cm;line-height:1.5;"><b><span data-draw="campo" data-campo="nome" data-vazio="[nome da parte executada]">—</span></b>, já qualificado(a) nos autos em epígrafe, por seu(sua) advogado(a) que esta subscreve, diante da decisão que determinou a sua intimação para se apresentar, no prazo de 5 (cinco) dias, em uma das unidades de regime semiaberto relacionadas, sob pena de expedição de mandado de prisão ou de regressão de regime, vem requerer a sua <b>RECONSIDERAÇÃO, COM URGÊNCIA</b>, pelas razões a seguir.</p>
           <p style="margin:18pt 0 12pt 0;text-align:justify;font-weight:bold;line-height:1.5;">I – A SAP NÃO INDICOU UNIDADES COM VAGA</p>
           <p style="margin:0 0 12pt 0;text-align:justify;text-indent:2cm;line-height:1.5;">A decisão se apoia na informação de vagas prestada no Pedido de Providências nº 0012533-71.2022.8.26.0502. Naquele expediente, porém, a Secretaria da Administração Penitenciária não indicou nenhuma unidade com vaga. Limitou-se a informar, em termos genéricos (fls. 49 e 55):</p>
           <p style="margin:0 0 12pt 4cm;text-align:justify;font-size:10pt;line-height:1.15;">"(...) a existência, por ora, de vagas em unidades prisionais de regime semiaberto, que serão disponibilizadas aos sentenciados, conforme os parâmetros estabelecidos no artigo 4º da Resolução nº 05, de 25 de novembro de 2016, do Conselho Nacional de Política Criminal e Penitenciária. Ressalto que, para a efetiva disponibilização da vaga e definição da unidade prisional de destino, serão considerados o perfil e a classificação carcerária do sentenciado (...)."</p>
@@ -553,7 +556,7 @@ a { color: inherit; }
             <p data-crit="0" style="margin:0 0 6pt 2cm;text-indent:-0.6cm;padding-left:0.6cm;text-align:justify;line-height:1.5;"><span class="ls-mark">[marque, no formulário, os critérios presentes no caso]</span></p>
           </div>
           <p style="margin:18pt 0 12pt 0;text-align:justify;font-weight:bold;line-height:1.5;">V – PEDIDOS</p>
-          <p style="margin:0 0 12pt 0;text-align:justify;text-indent:2cm;line-height:1.5;">Ante o exposto, a Defensoria Pública requer:</p>
+          <p style="margin:0 0 12pt 0;text-align:justify;text-indent:2cm;line-height:1.5;">Ante o exposto, <span data-papel="d">a Defensoria Pública </span>requer:</p>
           <div>
             <p style="margin:0 0 6pt 2cm;text-indent:-0.6cm;padding-left:0.6cm;text-align:justify;line-height:1.5;">a) a reconsideração da decisão;</p>
             <p style="margin:0 0 6pt 2cm;text-indent:-0.6cm;padding-left:0.6cm;text-align:justify;line-height:1.5;">b) com urgência, a suspensão do prazo de apresentação e da cominação de mandado de prisão e de regressão, até a apreciação deste pedido;</p>
@@ -563,7 +566,7 @@ a { color: inherit; }
           </div>
           <p style="margin:0 0 12pt 0;text-align:justify;text-indent:2cm;line-height:1.5;">Termos em que, pede deferimento.</p>
           <p style="margin:0 0 12pt 0;text-align:right;line-height:1.5;"><span data-draw="campo" data-campo="cidade" data-vazio="[Cidade]">—</span>, data do protocolo.</p>
-          <p style="margin:24pt 0 0 0;text-align:center;line-height:1.5;"><b><span data-draw="campo" data-campo="defensor" data-vazio="[Nome do(a) defensor(a)]">—</span></b><br>Defensor(a) Público(a) do Estado de São Paulo</p>
+          <p style="margin:24pt 0 0 0;text-align:center;line-height:1.5;"><b><span data-draw="campo" data-campo="defensor" data-vazio="[nome de quem assina]">—</span></b><br><span data-papel="d">Defensor(a) Público(a) do Estado de São Paulo</span><span data-papel="a" hidden>Advogado(a) – OAB/SP nº <span data-draw="campo" data-campo="oab" data-vazio="[número]">—</span></span></p>
         </article>
       </div>
       </div>
@@ -625,8 +628,9 @@ a { color: inherit; }
 </div>
 
 <footer class="ls-rodape">
-  <p>Painel independente, feito a partir dos dados públicos da Secretaria da Administração Penitenciária (SAP-SP). Não é publicação oficial da SAP nem da Defensoria Pública.</p>
-  <p>A coleta roda uma vez por dia. Os números registrados e o arquivo original publicado pela SAP em cada data ficam guardados no repositório <a href="https://github.com/Dsnunes1989/lotacao-semiaberto" target="_blank" rel="noopener">Dsnunes1989/lotacao-semiaberto</a>. O que se digita no gerador de manifestação não sai deste navegador.</p>
+  <p>Painel independente, feito a partir dos dados públicos da Secretaria da Administração Penitenciária (SAP-SP). Não é publicação oficial da SAP nem da Defensoria Pública. Os números são calculados a partir do que a SAP publica e podem conter erros de leitura ou de classificação: confira a fonte antes de usar em juízo. O método está na aba <a href="#metodo">Método e normas</a>.</p>
+  <p>A coleta roda uma vez por dia. Os números registrados e o arquivo original publicado pela SAP em cada data ficam guardados no repositório <a href="https://github.com/Dsnunes1989/lotacao-semiaberto" target="_blank" rel="noopener">Dsnunes1989/lotacao-semiaberto</a>.</p>
+  <p>Esta página não usa cookies nem ferramentas de rastreamento. O que se digita no gerador de manifestação não sai deste navegador; cidade, nome de quem assina e número da OAB ficam guardados nele para a próxima vez.</p>
 </footer>
 
 <script>
@@ -1347,7 +1351,7 @@ a { color: inherit; }
   document.querySelectorAll('#ls-traj-serie').forEach((i) => i.addEventListener('change', () => dash.draw('trajetoria')));
 
   // ---------- Manifestação ----------
-  const LS_GUARDA = ['cidade', 'defensor'];
+  const LS_GUARDA = ['cidade', 'defensor', 'oab'];
   const lsGuardado = (k) => { try { return localStorage.getItem('ls-peca-' + k) || ''; } catch (e) { return ''; } };
   const lsGuardar = (k, v) => { try { localStorage.setItem('ls-peca-' + k, v); } catch (e) { /* sem armazenamento */ } };
   LS_GUARDA.forEach((k) => document.querySelectorAll('#f-' + k).forEach((inp) => {
@@ -1365,6 +1369,18 @@ a { color: inherit; }
     document.querySelectorAll('#peca [data-var]').forEach((el) => { el.hidden = el.dataset.var !== v; });
   };
   document.querySelectorAll('#f-var').forEach((sel) => sel.addEventListener('change', lsVariante));
+
+  // Quem assina: Defensoria Pública ou advocacia
+  const lsPapel = () => {
+    const p = (document.querySelector('#f-papel') || {}).value || 'd';
+    document.querySelectorAll('[data-papel]').forEach((el) => { el.hidden = el.dataset.papel !== p; });
+  };
+  document.querySelectorAll('#f-papel').forEach((sel) => {
+    const v = lsGuardado('papel');
+    if (v === 'a' || v === 'd') sel.value = v;
+    sel.addEventListener('change', () => { lsGuardar('papel', sel.value); lsPapel(); });
+  });
+  lsPapel();
 
   const lsCriterios = () => {
     const marcados = new Set([...document.querySelectorAll('.f-crit')].filter((c) => c.checked).map((c) => c.value));
