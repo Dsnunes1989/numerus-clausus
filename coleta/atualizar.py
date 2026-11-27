@@ -53,8 +53,24 @@ def num(v):
     return int(d) if d else None
 
 
+def gravar_totais(data, vals):
+    """Guarda os totais que a própria SAP publica (população total, masculina e
+    a do mesmo dia do ano anterior), para conferir a soma do painel."""
+    caminho = os.path.join(DADOS, "totais.json")
+    try:
+        rows = json.load(open(caminho, encoding="utf-8"))["rows"]
+    except FileNotFoundError:
+        rows = []
+    rows = [r for r in rows if r["d"] != data]
+    rows.append({"d": data, "pop_total": num(vals.get("x")), "pop_masculina": num(vals.get("m")),
+                 "pop_total_ano_anterior": num(vals.get("y"))})
+    rows.sort(key=lambda r: r["d"])
+    with open(caminho, "w", encoding="utf-8") as f:
+        json.dump({"rows": rows}, f, ensure_ascii=False, separators=(",", ":"))
+
+
 def main():
-    bruto = open(sys.argv[1], "rb").read() if len(sys.argv) > 1 else baixar()
+    bruto =open(sys.argv[1], "rb").read() if len(sys.argv) > 1 else baixar()
     texto = bruto.decode("utf-8", errors="replace")
     vals = ler_variaveis(texto)
 
@@ -92,6 +108,7 @@ def main():
         json.dump({"rows": hist + novos}, f, ensure_ascii=False, separators=(",", ":"))
     with open(os.path.join(DADOS, "meta.json"), "w", encoding="utf-8") as f:
         json.dump({"data_sap": data, "coletado_em": datetime.datetime.now(BRT).isoformat(timespec="minutes")}, f)
+    gravar_totais(data, vals)
 
     # Resumo para quem acompanha a coleta
     cad = {c["id"]: c for c in cat}

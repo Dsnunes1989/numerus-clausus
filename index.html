@@ -145,6 +145,9 @@ a { color: inherit; }
   .ls-legend { display: inline-flex; align-items: center; gap: 6px; font-size: var(--cds-font-size-caption); color: var(--color-fg-muted); }
   .ls-sw { width: 14px; height: 3px; border-radius: 2px; display: inline-block; background: var(--cds-chart-muted); }
   .ls-sw-est { background: var(--cds-chart-muted); }
+  .ls-sw-fech { background: var(--cds-chart-status-critical); }
+  #tabela-evolucao th { white-space: normal; }
+  .ls-page .ls-dl li { text-align: left; -webkit-hyphens: manual; hyphens: manual; }
   .ls-line { fill: none; stroke-width: 2px; stroke-linecap: round; stroke-linejoin: round; }
   .ls-line-est { stroke: var(--cds-chart-muted); }
   .ls-dot-est { fill: var(--cds-chart-muted); stroke: var(--color-panel); stroke-width: 2px; }
@@ -248,7 +251,7 @@ a { color: inherit; }
             <p class="ls-marca-sub">Lotação prisional em São Paulo e semiaberto da 4ª RAJ, com os dados diários da SAP</p>
           </div>
         </div>
-        <p class="ls-lede">Em <b data-draw="valor" data-source="resumo" data-field="data_br" data-where="chave=raj4-Masculino" data-fmt="texto">—</b>, os pavilhões de semiaberto das unidades masculinas que o DEECRIM da 4ª RAJ indica para início de pena estavam com <b data-draw="valor" data-source="listadas_resumo" data-field="sa_taxa" data-where="chave=Masculino" data-fmt="pct">—</b> de ocupação. Somando a unidade inteira, <b data-draw="valor" data-source="listadas_resumo" data-field="n_est_1375" data-where="chave=Masculino">—</b> dessas unidades passavam de 137,5%. O sistema prisional do Estado, como um todo, operava com <b data-draw="valor" data-source="geral" data-field="ocupacao" data-where="chave=estado" data-fmt="pct">—</b> de ocupação.</p>
+        <p class="ls-lede">Em <b data-draw="valor" data-source="resumo" data-field="data_br" data-where="chave=raj4-Masculino" data-fmt="texto">—</b>, os pavilhões de semiaberto das unidades masculinas que o DEECRIM da 4ª RAJ indica para início de pena estavam com <b data-draw="valor" data-source="listadas_resumo" data-field="sa_taxa" data-where="chave=Masculino" data-fmt="pct">—</b> de ocupação. Somando a unidade inteira, <b data-draw="valor" data-source="listadas_resumo" data-field="n_est_1375" data-where="chave=Masculino">—</b> dessas unidades passavam de 137,5%. O sistema prisional do Estado, como um todo, operava com <b data-draw="valor" data-source="geral" data-field="ocupacao" data-where="chave=estado" data-fmt="pct">—</b> de ocupação, e o fechado e provisórios, com <b data-draw="valor" data-source="fechado_resumo" data-field="ocupacao" data-where="chave=estado" data-fmt="pct">—</b>.</p>
         <p class="ls-src">Fonte: <a href="https://www1.sap.sp.gov.br/sp/unidades-prisionais/unidades-prisionais.html" target="_blank" rel="noopener">SAP-SP, página Unidades Prisionais</a>, com registro diário desde 28/10/2026.</p>
       </div>
       <aside class="ls-chamada" aria-labelledby="chamada-titulo">
@@ -262,9 +265,11 @@ a { color: inherit; }
       <button type="button" role="tab" id="tab-indicadas" data-aba="indicadas" aria-selected="false">Unidades indicadas</button>
       <button type="button" role="tab" id="tab-semiaberto" data-aba="semiaberto" aria-selected="false">Semiaberto na 4ª RAJ</button>
       <button type="button" role="tab" id="tab-geral" data-aba="geral" aria-selected="false">Superlotação geral</button>
+      <button type="button" role="tab" id="tab-fechado" data-aba="fechado" aria-selected="false">Regime fechado</button>
       <button type="button" role="tab" id="tab-estado" data-aba="estado" aria-selected="false">Semiaberto no Estado</button>
       <button type="button" role="tab" id="tab-trajetoria" data-aba="trajetoria" aria-selected="false">Trajetória</button>
       <button type="button" role="tab" id="tab-manifestacao" data-aba="manifestacao" aria-selected="false">Gerar manifestação</button>
+      <button type="button" role="tab" id="tab-dados" data-aba="dados" aria-selected="false">Baixar dados</button>
       <button type="button" role="tab" id="tab-metodo" data-aba="metodo" aria-selected="false">Método e normas</button>
     </nav>
   </header>
@@ -275,6 +280,7 @@ a { color: inherit; }
         <div class="ls-tile ls-key"><span class="ls-label">Pavilhões de semiaberto acima da capacidade</span><span class="ls-num"><span data-draw="valor" data-source="listadas_resumo" data-field="n_pav_100" data-where="chave=Masculino">—</span> de <span data-draw="valor" data-source="listadas_resumo" data-field="n" data-where="chave=Masculino">—</span></span><span class="ls-label">Unidades masculinas indicadas pelo DEECRIM</span></div>
         <div class="ls-tile ls-key"><span class="ls-label">Unidades indicadas acima de 137,5%</span><span class="ls-num"><span data-draw="valor" data-source="listadas_resumo" data-field="n_est_1375" data-where="chave=Masculino">—</span> de <span data-draw="valor" data-source="listadas_resumo" data-field="n" data-where="chave=Masculino">—</span></span><span class="ls-label">Somando a unidade inteira</span></div>
         <div class="ls-tile"><span class="ls-label">Semiaberto masculino na 4ª RAJ</span><span class="ls-num" data-draw="valor" data-source="resumo" data-field="taxa" data-where="chave=raj4-Masculino" data-fmt="pct">—</span><span class="ls-label">Vagas em funcionamento</span></div>
+        <div class="ls-tile ls-key"><span class="ls-label">Fechado e provisórios no Estado</span><span class="ls-num" data-draw="valor" data-source="fechado_resumo" data-field="ocupacao" data-where="chave=estado" data-fmt="pct">—</span><span class="ls-label"><span data-draw="valor" data-source="fechado_resumo" data-field="excedente_1375" data-where="chave=estado">—</span> presos além de 137,5%</span></div>
         <div class="ls-tile"><span class="ls-label">Todas as unidades do Estado</span><span class="ls-num" data-draw="valor" data-source="geral" data-field="ocupacao" data-where="chave=estado" data-fmt="pct">—</span><span class="ls-label">Fechado, provisórios, semiaberto e demais</span></div>
       </div>
 
@@ -434,6 +440,95 @@ a { color: inherit; }
   </section>
   </div>
 
+  <div class="ls-panel" id="aba-fechado" role="tabpanel" aria-labelledby="tab-fechado" hidden>
+  <section class="ls-sec" id="fechado">
+    <div class="ls-sec-head">
+      <h2>Regime fechado e provisórios</h2>
+      <p>Tudo o que não é semiaberto: regime fechado, provisórios (CDPs) e os poucos pavilhões de prisão civil, RDD e hospital. É o recorte em que a SAP informa as vagas “em regime fechado”: o total menos o semiaberto. Nas unidades mistas, o pavilhão de semiaberto fica fora desta conta.</p>
+    </div>
+    <p class="ls-subhead">Estado de São Paulo</p>
+    <div class="ls-tiles">
+      <div class="ls-tile ls-key"><span class="ls-label">Ocupação do fechado e provisórios</span><span class="ls-num" data-draw="valor" data-source="fechado_resumo" data-field="ocupacao" data-where="chave=estado" data-fmt="pct">—</span></div>
+      <div class="ls-tile"><span class="ls-label">Presos</span><span class="ls-num" data-draw="valor" data-source="fechado_resumo" data-field="populacao" data-where="chave=estado">—</span><span class="ls-label">para <span data-draw="valor" data-source="fechado_resumo" data-field="capacidade" data-where="chave=estado">—</span> vagas</span></div>
+      <div class="ls-tile ls-key"><span class="ls-label">Unidades acima de 137,5%</span><span class="ls-num"><span data-draw="valor" data-source="fechado_resumo" data-field="acima_1375" data-where="chave=estado">—</span> de <span data-draw="valor" data-source="fechado_resumo" data-field="unidades" data-where="chave=estado">—</span></span><span class="ls-label">Contando só o fechado e provisórios</span></div>
+      <div class="ls-tile"><span class="ls-label">Presos além do limite de 137,5%</span><span class="ls-num" data-draw="valor" data-source="fechado_resumo" data-field="excedente_1375" data-where="chave=estado">—</span><span class="ls-label">Somados unidade a unidade</span></div>
+    </div>
+    <p class="ls-subhead">4ª RAJ</p>
+    <div class="ls-tiles">
+      <div class="ls-tile ls-key"><span class="ls-label">Ocupação do fechado e provisórios</span><span class="ls-num" data-draw="valor" data-source="fechado_resumo" data-field="ocupacao" data-where="chave=raj4" data-fmt="pct">—</span></div>
+      <div class="ls-tile"><span class="ls-label">Presos</span><span class="ls-num" data-draw="valor" data-source="fechado_resumo" data-field="populacao" data-where="chave=raj4">—</span><span class="ls-label">para <span data-draw="valor" data-source="fechado_resumo" data-field="capacidade" data-where="chave=raj4">—</span> vagas</span></div>
+      <div class="ls-tile ls-key"><span class="ls-label">Unidades acima de 137,5%</span><span class="ls-num"><span data-draw="valor" data-source="fechado_resumo" data-field="acima_1375" data-where="chave=raj4">—</span> de <span data-draw="valor" data-source="fechado_resumo" data-field="unidades" data-where="chave=raj4">—</span></span><span class="ls-label">Contando só o fechado e provisórios</span></div>
+      <div class="ls-tile"><span class="ls-label">Presos além do limite de 137,5%</span><span class="ls-num" data-draw="valor" data-source="fechado_resumo" data-field="excedente_1375" data-where="chave=raj4">—</span><span class="ls-label">Somados unidade a unidade</span></div>
+    </div>
+    <div class="ls-card" id="card-evolucao">
+      <h3>O fechado pagou a conta do semiaberto</h3>
+      <p class="ls-prose">Entre <b data-draw="valor" data-source="evolucao" data-field="de" data-where="chave=variacao" data-fmt="texto">—</b> e <b data-draw="valor" data-source="evolucao" data-field="ate" data-where="chave=variacao" data-fmt="texto">—</b>, o saldo do fechado e provisórios foi de <b data-draw="valor" data-source="evolucao" data-field="fechado_cap" data-where="chave=variacao" data-fmt="sinal">—</b> vagas e <b data-draw="valor" data-source="evolucao" data-field="fechado_pop" data-where="chave=variacao" data-fmt="sinal">—</b> presos, e a ocupação passou de <b data-draw="valor" data-source="evolucao" data-field="fechado_taxa_de" data-where="chave=variacao" data-fmt="pct">—</b> para <b data-draw="valor" data-source="evolucao" data-field="fechado_taxa_ate" data-where="chave=variacao" data-fmt="pct">—</b>. No mesmo período, o saldo do semiaberto foi de <b data-draw="valor" data-source="evolucao" data-field="sa_cap" data-where="chave=variacao" data-fmt="sinal">—</b> vagas, e a ocupação passou de <b data-draw="valor" data-source="evolucao" data-field="sa_taxa_de" data-where="chave=variacao" data-fmt="pct">—</b> para <b data-draw="valor" data-source="evolucao" data-field="sa_taxa_ate" data-where="chave=variacao" data-fmt="pct">—</b>.</p>
+      <div class="ls-legend-row">
+        <span class="ls-legend"><span class="ls-sw ls-sw-fech"></span>Fechado e provisórios</span>
+        <span class="ls-legend"><span class="ls-sw ls-sw-est"></span>Semiaberto</span>
+      </div>
+      <div class="ls-chart dash-skeleton" id="grafico-evolucao" data-draw="evolucao-grafico" data-source="evolucao" aria-label="Ocupação do fechado e do semiaberto no Estado, de maio de 2025 até a data mais recente"></div>
+      <div class="ls-table-box" style="max-height: none;">
+        <table class="ls-table" id="tabela-evolucao" data-source="evolucao" data-row-key="chave">
+          <thead><tr>
+            <th><span class="ls-sort" style="cursor: default;">Data</span></th>
+            <th class="ls-n"><span class="ls-sort" style="cursor: default; justify-content: flex-end;">Vagas fechado</span></th>
+            <th class="ls-n"><span class="ls-sort" style="cursor: default; justify-content: flex-end;">Presos fechado</span></th>
+            <th class="ls-n"><span class="ls-sort" style="cursor: default; justify-content: flex-end;">Ocupação fechado</span></th>
+            <th class="ls-n ls-hide-narrow"><span class="ls-sort" style="cursor: default; justify-content: flex-end;">Vagas semiaberto</span></th>
+            <th class="ls-n ls-hide-narrow"><span class="ls-sort" style="cursor: default; justify-content: flex-end;">Presos semiaberto</span></th>
+            <th class="ls-n"><span class="ls-sort" style="cursor: default; justify-content: flex-end;">Ocupação semiaberto</span></th>
+            <th class="ls-hide-narrow"><span class="ls-sort" style="cursor: default;">Origem</span></th>
+          </tr></thead>
+          <tbody data-draw="evolucao-tabela"></tbody>
+        </table>
+      </div>
+      <p class="ls-note">Os pontos de 30/05/2025 e 01/12/2025 são números informados pela SAP em resposta a ofício da Defensoria Pública e citados na Rcl 58.207/STF. Os demais são a soma diária deste painel, no mesmo recorte. Entre as duas fontes pode haver pequenas diferenças de critério, como vagas de pavilhões fechados para reforma.</p>
+    </div>
+    <div class="ls-card" id="card-fechado-raj4">
+      <h3>Fechado e provisórios nas unidades da 4ª RAJ</h3>
+      <div class="ls-legend-row">
+        <span class="ls-legend"><span class="ls-sw-l100"></span>100% da capacidade</span>
+        <span class="ls-legend"><span class="ls-sw-l137"></span>137,5%, limite da Resolução CNPCP</span>
+      </div>
+      <div class="ls-chart dash-skeleton" id="grafico-fechado-raj4" data-draw="grafico-fechado" data-source="unidades" aria-label="Ocupação do fechado e provisórios em cada unidade da 4ª RAJ"></div>
+      <p class="ls-note">Cada barra conta só o fechado e provisórios da unidade. Nas mistas, passe o cursor ou toque na barra para ver o pavilhão de semiaberto.</p>
+    </div>
+    <div class="ls-card ls-table-wrap" id="card-tabela-fechado">
+      <h3>Todas as unidades: fechado, semiaberto e unidade inteira</h3>
+      <div class="ls-controls">
+        <input type="search" id="ls-f-busca" placeholder="Buscar cidade ou unidade" aria-label="Buscar cidade ou unidade">
+        <label><input type="checkbox" id="ls-f-raj4"> Só 4ª RAJ</label>
+        <label><input type="checkbox" id="ls-f-acima"> Só fechado acima de 137,5%</label>
+        <label><input type="checkbox" id="ls-f-mistas"> Só unidades com semiaberto</label>
+      </div>
+      <div class="ls-actions"><span class="ls-note" id="ls-f-n" aria-live="polite"></span><button type="button" class="ls-btn" data-baixar="fechado-tabela" data-draw="botao-dados" disabled>Baixar esta tabela (CSV)</button></div>
+      <div class="ls-table-box">
+        <table class="ls-table" id="tabela-fechado" data-source="unidades" data-row-key="unidade_id">
+          <thead>
+            <tr>
+              <th aria-sort="none"><button type="button" class="ls-sort" data-t="f" data-k="unidade">Unidade</button></th>
+              <th aria-sort="none" class="ls-n"><button type="button" class="ls-sort" data-t="f" data-k="f_cap">Vagas</button></th>
+              <th aria-sort="none" class="ls-n"><button type="button" class="ls-sort" data-t="f" data-k="f_pop">Presos</button></th>
+              <th aria-sort="descending" class="ls-n"><button type="button" class="ls-sort" data-t="f" data-k="f_taxa">Ocupação</button></th>
+              <th aria-sort="none" class="ls-n"><button type="button" class="ls-sort" data-t="f" data-k="f_excedente">Além de 137,5%</button></th>
+              <th aria-sort="none" class="ls-n ls-hide-narrow"><button type="button" class="ls-sort" data-t="f" data-k="sa_taxa">Semiaberto</button></th>
+              <th aria-sort="none" class="ls-n ls-hide-narrow"><button type="button" class="ls-sort" data-t="f" data-k="ocupacao">Unidade</button></th>
+            </tr>
+          </thead>
+          <tbody data-draw="tabela-fechado"></tbody>
+        </table>
+      </div>
+      <p class="ls-note">Vagas, presos, ocupação e “além de 137,5%” contam só o fechado e provisórios. “Além de 137,5%” é quantos presos a unidade tem acima do limite da Resolução CNPCP nº 05/2016. As duas últimas colunas trazem a ocupação do pavilhão de semiaberto, quando há, e a da unidade inteira.</p>
+    </div>
+    <div class="ls-card" id="card-mudancas">
+      <h3>Vagas que mudaram de regime ou de tamanho</h3>
+      <p class="ls-note">Se a SAP converter vagas de fechado em semiaberto, como fez nas Penitenciárias de Itaí e de Tremembé, a mudança aparece aqui no dia em que for publicada.</p>
+      <div data-draw="mudancas" data-source="mudancas_vagas">—</div>
+    </div>
+  </section>
+  </div>
+
   <div class="ls-panel" id="aba-estado" role="tabpanel" aria-labelledby="tab-estado" hidden>
   <section class="ls-sec" id="estado">
     <div class="ls-sec-head">
@@ -514,6 +609,7 @@ a { color: inherit; }
         <select id="ls-traj-serie" aria-label="Série da trajetória">
           <option value="semiaberto|Masculino">Semiaberto, vagas masculinas</option>
           <option value="semiaberto|Feminino">Semiaberto, vagas femininas</option>
+          <option value="fechado|Todos">Fechado e provisórios (tudo menos o semiaberto)</option>
           <option value="geral|Todos">Todas as unidades prisionais</option>
         </select>
         <span class="ls-legend"><span class="ls-sw ls-sw-raj"></span>4ª RAJ</span>
@@ -620,6 +716,37 @@ a { color: inherit; }
     </section>
   </div>
 
+  <div class="ls-panel" id="aba-dados" role="tabpanel" aria-labelledby="tab-dados" hidden>
+  <section class="ls-sec" id="dados">
+    <div class="ls-sec-head">
+      <h2>Baixar dados</h2>
+      <p>Os arquivos são montados na hora, no seu navegador, com tudo o que o painel registrou até <b data-draw="valor" data-source="serie" data-field="fim_br" data-where="chave=serie" data-fmt="texto">—</b>. Os CSV abrem direto no Excel em português (ponto e vírgula e vírgula decimal).</p>
+    </div>
+    <div class="ls-grid">
+      <div class="ls-card">
+        <h3>Planilha completa</h3>
+        <p class="ls-prose">Um arquivo .xlsx com uma aba para cada recorte: Estado e 4ª RAJ dia a dia, unidades hoje, unidades dia a dia, pavilhões dia a dia, os números da SAP de 2025 e os totais que a própria SAP publica. A primeira aba explica cada coluna.</p>
+        <div class="ls-actions"><button type="button" class="ls-btn ls-btn-main" data-baixar="xlsx" data-draw="botao-dados" disabled>Baixar planilha (.xlsx)</button></div>
+      </div>
+      <div class="ls-card">
+        <h3>Arquivos separados (CSV)</h3>
+        <ul class="ls-prose-list ls-dl">
+          <li><button type="button" class="ls-btn" data-baixar="serie-estado-4araj" data-draw="botao-dados" disabled>Estado e 4ª RAJ por dia</button> total, fechado e provisórios, semiaberto.</li>
+          <li><button type="button" class="ls-btn" data-baixar="unidades-atual" data-draw="botao-dados" disabled>Unidades hoje</button> com fechado, semiaberto e unidade inteira.</li>
+          <li><button type="button" class="ls-btn" data-baixar="unidades-por-dia" data-draw="botao-dados" disabled>Unidades por dia</button> a série de cada unidade.</li>
+          <li><button type="button" class="ls-btn" data-baixar="pavilhoes-por-dia" data-draw="botao-dados" disabled>Pavilhões por dia</button> como a SAP publica, com o nome da variável de origem.</li>
+        </ul>
+      </div>
+      <div class="ls-card">
+        <h3>Para citar e conferir</h3>
+        <p class="ls-prose">Sugestão de fonte: “SAP-SP, página Unidades Prisionais, população de [data], compilada pelo painel <i lang="la">Numerus clausus</i>”. O arquivo original que a SAP publicou em cada data fica guardado na <a href="https://github.com/Dsnunes1989/numerus-clausus/tree/main/data/bruto" target="_blank" rel="noopener">pasta data/bruto do repositório</a>.</p>
+        <p class="ls-note">Conferência em <b data-draw="valor" data-source="conferencia" data-field="data_br" data-where="chave=sap" data-fmt="texto">—</b>: a soma dos pavilhões deu <b data-draw="valor" data-source="conferencia" data-field="pop_painel" data-where="chave=sap">—</b> presos, e a SAP informa <b data-draw="valor" data-source="conferencia" data-field="pop_sap" data-where="chave=sap">—</b> no total (confere: <b data-draw="valor" data-source="conferencia" data-field="confere" data-where="chave=sap" data-fmt="texto">—</b>). Para um ano antes, a SAP informa <b data-draw="valor" data-source="conferencia" data-field="pop_ano_anterior" data-where="chave=sap">—</b> presos, <b data-draw="valor" data-source="conferencia" data-field="aumento_ano" data-where="chave=sap" data-fmt="sinal">—</b> em um ano.</p>
+        <p class="ls-note">Para uso em programas, os dados brutos estão em <a href="data/historico.json">data/historico.json</a> e <a href="data/catalogo.json">data/catalogo.json</a>.</p>
+      </div>
+    </div>
+  </section>
+  </div>
+
   <div class="ls-panel" id="aba-metodo" role="tabpanel" aria-labelledby="tab-metodo" hidden>
   <section class="ls-sec" id="normas">
     <div class="ls-sec-head">
@@ -657,6 +784,9 @@ a { color: inherit; }
           <li>Uma rotina diária lê o arquivo de dados da página Unidades Prisionais da SAP e grava capacidade e população de cada pavilhão de cada unidade (regime fechado, provisórios, semiaberto, prisão civil e hospitais) sempre que a SAP muda a data da população. O primeiro registro é de 28/10/2026.</li>
           <li>Ocupação é a população dividida pela capacidade. A unidade inteira soma todos os seus pavilhões.</li>
           <li>Ficam fora da conta, enquanto estiverem com zero preso, os pavilhões com causa documentada: o CPP de Franco da Rocha (<a href="https://www.portaldoispontos.com.br/noticia/governo-do-estado-encerra-atividades-do-cpp-de-franco-da-rocha-e-discute-com-prefeitura-destinacao-cultural-para-o-espaco" target="_blank" rel="noopener">atividades encerradas, notícia de 21/08/2026</a>) e a Penitenciária I de Franco da Rocha, fora o pavilhão de semiaberto (<a href="https://www.correiodamanha.com.br/nacional/sao-paulo/estado-de-sao-paulo/2026/07/302192-reforma-de-rs-182-milhoes-em-presidio-de-franco-da-rocha.html" target="_blank" rel="noopener">reforma até fevereiro de 2027</a>).</li>
+          <li>Fechado e provisórios é tudo o que não é semiaberto: regime fechado, provisórios, prisão civil, RDD e hospital. É o recorte em que a SAP informa as vagas “em regime fechado”. Nas unidades mistas, o pavilhão de semiaberto fica fora dessa conta.</li>
+          <li>Os números de 30/05/2025 e 01/12/2025 na aba Regime fechado foram informados pela SAP em resposta a ofício da Defensoria Pública e estão citados na Rcl 58.207/STF. Não vêm da coleta diária.</li>
+          <li>A cada coleta, a soma dos pavilhões é conferida com a população total que a própria SAP publica no mesmo arquivo.</li>
           <li>A 4ª RAJ reúne as unidades vinculadas ao DEECRIM de Campinas, segundo a relação de presídios por DEECRIM do TJSP, incluindo o complexo de Franco da Rocha.</li>
           <li>As unidades indicadas são as da decisão padrão do DEECRIM da 4ª RAJ (setembro de 2026). A comparação com 2023 usa a tabela de uma manifestação da Defensoria Pública com dados do site da SAP.</li>
         </ul>
@@ -717,16 +847,17 @@ a { color: inherit; }
   dash.calc('unidades', {
     inputs: ['atual'],
     title: 'Ocupação de cada unidade inteira',
-    description: 'Soma todos os pavilhões em funcionamento de cada unidade prisional (fechado, provisórios, semiaberto, prisão civil e hospital) e calcula a ocupação da unidade inteira.',
+    description: 'Soma todos os pavilhões em funcionamento de cada unidade prisional (fechado, provisórios, semiaberto, prisão civil e hospital) e calcula a ocupação da unidade inteira, da parte de semiaberto e da parte de fechado e provisórios (tudo o que não é semiaberto).',
     fn: (atual) => {
       const g = new Map();
       for (const r of atual) {
-        const u = g.get(r.unidade_id) || { unidade_id: r.unidade_id, unidade: r.unidade, cidade: r.cidade, coordenadoria: r.coordenadoria, tipo_unidade: r.tipo_unidade, raj4: r.raj4, sexos: [], capacidade: 0, populacao: 0, sa_cap: 0, sa_pop: 0, outros: 0 };
+        const u = g.get(r.unidade_id) || { unidade_id: r.unidade_id, unidade: r.unidade, cidade: r.cidade, coordenadoria: r.coordenadoria, tipo_unidade: r.tipo_unidade, raj4: r.raj4, sexos: [], capacidade: 0, populacao: 0, sa_cap: 0, sa_pop: 0, f_cap: 0, f_pop: 0, outros: 0 };
         if (!u.sexos.includes(r.sexo)) u.sexos.push(r.sexo);
         if (r.conta) {
           u.capacidade += r.capacidade;
           u.populacao += r.populacao;
           if (r.semiaberto) { u.sa_cap += r.capacidade; u.sa_pop += r.populacao; }
+          else { u.f_cap += r.capacidade; u.f_pop += r.populacao; }
         }
         if (!r.semiaberto && r.regime !== 'Prisão civil') u.outros += 1;
         g.set(r.unidade_id, u);
@@ -748,6 +879,11 @@ a { color: inherit; }
           mista: u.sa_cap > 0 && u.outros > 0,
           sa_cap: u.sa_cap,
           sa_pop: u.sa_pop,
+          sa_taxa: u.sa_cap ? Math.round((u.sa_pop / u.sa_cap) * 1000) / 10 : null,
+          f_cap: u.f_cap,
+          f_pop: u.f_pop,
+          f_taxa: u.f_cap ? Math.round((u.f_pop / u.f_cap) * 1000) / 10 : null,
+          f_excedente: u.f_cap ? Math.max(0, u.f_pop - Math.floor(1.375 * u.f_cap)) : 0,
         }));
     },
   });
@@ -836,6 +972,104 @@ a { color: inherit; }
         cap_mistas_1375: capA,
         pct_mistas_1375: Math.round((capA / total) * 1000) / 10,
       }];
+    },
+  });
+
+  dash.calc('fechado_resumo', {
+    inputs: ['unidades'],
+    title: 'Fechado e provisórios: resumo',
+    description: 'Soma, na 4ª RAJ e no Estado, as vagas e os presos de tudo o que não é semiaberto em cada unidade, conta as unidades acima de 100% e de 137,5% e calcula quantos presos excedem o limite de 137,5% unidade a unidade.',
+    fn: (unidades) => ['raj4', 'estado'].map((chave) => {
+      const us = unidades.filter((u) => u.f_cap > 0 && (chave === 'estado' || u.raj4));
+      const soma = (rs, k) => rs.reduce((s, u) => s + u[k], 0);
+      const cap = soma(us, 'f_cap'), pop = soma(us, 'f_pop');
+      const mistas = us.filter((u) => u.sa_cap > 0);
+      const mistasAcima = mistas.filter((u) => u.f_pop > 1.375 * u.f_cap);
+      return {
+        chave,
+        capacidade: cap,
+        populacao: pop,
+        ocupacao: Math.round((pop / cap) * 1000) / 10,
+        excedente_100: pop - cap,
+        excedente_1375: soma(us, 'f_excedente'),
+        unidades: us.length,
+        acima_100: us.filter((u) => u.f_pop > u.f_cap).length,
+        acima_1375: us.filter((u) => u.f_pop > 1.375 * u.f_cap).length,
+        mistas: mistas.length,
+        mistas_1375: mistasAcima.length,
+        sa_cap_mistas_1375: soma(mistasAcima, 'sa_cap'),
+      };
+    }),
+  });
+
+  dash.calc('evolucao', {
+    inputs: ['marcos', 'trajetoria'],
+    title: 'Fechado e semiaberto desde a Rcl 58.207',
+    description: 'Vagas, presos e ocupação do fechado (tudo o que não é semiaberto) e do semiaberto no Estado: os números informados pela SAP em 30/05/2025 e 01/12/2025 e a soma deste painel na primeira e na última data registradas.',
+    fn: (marcos, trajetoria) => {
+      const br = (s) => s.split('-').reverse().join('/');
+      const pct = (a, b) => (b ? Math.round((a / b) * 1000) / 10 : null);
+      const linhas = marcos.map((m) => ({
+        chave: m.d, data: m.d, rotulo: m.rotulo, origem: 'SAP, resposta a ofício',
+        fechado_cap: m.fechado_cap, fechado_pop: m.fechado_pop, fechado_taxa: pct(m.fechado_pop, m.fechado_cap),
+        sa_cap: m.sa_cap, sa_pop: m.sa_pop, sa_taxa: pct(m.sa_pop, m.sa_cap),
+      }));
+      const datas = [...new Set(trajetoria.map((r) => r.data))].sort();
+      const ponto = (d) => {
+        const f = trajetoria.find((r) => r.data === d && r.serie === 'fechado' && r.escopo === 'Estado');
+        const s = trajetoria.find((r) => r.data === d && r.serie === 'semiaberto_total' && r.escopo === 'Estado');
+        return { chave: d, data: d, rotulo: br(d), origem: 'Numerus clausus (soma diária)', fechado_cap: f.capacidade, fechado_pop: f.populacao, fechado_taxa: f.taxa, sa_cap: s.capacidade, sa_pop: s.populacao, sa_taxa: s.taxa };
+      };
+      const proprios = datas.length > 1 ? [datas[0], datas[datas.length - 1]] : datas;
+      const todas = linhas.concat(proprios.map(ponto));
+      const a = todas[0], z = todas[todas.length - 1];
+      todas.push({
+        chave: 'variacao', rotulo: `De ${a.rotulo} a ${z.rotulo}`,
+        de: a.rotulo, ate: z.rotulo,
+        fechado_cap: z.fechado_cap - a.fechado_cap, fechado_pop: z.fechado_pop - a.fechado_pop,
+        fechado_taxa_de: a.fechado_taxa, fechado_taxa_ate: z.fechado_taxa,
+        sa_cap: z.sa_cap - a.sa_cap, sa_pop: z.sa_pop - a.sa_pop,
+        sa_taxa_de: a.sa_taxa, sa_taxa_ate: z.sa_taxa,
+      });
+      return todas;
+    },
+  });
+
+  dash.calc('mudancas_vagas', {
+    inputs: ['catalogo', 'historico'],
+    title: 'Pavilhões que mudaram de capacidade',
+    description: 'Compara a capacidade de cada pavilhão na primeira e na última data registradas e lista os que mudaram, com o regime e a data da primeira mudança.',
+    fn: (catalogo, historico) => {
+      const cad = new Map(catalogo.map((c) => [c.id, c]));
+      const por = new Map();
+      for (const h of historico) {
+        const a = por.get(h.i) || [];
+        a.push(h);
+        por.set(h.i, a);
+      }
+      const br = (s) => s.split('-').reverse().join('/');
+      const out = [];
+      for (const [i, rs] of por) {
+        rs.sort((x, y) => (x.d < y.d ? -1 : 1));
+        const c0 = Number(rs[0].c), c1 = Number(rs[rs.length - 1].c);
+        if (c0 === c1) continue;
+        const mud = rs.find((r) => Number(r.c) !== c0);
+        const c = cad.get(i) || {};
+        out.push({ id: i, nome: c.nome || i, regime: c.regime, raj4: lsSim(c.raj4), de: c0, para: c1, diferenca: c1 - c0, quando: br(String(mud.d)) });
+      }
+      return out.sort((a, b) => Math.abs(b.diferenca) - Math.abs(a.diferenca));
+    },
+  });
+
+  dash.calc('conferencia', {
+    inputs: ['totais', 'trajetoria'],
+    title: 'Conferência com o total da SAP',
+    description: 'Compara, na data mais recente, a soma dos pavilhões deste painel com a população total que a própria SAP publica, e traz o total que a SAP informa para o ano anterior.',
+    fn: (totais, trajetoria) => {
+      if (!totais.length) return [];
+      const t = totais[totais.length - 1];
+      const soma = trajetoria.filter((r) => r.data === t.d && r.serie === 'geral' && r.escopo === 'Estado').reduce((s, r) => s + r.populacao, 0);
+      return [{ chave: 'sap', data_br: t.d.split('-').reverse().join('/'), pop_sap: t.pop_total, pop_painel: soma, confere: soma === t.pop_total ? 'sim' : 'não', pop_ano_anterior: t.pop_total_ano_anterior, aumento_ano: t.pop_total - t.pop_total_ano_anterior }];
     },
   });
 
@@ -940,7 +1174,7 @@ a { color: inherit; }
   dash.calc('trajetoria', {
     inputs: ['catalogo', 'historico'],
     title: 'Ocupação dia a dia',
-    description: 'Para cada data registrada, soma vagas em funcionamento e pessoas presas na 4ª RAJ e no Estado: no semiaberto, por sexo, e em todas as unidades.',
+    description: 'Para cada data registrada, soma vagas em funcionamento e pessoas presas na 4ª RAJ e no Estado: no semiaberto, por sexo e somado, no fechado e provisórios (tudo o que não é semiaberto) e em todas as unidades.',
     fn: (catalogo, historico) => {
       const sim = (v) => v === true || v === 'true';
       const cad = new Map(catalogo.map((c) => [c.id, c]));
@@ -953,7 +1187,8 @@ a { color: inherit; }
         const escopos = sim(c.raj4) ? ['4ª RAJ', 'Estado'] : ['Estado'];
         for (const escopo of escopos) {
           const series = [['geral', 'Todos']];
-          if (sim(c.semiaberto)) series.push(['semiaberto', c.sexo]);
+          if (sim(c.semiaberto)) series.push(['semiaberto', c.sexo], ['semiaberto_total', 'Todos']);
+          else series.push(['fechado', 'Todos']);
           for (const [serie, sexo] of series) {
             const k = `${h.d}|${serie}|${escopo}|${sexo}`;
             const a = acc.get(k) || { chave: k, data: String(h.d), serie, escopo, sexo, capacidade: 0, populacao: 0 };
@@ -1134,7 +1369,7 @@ a { color: inherit; }
     });
   };
 
-  window.lsLinhas = (el, series) => {
+  window.lsLinhas = (el, series, opts) => {
     el.classList.remove('dash-skeleton');
     el.replaceChildren();
     const W = el.clientWidth;
@@ -1142,7 +1377,7 @@ a { color: inherit; }
     const H = 260, mt = 18, mb = 26;
     const todos = series.flatMap((s) => s.pontos);
     if (!todos.length) return;
-    const fmtD = d3.utcFormat('%d/%m/%Y'), fmtTick = d3.utcFormat('%d/%m');
+    const fmtD = d3.utcFormat('%d/%m/%Y'), fmtTick = d3.utcFormat((opts && opts.tick) || '%d/%m');
     let [d0, d1] = d3.extent(todos, (p) => p.d);
     if (+d0 === +d1) { d0 = d3.utcDay.offset(d0, -3); d1 = d3.utcDay.offset(d1, 3); }
     const tMin = Math.min(90, d3.min(todos, (p) => p.t) - 5), tMax = Math.max(145, d3.max(todos, (p) => p.t) + 5);
@@ -1172,7 +1407,7 @@ a { color: inherit; }
     svg.append('text').attr('class', 'ls-t-ref').attr('x', ml + 4).attr('y', y(137.5) - 5).text('137,5%');
     const datas = [...new Set(todos.map((p) => +p.d))].sort((a, b) => a - b).map((v) => new Date(v));
     const nTicks = Math.max(1, Math.min(datas.length, Math.floor((x.range()[1] - ml) / 70)));
-    const ticks = datas.length <= nTicks ? datas : x.ticks(nTicks);
+    const ticks = (opts && opts.ticksDatas) ? datas.filter((d, i) => !opts.ticksDatas.length || opts.ticksDatas.includes(i)) : datas.length <= nTicks ? datas : x.ticks(nTicks);
     ticks.forEach((d) => svg.append('text').attr('class', 'ls-axis-t').attr('x', x(d)).attr('y', H - 6).attr('text-anchor', 'middle').text(fmtTick(d)));
     const linha = d3.line().x((p) => x(p.d)).y((p) => y(p.t));
     const labels = [];
@@ -1272,6 +1507,96 @@ a { color: inherit; }
     ]);
   });
 
+  dash.draw('grafico-fechado', (el) => {
+    const data = lsEstado(el, 'unidades');
+    if (!data) return;
+    lsBarras(el, data.filter((u) => u.raj4 && u.f_cap > 0 && u.f_pop > 0).map((u) => ({
+      nome: u.unidade, capacidade: u.f_cap, populacao: u.f_pop, conta: true,
+      nota: u.sa_cap ? `Fora da conta: pavilhão de semiaberto com ${lsInt(u.sa_pop)} presos para ${lsInt(u.sa_cap)} vagas (${lsPct(u.sa_taxa)}).` : null,
+    })), { ref2: true });
+  });
+
+  dash.draw('evolucao-grafico', (el) => {
+    const data = lsEstado(el, 'evolucao');
+    if (!data) return;
+    const pts = data.filter((r) => r.data);
+    const serie = (k) => pts.map((r) => ({ d: new Date(r.data + 'T12:00:00Z'), t: r[k + '_taxa'], pop: r[k + '_pop'], cap: r[k + '_cap'] }));
+    lsLinhas(el, [
+      { nome: 'Semiaberto', pontos: serie('sa'), cls: 'ls-line-est', dotCls: 'ls-dot-est', cor: null },
+      { nome: 'Fechado e provisórios', pontos: serie('fechado'), cor: 'var(--cds-chart-status-critical)' },
+    ], { tick: '%m/%Y', ticksDatas: [0, 1, pts.length - 1] });
+  });
+
+  dash.draw('evolucao-tabela', (tb) => {
+    const o = dash.data('evolucao');
+    if (o.status !== 'ok') { tb.replaceChildren(); return; }
+    const cel = (txt, cls) => { const td = document.createElement('td'); if (cls) td.className = cls; td.textContent = txt; return td; };
+    tb.replaceChildren(...o.data.filter((r) => r.data).map((r) => {
+      const tr = document.createElement('tr');
+      tr.dataset.key = r.chave;
+      tr.append(
+        cel(r.rotulo),
+        cel(lsInt(r.fechado_cap), 'ls-n'), cel(lsInt(r.fechado_pop), 'ls-n'), cel(lsPct(r.fechado_taxa), 'ls-n' + (r.fechado_taxa > 137.5 ? ' ls-over' : '')),
+        cel(lsInt(r.sa_cap), 'ls-n ls-hide-narrow'), cel(lsInt(r.sa_pop), 'ls-n ls-hide-narrow'), cel(lsPct(r.sa_taxa), 'ls-n'),
+        cel(r.origem, 'ls-hide-narrow'),
+      );
+      return tr;
+    }));
+  });
+
+  window.lsLinhasFechado = () => {
+    const u = dash.data('unidades');
+    if (u.status !== 'ok') return [];
+    const q = ((document.querySelector('#ls-f-busca') || {}).value || '').trim().toLowerCase();
+    const soRaj = !!(document.querySelector('#ls-f-raj4') || {}).checked;
+    const soAcima = !!(document.querySelector('#ls-f-acima') || {}).checked;
+    const soMistas = !!(document.querySelector('#ls-f-mistas') || {}).checked;
+    const o = window.lsOrdem.f;
+    const num = ['f_cap', 'f_pop', 'f_taxa', 'f_excedente', 'sa_cap', 'sa_taxa', 'ocupacao'];
+    const val = (r) => (num.includes(o.k) ? (r[o.k] === null ? -1 : Number(r[o.k])) : String(r[o.k]));
+    return lsOrdenar(u.data.filter((r) => r.f_cap > 0 && (!soRaj || r.raj4) && (!soAcima || r.f_pop > 1.375 * r.f_cap) && (!soMistas || r.sa_cap > 0)
+      && (!q || (r.unidade + ' ' + r.coordenadoria).toLowerCase().includes(q))), val, o);
+  };
+
+  dash.draw('tabela-fechado', (tb) => {
+    const rows = lsLinhasFechado();
+    const cel = (txt, cls) => { const td = document.createElement('td'); if (cls) td.className = cls; td.textContent = txt; return td; };
+    tb.replaceChildren(...rows.map((r) => {
+      const tr = document.createElement('tr');
+      tr.dataset.key = String(r.unidade_id);
+      tr.append(
+        cel(r.unidade),
+        cel(lsInt(r.f_cap), 'ls-n'),
+        cel(lsInt(r.f_pop), 'ls-n'),
+        cel(lsPct(r.f_taxa), 'ls-n' + (r.f_taxa > 137.5 ? ' ls-over' : '')),
+        cel(r.f_excedente ? lsInt(r.f_excedente) : '—', 'ls-n'),
+        cel(r.sa_cap ? lsPct(r.sa_taxa) : '—', 'ls-n ls-hide-narrow'),
+        cel(lsPct(r.ocupacao), 'ls-n ls-hide-narrow'),
+      );
+      return tr;
+    }));
+    const n = document.getElementById('ls-f-n');
+    if (n) n.textContent = rows.length === 1 ? '1 unidade' : `${lsInt(rows.length)} unidades`;
+  });
+
+  dash.draw('mudancas', (el) => {
+    const o = dash.data('mudancas_vagas'), s = dash.data('serie');
+    if (o.status !== 'ok' || s.status !== 'ok') { el.textContent = '—'; return; }
+    const ini = s.data[0].inicio_br;
+    if (!o.data.length) { el.textContent = `Desde ${ini}, nenhum pavilhão mudou de capacidade.`; return; }
+    const ul = document.createElement('ul');
+    ul.className = 'ls-prose-list';
+    o.data.forEach((r) => {
+      const li = document.createElement('li');
+      li.textContent = `${r.nome}: de ${lsInt(r.de)} para ${lsInt(r.para)} vagas (${r.diferenca > 0 ? '+' : ''}${lsInt(r.diferenca)}), a partir de ${r.quando}.`;
+      ul.append(li);
+    });
+    const p = document.createElement('p');
+    p.className = 'ls-prose';
+    p.textContent = `Desde ${ini}, ${o.data.length === 1 ? '1 pavilhão mudou' : o.data.length + ' pavilhões mudaram'} de capacidade:`;
+    el.replaceChildren(p, ul);
+  });
+
   dash.draw('ociosas', (tb) => {
     const o = dash.data('ociosas');
     if (o.status !== 'ok') { tb.replaceChildren(); return; }
@@ -1323,7 +1648,8 @@ a { color: inherit; }
     el.replaceChildren(m);
   });
 
-  window.lsOrdem = { b: { k: 'ocupacao', dir: -1 }, u: { k: 'ocupacao', dir: -1 } };
+  window.lsOrdem = { b: { k: 'ocupacao', dir: -1 }, u: { k: 'ocupacao', dir: -1 }, f: { k: 'f_taxa', dir: -1 } };
+  const LS_TABELAS = { b: 'tabela', u: 'tabela-unid', f: 'tabela-fechado' };
   const lsOrdenar = (rows, val, o) => rows.sort((a, b) => { const va = val(a), vb = val(b); return (typeof va === 'number' ? va - vb : String(va).localeCompare(String(vb), 'pt-BR')) * o.dir; });
 
   dash.draw('tabela', (tb) => {
@@ -1388,7 +1714,7 @@ a { color: inherit; }
         const th = bb.closest('th');
         if (th) th.setAttribute('aria-sort', bb.dataset.k === k ? (window.lsOrdem[t].dir === 1 ? 'ascending' : 'descending') : 'none');
       });
-      dash.draw(t === 'u' ? 'tabela-unid' : 'tabela');
+      dash.draw(LS_TABELAS[t]);
     });
   });
   document.querySelectorAll('#ls-busca').forEach((i) => i.addEventListener('input', () => dash.draw('tabela')));
@@ -1396,6 +1722,8 @@ a { color: inherit; }
   document.querySelectorAll('#ls-u-busca').forEach((i) => i.addEventListener('input', () => dash.draw('tabela-unid')));
   document.querySelectorAll('#ls-u-raj4, #ls-u-acima').forEach((i) => i.addEventListener('change', () => dash.draw('tabela-unid')));
   document.querySelectorAll('#ls-traj-serie').forEach((i) => i.addEventListener('change', () => dash.draw('trajetoria')));
+  document.querySelectorAll('#ls-f-busca').forEach((i) => i.addEventListener('input', () => dash.draw('tabela-fechado')));
+  document.querySelectorAll('#ls-f-raj4, #ls-f-acima, #ls-f-mistas').forEach((i) => i.addEventListener('change', () => dash.draw('tabela-fechado')));
 
   // ---------- Manifestação ----------
   const LS_GUARDA = ['cidade', 'defensor', 'oab'];
@@ -1499,6 +1827,185 @@ a { color: inherit; }
   };
   document.querySelectorAll('#ls-copiar-rico').forEach((b) => b.addEventListener('click', () => lsCopiar(b, true)));
   document.querySelectorAll('#ls-copiar-texto').forEach((b) => b.addEventListener('click', () => lsCopiar(b, false)));
+
+  // ---------- Exportação: planilha (.xlsx) e CSV, montadas no navegador ----------
+  window.lsTabelas = () => {
+    const get = (id) => { const r = dash.data(id); return r.status === 'ok' ? r.data : null; };
+    const cat = get('catalogo'), hist = get('historico'), traj = get('trajetoria'), uni = get('unidades'), marcos = get('marcos'), totais = get('totais');
+    if (!cat || !hist || !traj || !uni || !marcos || !totais) return null;
+    const r1 = (v) => (v === null || v === undefined ? null : Math.round(v * 10) / 10);
+    const pct = (p, c) => (c ? r1((p / c) * 100) : null);
+    const cad = new Map(cat.map((c) => [c.id, c]));
+    // Série por recorte (Estado e 4ª RAJ): total, fechado e provisórios, semiaberto
+    const chaves = new Map();
+    traj.forEach((r) => {
+      if (!['geral', 'fechado', 'semiaberto_total'].includes(r.serie)) return;
+      const k = r.data + '|' + r.escopo;
+      const a = chaves.get(k) || { data: r.data, recorte: r.escopo };
+      const pre = { geral: 'total', fechado: 'fechado', semiaberto_total: 'semiaberto' }[r.serie];
+      a[pre + '_vagas'] = r.capacidade; a[pre + '_presos'] = r.populacao; a[pre + '_ocupacao'] = r.taxa;
+      chaves.set(k, a);
+    });
+    const colsSerie = ['data', 'recorte', 'total_vagas', 'total_presos', 'total_ocupacao', 'fechado_vagas', 'fechado_presos', 'fechado_ocupacao', 'semiaberto_vagas', 'semiaberto_presos', 'semiaberto_ocupacao'];
+    const serie = [...chaves.values()].sort((a, b) => (a.data + a.recorte < b.data + b.recorte ? -1 : 1)).map((a) => colsSerie.map((c) => a[c] ?? null));
+    // Unidades na data mais recente
+    const ultima = hist.reduce((m, r) => (String(r.d) > m ? String(r.d) : m), '');
+    const colsUni = ['data', 'unidade', 'cidade', 'coordenadoria', 'tipo', 'quarta_raj', 'sexo', 'total_vagas', 'total_presos', 'total_ocupacao', 'fechado_vagas', 'fechado_presos', 'fechado_ocupacao', 'fechado_presos_acima_137_5', 'semiaberto_vagas', 'semiaberto_presos', 'semiaberto_ocupacao'];
+    const unidades = uni.slice().sort((a, b) => a.unidade.localeCompare(b.unidade, 'pt-BR')).map((u) => [
+      ultima, u.unidade, u.cidade, u.coordenadoria, u.tipo_unidade, u.raj4 ? 'sim' : 'não', u.sexo,
+      u.capacidade, u.populacao, u.ocupacao, u.f_cap || null, u.f_cap ? u.f_pop : null, u.f_taxa, u.f_cap ? u.f_excedente : null,
+      u.sa_cap || null, u.sa_cap ? u.sa_pop : null, u.sa_taxa,
+    ]);
+    // Unidades dia a dia
+    const conta = (c, p) => c.situacao === 'Em funcionamento' || p > 0;
+    const acc = new Map();
+    hist.forEach((h) => {
+      const c = cad.get(h.i);
+      if (!c) return;
+      const cap = Number(h.c), pop = Number(h.p);
+      if (!conta(c, pop)) return;
+      const k = h.d + '|' + c.unidade_id;
+      const a = acc.get(k) || { d: h.d, u: c.unidade, coord: c.coordenadoria, raj4: lsSim(c.raj4), tc: 0, tp: 0, fc: 0, fp: 0, sc: 0, sp: 0 };
+      a.tc += cap; a.tp += pop;
+      if (lsSim(c.semiaberto)) { a.sc += cap; a.sp += pop; } else { a.fc += cap; a.fp += pop; }
+      acc.set(k, a);
+    });
+    const colsUniSerie = ['data', 'unidade', 'coordenadoria', 'quarta_raj', 'total_vagas', 'total_presos', 'total_ocupacao', 'fechado_vagas', 'fechado_presos', 'fechado_ocupacao', 'semiaberto_vagas', 'semiaberto_presos', 'semiaberto_ocupacao'];
+    const uniSerie = [...acc.values()].sort((a, b) => (a.d === b.d ? a.u.localeCompare(b.u, 'pt-BR') : a.d < b.d ? -1 : 1)).map((a) => [
+      a.d, a.u, a.coord, a.raj4 ? 'sim' : 'não', a.tc, a.tp, pct(a.tp, a.tc), a.fc || null, a.fc ? a.fp : null, pct(a.fp, a.fc), a.sc || null, a.sc ? a.sp : null, pct(a.sp, a.sc),
+    ]);
+    // Pavilhões dia a dia, como a SAP publica
+    const colsPav = ['data', 'pavilhao_id', 'pavilhao', 'unidade', 'cidade', 'coordenadoria', 'quarta_raj', 'regime', 'bloco', 'sexo', 'situacao', 'vagas', 'presos', 'ocupacao', 'conta_no_painel', 'variavel_sap_presos', 'variavel_sap_vagas'];
+    const pav = hist.slice().sort((a, b) => (a.d === b.d ? (String(a.i) < String(b.i) ? -1 : 1) : a.d < b.d ? -1 : 1)).map((h) => {
+      const c = cad.get(h.i) || {};
+      const cap = Number(h.c), pop = Number(h.p);
+      return [h.d, h.i, c.nome, c.unidade, c.cidade, c.coordenadoria, lsSim(c.raj4) ? 'sim' : 'não', c.regime, c.bloco, c.sexo, c.situacao, cap, pop, pct(pop, cap), conta(c, pop) ? 'sim' : 'não', c.var_populacao, c.var_capacidade];
+    });
+    const colsMarcos = ['data', 'fechado_vagas', 'fechado_presos', 'fechado_ocupacao', 'semiaberto_vagas', 'semiaberto_presos', 'semiaberto_ocupacao', 'fonte', 'nota'];
+    const mar = marcos.map((m) => [m.d, m.fechado_cap, m.fechado_pop, pct(m.fechado_pop, m.fechado_cap), m.sa_cap, m.sa_pop, pct(m.sa_pop, m.sa_cap), m.fonte, m.nota]);
+    const colsTot = ['data', 'populacao_total_sap', 'populacao_masculina_sap', 'populacao_total_ano_anterior_sap'];
+    const tot = totais.map((t) => [t.d, t.pop_total, t.pop_masculina, t.pop_total_ano_anterior]);
+    const leia = [
+      ['Numerus clausus: dados de lotação prisional de São Paulo'],
+      ['Gerado em', new Date().toLocaleString('pt-BR')],
+      ['Data mais recente da SAP', ultima],
+      ['Fonte', 'SAP-SP, página Unidades Prisionais (www1.sap.sp.gov.br/sp/unidades-prisionais), arquivo pop-pri.js, coletado diariamente'],
+      ['Arquivos originais', 'https://github.com/Dsnunes1989/numerus-clausus/tree/main/data/bruto'],
+      ['Fechado', 'Fechado e provisórios: tudo o que não é semiaberto (regime fechado, provisórios, prisão civil, RDD e hospital). É o recorte em que a SAP informa as vagas "em regime fechado".'],
+      ['Ocupação', 'Presos divididos por vagas, em %. Só entram pavilhões em funcionamento ou com presos.'],
+      ['Acima de 137,5%', 'Presos além do limite de 137,5% (Resolução CNPCP nº 5/2016) em cada unidade: presos menos 137,5% das vagas, arredondado para baixo.'],
+      ['Marcos_SAP', 'Números de 30/05/2025 e 01/12/2025 informados pela SAP em resposta a ofício da Defensoria Pública, citados na Rcl 58.207/STF.'],
+      ['Aviso', 'Painel independente, não oficial. Confira a fonte antes de usar em juízo.'],
+    ];
+    return [
+      { nome: 'Leia-me', cols: ['Numerus clausus', 'Dados de lotação prisional de São Paulo'], rows: leia.slice(1) },
+      { nome: 'Estado e 4a RAJ por dia', arq: 'serie-estado-4araj', cols: colsSerie, rows: serie },
+      { nome: 'Unidades (atual)', arq: 'unidades-atual', cols: colsUni, rows: unidades },
+      { nome: 'Unidades por dia', arq: 'unidades-por-dia', cols: colsUniSerie, rows: uniSerie },
+      { nome: 'Pavilhoes por dia', arq: 'pavilhoes-por-dia', cols: colsPav, rows: pav },
+      { nome: 'Marcos SAP', arq: 'marcos-sap', cols: colsMarcos, rows: mar },
+      { nome: 'Totais SAP', arq: 'totais-sap', cols: colsTot, rows: tot },
+    ];
+  };
+
+  window.lsBaixar = (nome, blob) => {
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = nome;
+    document.body.append(a);
+    a.click();
+    setTimeout(() => { URL.revokeObjectURL(a.href); a.remove(); }, 1000);
+  };
+
+  // CSV no formato que o Excel em português abre direto: ponto e vírgula, vírgula decimal e BOM.
+  window.lsCsv = (cols, rows) => {
+    const f = (v) => {
+      if (v === null || v === undefined) return '';
+      if (typeof v === 'number') return String(v).replace('.', ',');
+      const t = String(v);
+      return /[;"\n\r]/.test(t) ? '"' + t.replace(/"/g, '""') + '"' : t;
+    };
+    return new Blob(['﻿' + [cols, ...rows].map((r) => r.map(f).join(';')).join('\r\n')], { type: 'text/csv;charset=utf-8' });
+  };
+
+  // XLSX mínimo: um arquivo ZIP sem compressão com as planilhas em XML.
+  window.lsXlsx = (abas) => {
+    const enc = new TextEncoder();
+    const esc = (t) => String(t).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c])).replace(/[\u0000-\u0008\u000b\u000c\u000e-\u001f]/g, '');
+    const col = (n) => { let s = ''; n += 1; while (n) { const m = (n - 1) % 26; s = String.fromCharCode(65 + m) + s; n = Math.floor((n - 1) / 26); } return s; };
+    const celula = (v, ref, est) => {
+      if (v === null || v === undefined || v === '') return '';
+      if (typeof v === 'number' && isFinite(v)) return `<c r="${ref}"${est ? ` s="${est}"` : ''}><v>${v}</v></c>`;
+      return `<c r="${ref}" t="inlineStr"${est ? ` s="${est}"` : ''}><is><t xml:space="preserve">${esc(v)}</t></is></c>`;
+    };
+    const planilha = (aba) => {
+      const linhas = [aba.cols, ...aba.rows];
+      const larg = aba.cols.map((c, j) => Math.min(60, Math.max(10, ...linhas.slice(0, 200).map((r) => String(r[j] ?? '').length + 2))));
+      const xml = linhas.map((r, i) => `<row r="${i + 1}">${r.map((v, j) => celula(v, col(j) + (i + 1), i === 0 ? 1 : 0)).join('')}</row>`).join('');
+      return '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>'
+        + '<worksheet xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main">'
+        + '<sheetViews><sheetView workbookViewId="0"><pane ySplit="1" topLeftCell="A2" activePane="bottomLeft" state="frozen"/></sheetView></sheetViews>'
+        + `<cols>${larg.map((w, j) => `<col min="${j + 1}" max="${j + 1}" width="${w}" customWidth="1"/>`).join('')}</cols>`
+        + `<sheetData>${xml}</sheetData></worksheet>`;
+    };
+    const arquivos = [
+      ['[Content_Types].xml', '<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types"><Default Extension="rels" ContentType="application/vnd.openxmlformats-package.relationships+xml"/><Default Extension="xml" ContentType="application/xml"/><Override PartName="/xl/workbook.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet.main+xml"/><Override PartName="/xl/styles.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.styles+xml"/>'
+        + abas.map((a, i) => `<Override PartName="/xl/worksheets/sheet${i + 1}.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.worksheet+xml"/>`).join('') + '</Types>'],
+      ['_rels/.rels', '<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"><Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument" Target="xl/workbook.xml"/></Relationships>'],
+      ['xl/workbook.xml', '<?xml version="1.0" encoding="UTF-8" standalone="yes"?><workbook xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships"><sheets>'
+        + abas.map((a, i) => `<sheet name="${esc(a.nome.slice(0, 31))}" sheetId="${i + 1}" r:id="rId${i + 1}"/>`).join('') + '</sheets></workbook>'],
+      ['xl/_rels/workbook.xml.rels', '<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships">'
+        + abas.map((a, i) => `<Relationship Id="rId${i + 1}" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/worksheet" Target="worksheets/sheet${i + 1}.xml"/>`).join('')
+        + `<Relationship Id="rId${abas.length + 1}" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/styles" Target="styles.xml"/></Relationships>`],
+      ['xl/styles.xml', '<?xml version="1.0" encoding="UTF-8" standalone="yes"?><styleSheet xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main"><fonts count="2"><font><sz val="11"/><name val="Calibri"/></font><font><b/><sz val="11"/><name val="Calibri"/></font></fonts><fills count="2"><fill><patternFill patternType="none"/></fill><fill><patternFill patternType="gray125"/></fill></fills><borders count="1"><border><left/><right/><top/><bottom/><diagonal/></border></borders><cellStyleXfs count="1"><xf numFmtId="0" fontId="0" fillId="0" borderId="0"/></cellStyleXfs><cellXfs count="2"><xf numFmtId="0" fontId="0" fillId="0" borderId="0" xfId="0"/><xf numFmtId="0" fontId="1" fillId="0" borderId="0" xfId="0" applyFont="1"/></cellXfs><cellStyles count="1"><cellStyle name="Normal" xfId="0" builtinId="0"/></cellStyles></styleSheet>'],
+      ...abas.map((a, i) => [`xl/worksheets/sheet${i + 1}.xml`, planilha(a)]),
+    ];
+    const crcT = new Uint32Array(256).map((_, n) => { let c = n; for (let k = 0; k < 8; k++) c = c & 1 ? 0xedb88320 ^ (c >>> 1) : c >>> 1; return c >>> 0; });
+    const crc = (b) => { let c = 0xffffffff; for (let i = 0; i < b.length; i++) c = crcT[(c ^ b[i]) & 0xff] ^ (c >>> 8); return (c ^ 0xffffffff) >>> 0; };
+    const partes = [], centro = [];
+    let off = 0;
+    const u16 = (v) => [v & 0xff, (v >>> 8) & 0xff];
+    const u32 = (v) => [v & 0xff, (v >>> 8) & 0xff, (v >>> 16) & 0xff, (v >>> 24) & 0xff];
+    for (const [nome, txt] of arquivos) {
+      const n = enc.encode(nome), d = enc.encode(txt), c = crc(d);
+      const cab = new Uint8Array([...u32(0x04034b50), ...u16(20), ...u16(0x0800), ...u16(0), ...u16(0), ...u16(0x21), ...u32(c), ...u32(d.length), ...u32(d.length), ...u16(n.length), ...u16(0)]);
+      partes.push(cab, n, d);
+      centro.push(new Uint8Array([...u32(0x02014b50), ...u16(20), ...u16(20), ...u16(0x0800), ...u16(0), ...u16(0), ...u16(0x21), ...u32(c), ...u32(d.length), ...u32(d.length), ...u16(n.length), ...u16(0), ...u16(0), ...u16(0), ...u16(0), ...u32(0), ...u32(off)]), n);
+      off += cab.length + n.length + d.length;
+    }
+    const tamCentro = centro.reduce((s, b) => s + b.length, 0);
+    const fim = new Uint8Array([...u32(0x06054b50), ...u16(0), ...u16(0), ...u16(arquivos.length), ...u16(arquivos.length), ...u32(tamCentro), ...u32(off), ...u16(0)]);
+    return new Blob([...partes, ...centro, fim], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+  };
+
+  document.addEventListener('click', (ev) => {
+    const b = ev.target.closest('[data-baixar]');
+    if (!b) return;
+    const abas = lsTabelas();
+    const ultima = (dash.data('meta_data').data || [{}])[0].data || 'dados';
+    if (!abas) return;
+    const qual = b.dataset.baixar;
+    if (qual === 'xlsx') { lsBaixar(`numerus-clausus_${ultima}.xlsx`, lsXlsx(abas)); return; }
+    if (qual === 'fechado-tabela') {
+      const rows = lsLinhasFechado().map((u) => [u.unidade, u.coordenadoria, u.raj4 ? 'sim' : 'não', u.f_cap, u.f_pop, u.f_taxa, u.f_excedente, u.sa_cap || null, u.sa_cap ? u.sa_pop : null, u.sa_taxa, u.capacidade, u.populacao, u.ocupacao]);
+      lsBaixar(`fechado-por-unidade_${ultima}.csv`, lsCsv(['unidade', 'coordenadoria', 'quarta_raj', 'fechado_vagas', 'fechado_presos', 'fechado_ocupacao', 'fechado_presos_acima_137_5', 'semiaberto_vagas', 'semiaberto_presos', 'semiaberto_ocupacao', 'total_vagas', 'total_presos', 'total_ocupacao'], rows));
+      return;
+    }
+    const aba = abas.find((a) => a.arq === qual);
+    if (aba) lsBaixar(`${aba.arq}_${ultima}.csv`, lsCsv(aba.cols, aba.rows));
+  });
+
+  dash.calc('meta_data', {
+    inputs: ['historico'],
+    title: 'Data mais recente',
+    description: 'Data mais recente registrada, para nomear os arquivos baixados.',
+    fn: (historico) => [{ chave: 'ultima', data: historico.reduce((m, r) => (String(r.d) > m ? String(r.d) : m), '') }],
+  });
+
+  dash.draw('botao-dados', (el) => {
+    const ok = dash.data('meta_data').status === 'ok';
+    el.disabled = !ok;
+  });
 
   // ---------- Abas ----------
   const lsAbas = () => [...document.querySelectorAll('.ls-tabs [data-aba]')];

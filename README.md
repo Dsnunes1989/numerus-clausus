@@ -10,6 +10,8 @@ Painel independente. Não é publicação oficial da SAP nem da Defensoria Públ
 
 - **Coleta.** Todo dia, às 20h23 e às 10h23 (Brasília), o GitHub Actions baixa o arquivo `pop-pri.js` da SAP e lê a capacidade e a população de cada pavilhão listado em `data/catalogo.json`. Quando a SAP publica uma data nova, a coleta acrescenta uma linha por pavilhão em `data/historico.json` e guarda o arquivo original do dia em `data/bruto/`. Se a data não mudou, nada é alterado.
 - **Publicação.** O site (`index.html`, `assets/`, `data/`) é publicado pelo GitHub Pages a cada coleta e a cada alteração no repositório.
+- **Regime fechado.** A aba Regime fechado soma, em cada unidade, tudo o que não é semiaberto (fechado, provisórios, prisão civil, RDD e hospital), que é o recorte em que a SAP informa as vagas "em regime fechado".
+- **Baixar dados.** A aba Baixar dados monta, no navegador, uma planilha .xlsx e arquivos CSV (formato do Excel em português) com toda a série registrada.
 - **Privacidade.** O que se digita no gerador de manifestação fica no navegador de quem usa; nada é enviado.
 
 ## Arquivos
@@ -20,6 +22,8 @@ Painel independente. Não é publicação oficial da SAP nem da Defensoria Públ
 | `data/historico.json` | Capacidade (`c`) e população (`p`) de cada pavilhão (`i`) em cada data (`d`) |
 | `data/bruto/` | Arquivo `pop-pri.js` publicado pela SAP em cada data registrada |
 | `data/rede_2023.json` | Situação do semiaberto da 4ª RAJ em 27/10/2023, para comparação |
+| `data/totais.json` | Totais que a própria SAP publica no mesmo arquivo (população total, masculina e do ano anterior), usados para conferir a soma dos pavilhões |
+| `data/marcos.json` | Vagas e presos do fechado e do semiaberto em 30/05/2025 e 01/12/2025, informados pela SAP em resposta a ofício da Defensoria Pública e citados na Rcl 58.207/STF |
 | `coleta/atualizar.py` | Script da coleta |
 
 ## Avisos

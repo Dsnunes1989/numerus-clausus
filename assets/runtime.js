@@ -1,6 +1,6 @@
 // Runtime mínimo do painel: carrega os dados, calcula e desenha.
 (() => {
-  const FONTES = { catalogo: 'data/catalogo.json', historico: 'data/historico.json', rede_2023: 'data/rede_2023.json' };
+  const FONTES = { catalogo: 'data/catalogo.json', historico: 'data/historico.json', rede_2023: 'data/rede_2023.json', totais: 'data/totais.json', marcos: 'data/marcos.json' };
   const RAW = {};
   const calcs = {}, draws = {}, onFns = [];
   let cache = {};
